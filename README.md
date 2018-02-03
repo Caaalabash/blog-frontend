@@ -5,7 +5,7 @@
 前端：vue vue-router axios  
 后端：express mongodb  
 ## 博客地址
-[我的博客](blog.calabash.top)
+[我的博客](http://blog.calabash.top)
 ## 起步
 + 进入项目目录后安装依赖
 ````
