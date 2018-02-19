@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
-    <blog-header :user="user"></blog-header>
-    <blog-links @openDialog="openDialog" :user="user"></blog-links>
+    <blog-header :user="user" :users="users"></blog-header>
+    <blog-links @openDialog="openDialog" :user="user" :users="users"></blog-links>
     <transition name="move" mode="out-in">
       <router-view></router-view>
     </transition>
-    <login-dialog :isVisible="dialogVisible" @closeDialog="closeDialog"></login-dialog>
+    <login-dialog :openLoginDialog="openLoginDialog" @closeDialog="closeDialog"></login-dialog>
   </div>
 </template>
 
@@ -13,15 +13,10 @@
   import BlogHeader from '../base/BlogHeader'
   import BlogLinks from  '../base/BlogLinks'
   import LoginDialog from '../base/LoginDialog'
-  import {getStorage} from '../../lib/lib'
-  import service from '../../service/apiManage'
+  import {mapMutations,mapGetters} from 'vuex'
   export default{
     name:'index',
-    props:{
-      user:{
-        default:'Calabash'
-      }
-    },
+    props:['user'],
     components:{
       'blog-header':BlogHeader,
       'blog-links':BlogLinks,
@@ -29,21 +24,33 @@
     },
     data(){
       return{
-        dialogVisible:false,
-        currentUser:getStorage('currentUser')
+
       }
     },
+    computed:{
+      ...mapGetters([
+        'openLoginDialog',
+        'loginStatus',
+        'users'
+      ])
+    },
     methods:{
+      ...mapMutations([
+        'OPEN_LOGIN_DIALOG'
+      ]),
       openDialog(){
-        this.currentUser = getStorage('currentUser')
-        if(!this.currentUser){
-          this.dialogVisible=true
+        if(!this.loginStatus){
+          this.OPEN_LOGIN_DIALOG(true)
         }else{
-          this.$router.push({path:`/${this.currentUser}/manage`})
+          this.$router.push({path:`/${this.users.userName}/manage`})
         }
       },
       closeDialog(){
-        this.dialogVisible=false
+        this.OPEN_LOGIN_DIALOG(false)
+        if(this.loginStatus){
+          console.log(1)
+          this.$router.push({path:`/${this.users.userName}/manage`})
+        }
       },
     }
   }

@@ -1,13 +1,13 @@
 <template>
   <div class="header">
-    <a :href="`/${user}`">{{user}}</a>
+    <a :href="`/${users.userName}`">{{users.userName}}</a>
   </div>
 </template>
 
 <script>
   export default{
     name:'BlogHeader',
-    props:['user'],
+    props:['user','users'],
     data(){
       return{
 

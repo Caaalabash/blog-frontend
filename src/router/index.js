@@ -48,7 +48,7 @@ const router = new Router({
           name:'new-idea',
           path:'new-idea',
           component:resolve => require(['../components/base/ManageYourIdea.vue'], resolve),
-          props:(route)=>({blogDate:route.query.blogDate,userName:route.params.user})
+          props:(route)=>({blogDate:route.query.blogDate,userName:route.params.userName})
         },
         {
           name:'ideas',

@@ -26,7 +26,7 @@ const response = function(errno=0,res='',msg=''){
   }
 }
 
-
+const _Loginfilter = {'userPwd':0}
 
 /*注册功能
 * 对获取的用户名密码进行检查，都通过后检测用户名是否次重复
@@ -100,9 +100,9 @@ router.post('/checkUser',function (req,res) {
   let userName = req.body.userName,
       userPwd = req.body.userPwd
   if(check.validateLength(userName) && check.validateLength(userPwd)){
-    users.findOne(req.body).exec().then(function(doc){
+    users.findOne(req.body,_Loginfilter ).exec().then(function(doc){
       if(doc){
-        return res.json(response(0,'','登录成功'))
+        return res.json(response(0,doc,'登录成功'))
       }else{
         return res.json(response(1,'','用户名或密码错误'))
       }

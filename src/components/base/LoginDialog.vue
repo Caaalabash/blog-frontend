@@ -1,5 +1,5 @@
 <template>
-  <el-dialog  :visible.sync="isVisible"
+  <el-dialog  :visible.sync="openLoginDialog"
               width="30%"
               :before-close="handleClose">
 
@@ -28,12 +28,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-import service from '../../service/apiManage'
-import {setStorage,getStorage} from '../../lib/lib'
+import {mapGetters,mapActions} from 'vuex'
+
 export default{
   name:'LoginDialog',
   props:{
-    isVisible:{
+    openLoginDialog:{
       type:Boolean,
       default:false
     }
@@ -60,35 +60,23 @@ export default{
 
   },
   methods:{
+    ...mapActions([
+      'login',
+      'register'
+    ]),
     handleClose(){
       this.$refs['form'].resetFields()
       this.$emit('closeDialog')
     },
     sendRequest(){
+      let self =this
       this.$refs['form'].validate((valid)=>{
         if(valid){
-          if(this.activeName==='login'){
-            service.checkUser(this.form).then((res)=>{
-              if(res.data.errno===0){
-                this.$message.success(res.data.msg)
-                setStorage('currentUser',this.form.userName)
-                this.handleClose()
-                this.$router.push(`/${getStorage('currentUser')}/manage`)
-
-              }else if(res.data.errno===1){
-                this.$message.error(res.data.msg)
-              }
-            })
+          if(self.activeName==='login'){
+            self.login(self.form)
           }else{
-            service.createUser(this.form).then((res)=>{
-              if(res.data.errno===0){
-                this.$message.success(res.data.msg)
-                setStorage('currentUser',this.form.userName)
-                this.handleClose()
-              }else if(res.data.errno===1){
-                this.$message.error(res.data.msg)
-              }
-            })
+            self.register(self.form)
+            self.handleClose()
           }
         }
       })

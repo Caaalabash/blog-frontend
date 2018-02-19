@@ -24,18 +24,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import service from '../../service/apiManage'
+import {mapActions,mapGetters} from 'vuex'
 import {formatDate} from '../../lib/lib'
+
 export default{
-  props:['blogDate','userName'],
+  props:['blogDate'],
   data(){
     return{
-      idea:{
-        blogTitle:'',
-        blogContent: '# hello',
-        blogDate:'',
-        blogType:'public'
-      },
       rules:{
         blogTitle:[{ required: true, message: '请输入文章标题', trigger: 'blur' },
           { min: 4, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }]
@@ -44,11 +39,19 @@ export default{
   },
   computed: {
     compiledMarkdown: function () {
-      console.log(marked(this.idea.blogContent, { sanitize: true }))
       return marked(this.idea.blogContent, { sanitize: true })
-    }
+    },
+    ...mapGetters({
+      users:'users',
+      idea:'queryIdea'
+    })
   },
   methods: {
+    ...mapActions([
+      'createNewIdea',
+      'updateIdea',
+      'getIdea'
+    ]),
     update:_.debounce(function (e) {
       this.idea.blogContent = e.target.value
     }, 300),
@@ -60,43 +63,18 @@ export default{
             this.$message.error('文章内容不能为空')
           }else{
             this.idea.blogDate = formatDate()
-            let handler
-            this.blogDate?handler = this.changeIdea():handler=this.createNewIdea()
-            handler.then((res)=>{
-              if(res.data.errno===0){
-                this.$message.success(res.data.msg)
-                this.idea.blogContent=''
-                this.idea.blogTitle=''
-                this.idea.blogDate=''
-                this.idea.blodType = 'public'
-              }else if(res.data.errno===1){
-                this.$message.error(res.data.msg)
-              }
-            })
+            this.blogDate ?
+              this.updateIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.users.userName})):
+              this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
           }
         }
       })
-    },
-    changeIdea(){
-      return service.changeIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.userName}))
-    },
-    createNewIdea(){
-      return service.createNewIdea(Object.assign({userName:this.userName},this.idea))
-    },
-    getIdea(id){
-      service.getIdea({'blogDate':id,'userName':this.userName}).then((res)=>{
-        if(res.data.errno===0){
-          this.idea = res.data.res
-        }else{
-          this.$message.error(res.data.msg)
-        }
-      })
-    },
+    }
   },
   beforeRouteEnter (to, from, next) {
     if(to.query.blogDate){
       next(vm => {
-        vm.getIdea(vm.blogDate)
+        vm.getIdea({blogDate:vm.blogDate,userName:vm.users.userName})
       })
     }else{
       next()

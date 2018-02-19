@@ -16,32 +16,20 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import service from '../../service/apiManage'
   export default{
     name:'BlogLinks',
-    props:['user'],
+    props:['user','users'],
     data(){
       return{
-        infoList:{}
+        infoList:this.users.userInfo
       }
     },
     methods:{
       login(){
         this.$emit('openDialog')
       },
-      getLinks(){
-        service.getUserInfo({userName:this.user}).then((res)=>{
-          if(res.data.errno===0){
-            this.infoList = res.data.res
-          }else{
-            this.$message.error(res.data.msg)
-          }
-        })
-      }
-    },
-    created(){
-      this.getLinks()
     }
+
   }
 </script>
 

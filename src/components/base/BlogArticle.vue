@@ -11,10 +11,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import service from '../../service/apiManage'
+  import { mapActions ,mapGetters} from 'vuex'
   import {formatDateEng,getStorage} from '../../lib/lib'
+
   export default{
-    props:['id','user'],
+    props:['id','user','users'],
     data(){
       return{
         idea:{
@@ -36,17 +37,21 @@
       },
       formatDate(){
         return formatDateEng(this.idea.blogDate)
-      }
+      },
+      ...mapGetters([
+        'currentBlogList'
+      ])
     },
     methods: {
       getIdea(){
-        service.getIdea({'blogDate':this.id,'userName':this.user}).then((res)=>{
-          if(res.data.errno===0){
-            this.idea = res.data.res
-          }else{
-            this.$message.error(res.data.msg)
+        this.currentBlogList.forEach((item,index,arr)=>{
+          if(this.id === item.blogDate){
+            this.idea = Object.assign({},item,{nextBlogDate:this.hasSiblings(arr)(index+1)('blogDate'),lastBlogDate:this.hasSiblings(arr)(index-1)('blogDate')})
           }
         })
+      },
+      hasSiblings(arr){
+        return index=>property=>arr[index]?arr[index][property]:'0'
       },
       openOtherBlogs(value){
         if(value && value!=='0'){
