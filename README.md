@@ -26,11 +26,11 @@
 ## 效果
 个人喜欢简洁的风格，但没什么好的想法，**于是借（chao）鉴（xi）了[尤雨溪的博客](http://blog.evanyou.me/)**
 + 展示页  登录/注册藏在第四个链接
-![](http://blog.calabash.top/img/b1.jpg)
+![](http://blog.calabash.top/b1.jpg)
 + 文章页
-![](http://blog.calabash.top/img/b2.jpg)
+![](http://blog.calabash.top/b2.jpg)
 + 后台管理
-![](http://blog.calabash.top/img/b3.jpg)
-![](http://blog.calabash.top/img/b4.jpg)
+![](http://blog.calabash.top/b3.jpg)
+![](http://blog.calabash.top/b4.jpg)
 + 打包分析
-![](http://blog.calabash.top/img/b5.jpg)
+![](http://blog.calabash.top/b5.jpg)
