@@ -1,7 +1,7 @@
 import * as types from './mutation-type'
-import {initState} from './state'
 import {Message} from 'element-ui'
 import router from '../router'
+
 const mutations = {
   /*全局错误提示*/
   [types.REQUEST_ERR](state,{errno,msg}){
@@ -26,17 +26,10 @@ const mutations = {
   },
   /*注销*/
   [types.LOG_OUT](state){
-    //重置没有效果
-    /*window.localStorage.clear()
-    state = {...initState}*/
-    state.loginStatus = false
-    state.users.blogList = []
-    state.users.userInfo = {
-      twitter:'http://www.lanternpro.site/',
-      github:'https://github.com/',
-      weibo:'https://weibo.com/'
+    const initState = state.initState()
+    for (const key in initState) {
+      state[key] = initState[key];
     }
-    state.users.userName = ''
   },
   /*是否在登录状态*/
   [types.LOGIN_SUCCESS](state){
