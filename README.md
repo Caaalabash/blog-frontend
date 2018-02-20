@@ -2,8 +2,8 @@
 ## 简介
 一个简单的练手项目
 ## 技术栈
-前端：vue vue-router axios  
-后端：express mongodb  
+前端：vue vue-router axios  vuex
+后端：express mongodb  
 ## 博客地址
 [我的博客](http://blog.calabash.top)
 ## 起步
