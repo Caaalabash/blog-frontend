@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <a :href="`/${users.userName}`">{{users.userName}}</a>
+    <a :href="`/${user}`">{{user}}</a>
   </div>
 </template>
 

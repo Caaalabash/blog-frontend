@@ -32,6 +32,7 @@
   import {mapActions,mapGetters} from 'vuex'
   export default{
     name:'ManageIdea',
+    props:['users'],
     data(){
       return{
 
@@ -39,7 +40,6 @@
     },
     computed:{
       ...mapGetters([
-        'users',
         'blogList'
       ])
     },

@@ -6,11 +6,11 @@ export const currentBlogList = state=>state.currentBlogList
 
 export const users = state=>state.users
 
+export const userName = state=>state.users.userName
+
 export const loginStatus = state=>state.loginStatus
 
 export const openLoginDialog = state=>state.ui.openLoginDialog
-
-export const queryIdea = state=>state.queryIdea
 
 export const userInfo = state=>state.users.userInfo
 

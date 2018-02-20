@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import index from '../components/page/Index.vue'
 import BlogBody from '../components/base/BlogBody.vue'
-import {getStorage} from '../lib/lib'
+import store from '../store/index'
 Vue.use(Router)
+
 
 const router = new Router({
   routes: [
@@ -67,7 +68,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (getStorage('currentUser')!==to.params.user) {
+    if (store.getters.userName!==to.params.user) {
       next({
         name: 'error',
         params: { type:'权限不足' }

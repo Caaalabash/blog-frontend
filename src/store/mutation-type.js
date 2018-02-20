@@ -1,8 +1,3 @@
-/**
- * action.types
- */
-
-/*blog*/
 
 export const SET_CURRENT_BLOG_LIST = 'SET_CURRENT_BLOG_LIST'
 
@@ -20,10 +15,14 @@ export const CHANGE_IDEA = 'CHANGE_IDEA'
 
 export const GET_IDEA = 'GET_IDEA'
 
-export const  GET_USER_INFO= 'GET_USER_INFO'
+export const GET_USER_INFO= 'GET_USER_INFO'
 
 export const CHANGE_USER_INFO = 'CHANGE_USER_INFO'
 
 export const GET_IDEA_LIST = 'GET_IDEA_LIST'
 
 export const DELETE_IDEA = 'DELETE_IDEA'
+
+export const REQUEST_ERR  = 'REQUEST_ERR'
+
+export const REDIRECT_TO = 'REDIRECT_TO'

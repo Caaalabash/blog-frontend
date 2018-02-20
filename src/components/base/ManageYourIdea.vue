@@ -28,12 +28,19 @@ import {mapActions,mapGetters} from 'vuex'
 import {formatDate} from '../../lib/lib'
 
 export default{
-  props:['blogDate'],
+  props:['blogDate','users'],
   data(){
     return{
       rules:{
         blogTitle:[{ required: true, message: '请输入文章标题', trigger: 'blur' },
           { min: 4, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }]
+      },
+      idea:{
+        blogId:'',
+        blogTitle:'',
+        blogDate:'',
+        blogContent:'',
+        blogType:'public'
       }
     }
   },
@@ -42,15 +49,13 @@ export default{
       return marked(this.idea.blogContent, { sanitize: true })
     },
     ...mapGetters({
-      users:'users',
-      idea:'queryIdea'
+      blogList:'blogList'
     })
   },
   methods: {
     ...mapActions([
       'createNewIdea',
       'updateIdea',
-      'getIdea'
     ]),
     update:_.debounce(function (e) {
       this.idea.blogContent = e.target.value
@@ -66,6 +71,13 @@ export default{
             this.blogDate ?
               this.updateIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.users.userName})):
               this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
+            //发布成功
+            //在没有async await之前
+            setTimeout(()=>{
+              this.idea.blogTitle=''
+              this.idea.blogContent=''
+              this.idea.blogType='public'
+            },1000)
           }
         }
       })
@@ -74,7 +86,7 @@ export default{
   beforeRouteEnter (to, from, next) {
     if(to.query.blogDate){
       next(vm => {
-        vm.getIdea({blogDate:vm.blogDate,userName:vm.users.userName})
+        vm.idea = vm.blogList.filter(item=>item.blogDate===to.query.blogDate)[0]
       })
     }else{
       next()

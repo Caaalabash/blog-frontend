@@ -17,14 +17,13 @@
 import {mapGetters,mapActions} from 'vuex'
 export default{
   name:'ManageSetting',
-  props:['user'],
+  props:['user','users'],
   data(){
     return{
     }
   },
   computed:{
     ...mapGetters([
-      'users',
       'userInfo'
     ])
   },

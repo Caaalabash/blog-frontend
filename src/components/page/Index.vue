@@ -3,7 +3,7 @@
     <blog-header :user="user" :users="users"></blog-header>
     <blog-links @openDialog="openDialog" :user="user" :users="users"></blog-links>
     <transition name="move" mode="out-in">
-      <router-view></router-view>
+      <router-view :users="users"></router-view>
     </transition>
     <login-dialog :openLoginDialog="openLoginDialog" @closeDialog="closeDialog"></login-dialog>
   </div>
@@ -47,10 +47,6 @@
       },
       closeDialog(){
         this.OPEN_LOGIN_DIALOG(false)
-        if(this.loginStatus){
-          console.log(1)
-          this.$router.push({path:`/${this.users.userName}/manage`})
-        }
       },
     }
   }

@@ -8,6 +8,7 @@
 <script type="text/ecmascript-6">
 import ManageSideBar from '../base/ManageSideBar.vue'
 import {mapGetters} from 'vuex'
+
 export default{
   name:'Manage',
   computed:{
