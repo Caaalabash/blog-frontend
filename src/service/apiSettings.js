@@ -1,6 +1,3 @@
-/**
- * Created by 11210 on 2018/1/26.
- */
 import axios from 'axios'
 import qs from 'qs'
 import {Message} from 'element-ui'
@@ -8,6 +5,7 @@ import {Message} from 'element-ui'
 class BaseModule{
   constructor(){
     this.$http = axios.create({
+      timeout: 10000,  // 请求超时时间
       baseURL:'/api',
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -29,7 +27,23 @@ class BaseModule{
     })
     //响应拦截器
     this.$http.interceptors.response.use(response => {
-      return response
+      //如果状态码正确且有msg字段[说明需要使用Message组件]
+      if(response.status === 200){
+        if(response.data.msg){
+          Message({
+            showClose:true,
+            message:response.data.msg,
+            type:response.data.errno?'error':'success'
+          })
+        }
+        return response.data
+      }else{
+        Message({
+          showClose:true,
+          message:response.status,
+          type:'error'
+        })
+      }
     }, error =>{
       Message({
         showClose:true,

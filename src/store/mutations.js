@@ -1,16 +1,7 @@
 import * as types from './mutation-type'
-import {Message} from 'element-ui'
 import router from '../router'
 
 const mutations = {
-  /*全局错误提示*/
-  [types.REQUEST_ERR](state,{errno,msg}){
-    state.error = {errno,msg}
-    /*ELEMENT UI  message*/
-    if(msg.length){
-      errno ? Message.error({message:msg}):Message.success({message:msg})
-    }
-  },
   /*路由跳转*/
   [types.REDIRECT_TO](state,path){
     state.redirectTo = path

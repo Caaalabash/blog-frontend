@@ -27,11 +27,6 @@ const initState = {
 
 const state = {
   ...initState,
-  //ajax请求反馈的信息
-  error:{
-    errno:0,
-    msg:''
-  },
   //当前所在的博文列表,用于实现上一篇,下一篇
   currentBlogList:[],
   //控制登录窗口的打开
