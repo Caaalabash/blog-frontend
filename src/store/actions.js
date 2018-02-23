@@ -2,8 +2,8 @@ import * as types from './mutation-type'
 import apiManage from '../service/apiManage'
 
 //获取匹配user的博文列表
-export const getCurrentBlogList = function({commit ,state},{userName}){
-  apiManage.getIdeaList({userName}).then((res)=>{
+export const getCurrentBlogList = function({commit ,state},data){
+  apiManage.getIdeaList(data).then((res)=>{
     commit(types.SET_CURRENT_BLOG_LIST,res.res)
   })
 }

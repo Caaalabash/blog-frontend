@@ -4,7 +4,6 @@ const initState = {
   //当前登录用户的信息
   users:{
     userName:'',
-    __v:'',
     _id:'',
     userInfo:{
       twitter:'http://www.lanternpro.site/',

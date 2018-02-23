@@ -1,26 +1,22 @@
 <template>
-  <div>
-    <el-form ref="form" :rules="rules" :model="idea">
-      <el-form-item prop="blogTitle">
-        <el-input style="width: 50%" v-model="idea.blogTitle">
-          <template slot="prepend" >文章标题</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item >
-        <el-radio v-model="idea.blogType" label="public">公开</el-radio>
-        <el-radio v-model="idea.blogType" label="private">私密</el-radio>
-      </el-form-item>
-      <el-form-item >
-        <div id="editor">
-          <textarea :value="idea.blogContent" @input="update"></textarea>
-          <div v-html="compiledMarkdown"></div>
-        </div>
-      </el-form-item>
-      <el-form-item>
-        <el-button plain style="margin-top: 20px" @click="sendIdea">发布</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-form ref="form" :rules="rules" :model="idea" style="width: 40vmax">
+    <el-form-item prop="blogTitle">
+      <el-input style="width: 50%" v-model="idea.blogTitle" placeholder="文章标题"></el-input>
+    </el-form-item>
+    <el-form-item >
+      <el-radio v-model="idea.blogType" label="public">公开</el-radio>
+      <el-radio v-model="idea.blogType" label="private">私密</el-radio>
+    </el-form-item>
+    <el-form-item >
+      <div id="editor" class="post">
+        <textarea :value="idea.blogContent" @input="update" class="youridea"></textarea>
+        <div v-html="compiledMarkdown" class="content"></div>
+      </div>
+    </el-form-item>
+    <el-form-item>
+      <el-button plain style="margin-top: 20px" @click="sendIdea">发布</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script type="text/ecmascript-6">
@@ -98,14 +94,12 @@ export default{
 <style scoped>
   html, body, #editor {
     margin: 0;
-    height: 800px;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #333;
   }
 
   textarea, #editor div {
     display: inline-block;
-    width: 49%;
     height: 100%;
     vertical-align: top;
     box-sizing: border-box;
@@ -113,8 +107,7 @@ export default{
   }
 
   textarea {
-    border: none;
-    border-right: 1px solid #ccc;
+    border: 1px solid #ccc;
     resize: none;
     outline: none;
     background-color: #f6f6f6;
@@ -125,5 +118,14 @@ export default{
 
   code {
     color: #f66;
+  }
+  .youridea{
+    width:35vmax;
+    min-height: 60vh;
+  }
+  .content{
+    margin-top: 10vh;
+    background-color: rgba(0,0,0,.1);
+    width:35vmax;
   }
 </style>

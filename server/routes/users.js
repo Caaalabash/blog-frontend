@@ -26,7 +26,7 @@ const response = function(errno=0,res='',msg=''){
   }
 }
 
-const _Loginfilter = {'userPwd':0}
+const _Loginfilter = {'userPwd':0,'__v':0}
 
 /*注册功能
 * 对获取的用户名密码进行检查，都通过后检测用户名是否次重复
@@ -149,7 +149,11 @@ router.post('/getIdeaList',function (req,res) {
   if(1){//校验通过
     users.findOne({'userName':req.body.userName}).exec().then(function(doc){
       if(doc){
-        return res.json(response(0,doc.blogList,''))
+        let data = doc.blogList.filter((item)=>item.blogType==='public')
+        if(req.body.type==='all'){
+          return res.json(response(0,doc.blogList,''))
+        }
+        return res.json(response(0,data,''))
       }else{
         return res.json(response(1,'','该用户没有文章'))
       }

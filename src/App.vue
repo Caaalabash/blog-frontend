@@ -12,11 +12,6 @@ export default {
 
 <style>
   body {
-    font-family: "Roboto", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, serif;
-    text-rendering: optimizelegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-weight: 400;
     font-size: 16px;
     word-spacing: 1px;
     color: #666;
@@ -78,89 +73,6 @@ export default {
     }
     .header a {
       font-size: 14px;
-    }
-  }
-  .main ul {
-    list-style-type: none;
-    padding: 0;
-    padding-top: 4px;
-  }
-  .main ul li {
-    position: relative;
-    padding: 30px 0 30px;
-    border-bottom: 1px solid #e6e6e6;
-  }
-  .main ul li:first-child {
-    margin-top: -30px;
-  }
-  .main h2,
-  .main h3 {
-    letter-spacing: 1px;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  .main h2 {
-    font-size: 20px;
-    letter-spacing: 1px;
-    margin-left: 120px;
-  }
-  .main h2 a {
-    color: #444;
-  }
-  .main h2 a:hover {
-    color: #f33;
-  }
-  .main h3 {
-    font-size: 13px;
-    color: #999;
-    position: absolute;
-    left: 0;
-    top: 35px;
-
-  }
-  .form-icon{
-    width:40px;
-    height: 40px;
-  }
-  .sidebar{
-    position: absolute;
-    left:0;
-    width:200px;
-    padding:20px;
-    margin-top: 10px;
-    border-right: 1px solid #e6e6e6;
-  }
-  .sidebar h3{
-    margin:20px;
-    color: #999;
-  }
-  .sidebar h3:hover{
-    color: #f33;
-    cursor: pointer;
-  }
-  .right{
-    margin-left: 250px;
-    margin-top: 100px;
-
-  }
-  @media screen and (max-width: 420px) {
-    .main h2 {
-      font-size: 16px;
-      margin-left: 0;
-    }
-    .main h2 a:hover {
-      color: #f66;
-    }
-    .main h3 {
-      font-size: 11px;
-      position: static;
-      margin-bottom: 10px;
-    }
-    .main ul li {
-      padding: 18px 0 20px;
-    }
-    .main ul li:first-child {
-      margin-top: -35px;
     }
   }
   .gutter pre {
@@ -284,7 +196,6 @@ export default {
     top: 12%;
   }
   .post h3 {
-    top:50px;
     margin: 30px 0 15px;
   }
   .post .date {
@@ -295,9 +206,6 @@ export default {
     letter-spacing: 1px;
   }
   .post .content {
-    word-wrap:break-word;
-    word-break:break-all;
-    overflow: hidden;/*这个参数根据需要来决定要不要*/
     text-align: left;
     line-height: 1.8em;
   }
@@ -320,7 +228,7 @@ export default {
   .post .content ul li:before {
     position: absolute;
     font-weight: 600;
-    content: " Â· ";
+    content: " · ";
     margin: 0;
     left: 0;
   }
@@ -350,7 +258,6 @@ export default {
     font-family: "Roboto Mono", "Menlo", "Consolas", monospace;
     font-size: 13px;
     background-color: #f6f6f6;
-    padding: 3px 10px;
     margin: 0 5px;
     border-radius: 2px;
   }

@@ -7,6 +7,9 @@ Vue.use(Router)
 
 
 const router = new Router({
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },
   routes: [
     //错误处理 放在后面error会被/:user动态路由匹配到
     {

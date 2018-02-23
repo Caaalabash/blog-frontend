@@ -1,11 +1,31 @@
 <template>
-  <div class="sidebar">
-    <router-link to="new-idea" tag="h3">发布文章</router-link>
-    <router-link to="ideas" tag="h3">管理文章</router-link>
-    <router-link to="setting" tag="h3">个人设置</router-link>
-    <router-link :to="`/${users.userName}`" tag="h3">返回首页</router-link>
-    <h3 @click="logout" >退出登录</h3>
-  </div>
+  <el-menu
+    default-active="new-idea"
+    class="el-menu-vertical-demo"
+    router="true"
+    :collapse="isCollapse"
+  >
+    <el-menu-item index="new-idea">
+      <icon class="el-icon-edit-outline"></icon>
+      <span slot="title">发布文章</span>
+    </el-menu-item>
+    <el-menu-item index="ideas">
+      <icon class="el-icon-search"></icon>
+      <span slot="title">管理文章</span>
+    </el-menu-item>
+    <el-menu-item index="setting">
+      <icon class="el-icon-setting"></icon>
+      <span slot="title">个人设置</span>
+    </el-menu-item>
+    <el-menu-item :index="`/${users.userName}`">
+      <icon class="el-icon-back"></icon>
+      <span  slot="title">返回首页</span>
+    </el-menu-item>
+    <el-menu-item index="/">
+      <icon class="el-icon-close"></icon>
+      <span @click="logout" slot="title">退出登录</span>
+    </el-menu-item>
+  </el-menu>
 </template>
 
 <script type="text/ecmascript-6">
@@ -13,6 +33,11 @@ import {mapMutations} from 'vuex'
 export default{
   name:'ManageSideBar',
   props:['users'],
+  data(){
+    return{
+      isCollapse:window.innerWidth<400
+    }
+  },
   methods:{
     ...mapMutations([
       'LOG_OUT'
@@ -20,7 +45,23 @@ export default{
     logout(){
       this.LOG_OUT()
       this.$router.push('/')
+    },
+    handleResize(){
+      this.isCollapse = window.innerWidth<400
     }
-  }
+  },
+  mounted(){
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy(){
+    window.removeEventListener('resize', this.handleResize)
+  },
 }
 </script>
+
+<style>
+  .el-aside{
+    height: 100%;
+    border-right: 1px solid #c9c9c9;
+  }
+</style>
