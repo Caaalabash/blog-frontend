@@ -21,9 +21,9 @@
       <icon class="el-icon-back"></icon>
       <span  slot="title">返回首页</span>
     </el-menu-item>
-    <el-menu-item index="/">
+    <el-menu-item index="/" @click="logout">
       <icon class="el-icon-close"></icon>
-      <span @click="logout" slot="title">退出登录</span>
+      <span  slot="title">退出登录</span>
     </el-menu-item>
   </el-menu>
 </template>
@@ -35,7 +35,7 @@ export default{
   props:['users'],
   data(){
     return{
-      isCollapse:window.innerWidth<400
+      isCollapse:window.innerWidth<420
     }
   },
   methods:{
@@ -47,7 +47,7 @@ export default{
       this.$router.push('/')
     },
     handleResize(){
-      this.isCollapse = window.innerWidth<400
+      this.isCollapse = window.innerWidth<420
     }
   },
   mounted(){

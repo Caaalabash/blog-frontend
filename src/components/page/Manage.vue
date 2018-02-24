@@ -1,10 +1,8 @@
 <template>
-  <el-container class="flex_container">
-    <manage-side-bar :users="users" class="flex_left"></manage-side-bar>
-    <el-main class="flex_right">
-      <router-view :users="users"></router-view>
-    </el-main>
-  </el-container>
+  <div class="manage_grid">
+    <manage-side-bar :users="users" ></manage-side-bar>
+    <router-view :users="users"></router-view>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -24,16 +22,22 @@ export default{
   }
 }
 </script>
+
 <style>
-  .flex_container{
-    display: flex;
+.manage_grid{
+  display: grid;
+  grid-template-columns: 200px auto;
+}
+.manage_right{
+  padding: 40px 0 0 40px;
+}
+@media screen and (max-width: 420px) {
+  .manage_right{
+    padding: 10px;
   }
-  .flex_left{
-    flex:3;
-    margin-top: 10vh;
+  .manage_grid{
+    grid-template-columns: 64px auto;
   }
-  .flex_right{
-    flex:12;
-  }
+}
 </style>
 

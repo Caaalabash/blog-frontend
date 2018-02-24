@@ -11,11 +11,13 @@ export default {
 </script>
 
 <style>
+
   body {
     font-size: 16px;
     word-spacing: 1px;
     color: #666;
     margin: 0;
+    padding: 0;
   }
   img {
     border: none;
@@ -24,31 +26,6 @@ export default {
     color: #666;
     text-decoration: none;
     transition: color 0.2s ease, border-color 0.2s ease;
-  }
-  .header {
-    letter-spacing: 5px;
-    margin: 50px auto 15px;
-    text-align: center;
-  }
-  .header a {
-    font-size: 15px;
-    color: #444;
-  }
-  .links {
-    text-align: center;
-    font-family: "Roboto", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, serif;
-    color: #999;
-    font-size: 24px;
-    margin: 0;
-  }
-  .links a {
-    cursor: pointer;
-    padding: 2px;
-    margin: 0 3px;
-  }
-  .links img {
-    width: 15px;
-    height: 15px;
   }
   .header,
   h1,
@@ -61,19 +38,17 @@ export default {
     font-weight: 400;
     color: #444;
   }
-  .main {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 0 30px 50px;
-    position: relative;
+
+  textarea {
+    border: 1px solid #ccc;
+    resize: none;
+    outline: none;
+    background-color: #f6f6f6;
+    font-size: 14px;
+    font-family: 'Monaco', courier, monospace;
   }
-  @media screen and (max-width: 420px) {
-    .header {
-      margin: 40px auto 10px;
-    }
-    .header a {
-      font-size: 14px;
-    }
+  code {
+    color: #f66;
   }
   .gutter pre {
     color: #999;
@@ -165,8 +140,6 @@ export default {
   }
   .post {
     position: relative;
-    padding-bottom: 30px;
-    margin-bottom: 30px;
     border-bottom: 1px solid #e6e6e6;
   }
   .post h1,
@@ -329,10 +302,7 @@ export default {
   .show-comments a:hover {
     color: #666;
   }
-  @media screen and (max-width: 900px) {
-    .post {
-      padding-bottom: 80px;
-    }
+  @media screen and (max-width: 950px) {
     .blog-nav {
       position: absolute;
       bottom: 30px;
@@ -342,6 +312,10 @@ export default {
     }
     #older {
       right: 0;
+    }
+    .operator{
+      position: relative;
+      height: 60px;
     }
   }
   @media screen and (max-width: 420px) {

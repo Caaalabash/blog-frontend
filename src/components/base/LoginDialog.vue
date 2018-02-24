@@ -74,7 +74,9 @@ export default{
             self.login(self.form)
           }else{
             self.register(self.form)
-            self.handleClose()
+            setTimeout(()=>{
+              self.handleClose()
+            },1000)
           }
         }
       })

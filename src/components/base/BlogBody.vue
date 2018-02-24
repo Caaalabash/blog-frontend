@@ -37,7 +37,7 @@ export default{
     }
   },
   created(){
-    this.getCurrentBlogList({userName:this.user,type:'public'})
+    this.getCurrentBlogList({userName:this.user,type:'public',currentPage:1})
   }
 }
 </script>

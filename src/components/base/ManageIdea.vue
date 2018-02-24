@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="manage_right">
     <el-table :data="blogList">
       <el-table-column type="expand" v-show="isShow">
         <template slot-scope="scope">
@@ -9,17 +9,13 @@
       </el-table-column>
       <el-table-column
         prop="blogDate"
-        label="日期"
-       >
+        label="日期">
       </el-table-column>
       <el-table-column
-
         prop="blogTitle"
-        label="标题"
-        >
+        label="标题">
       </el-table-column>
       <el-table-column
-
         prop="blogType"
         label="状态">
       </el-table-column>
@@ -31,6 +27,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="float: right;margin-top: 5vh"
+      layout="prev, pager, next"
+      :total="50"
+      @current-change="_changePage">
+    </el-pagination>
   </div>
 </template>
 
@@ -42,7 +44,8 @@
     props:['users'],
     data(){
       return{
-        isShow:window.innerWidth<400
+        isShow:window.innerWidth<420,
+        currentPage:2
       }
     },
     computed:{
@@ -55,6 +58,9 @@
         'getIdeaList',
         'deleteIdea'
       ]),
+      _changePage(currentPage){
+        this.getIdeaList({userName:this.users.userName,type:'all',currentPage})
+      },
       _getIdeaList(){
         this.getIdeaList({userName:this.users.userName,type:'all'})
       },
@@ -66,7 +72,7 @@
         this.$router.push({name:'new-idea',query:{blogDate:id}})
       },
       handleResize(){
-        this.isShow = window.innerWidth<400
+        this.isShow = window.innerWidth<420
       }
     },
     mounted(){

@@ -1,22 +1,24 @@
 <template>
-  <el-form ref="form" :rules="rules" :model="idea" style="width: 40vmax">
-    <el-form-item prop="blogTitle">
-      <el-input style="width: 50%" v-model="idea.blogTitle" placeholder="文章标题"></el-input>
-    </el-form-item>
-    <el-form-item >
-      <el-radio v-model="idea.blogType" label="public">公开</el-radio>
-      <el-radio v-model="idea.blogType" label="private">私密</el-radio>
-    </el-form-item>
-    <el-form-item >
-      <div id="editor" class="post">
-        <textarea :value="idea.blogContent" @input="update" class="youridea"></textarea>
-        <div v-html="compiledMarkdown" class="content"></div>
-      </div>
-    </el-form-item>
-    <el-form-item>
-      <el-button plain style="margin-top: 20px" @click="sendIdea">发布</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="manage_right">
+    <el-form ref="form" :rules="rules" :model="idea" class="form_grid">
+      <el-form-item prop="blogTitle" class="g_title">
+        <el-input style="width: 50%" v-model="idea.blogTitle" placeholder="文章标题"></el-input>
+      </el-form-item>
+      <el-form-item class="g_type">
+        <el-radio v-model="idea.blogType" label="public">公开</el-radio>
+        <el-radio v-model="idea.blogType" label="private">私密</el-radio>
+      </el-form-item>
+      <el-form-item class="g_text">
+        <div id="editor" class="post">
+          <textarea :value="idea.blogContent" @input="update" class="youridea"></textarea>
+          <div v-html="compiledMarkdown" class="content"></div>
+        </div>
+      </el-form-item>
+      <el-form-item class="g_submit">
+        <el-button plain style="margin-top: 20px" @click="sendIdea">发布</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -92,40 +94,49 @@ export default{
 </script>
 
 <style scoped>
-  html, body, #editor {
-    margin: 0;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #333;
+  .form_grid{
+    display: grid;
+    width: 100%;
+    grid-template-rows: 60px 60px auto auto;
+    grid-template-areas: "title "
+                         "type  "
+                         "texts "
+                         "submit";
   }
-
-  textarea, #editor div {
-    display: inline-block;
-    height: 100%;
-    vertical-align: top;
-    box-sizing: border-box;
-    padding: 0 20px;
+  .g_submit{
+    grid-area: submit;
   }
-
-  textarea {
-    border: 1px solid #ccc;
-    resize: none;
-    outline: none;
-    background-color: #f6f6f6;
-    font-size: 14px;
-    font-family: 'Monaco', courier, monospace;
-    padding: 20px;
+  .g_text{
+    grid-area: texts;
   }
-
-  code {
-    color: #f66;
+  .g_title{
+    grid-area: title;
+  }
+  .g_type{
+    grid-area: type;
+  }
+  #editor{
+    display: grid;
+    grid-template-columns: 50% 50%;
   }
   .youridea{
-    width:35vmax;
     min-height: 60vh;
   }
   .content{
-    margin-top: 10vh;
     background-color: rgba(0,0,0,.1);
-    width:35vmax;
+  }
+  @media screen and (max-width: 600px) {
+    .form_grid{
+      grid-template-rows: 40px 40px auto auto;
+    }
+    #editor{
+      grid-template-columns: none;
+      grid-template-rows: 400px 400px;
+      grid-row-gap: 20px;
+    }
+    .youridea,.content{
+      width: 200px;
+      min-height: 400px;
+    }
   }
 </style>
