@@ -56,6 +56,7 @@
   .gird-container{
     display: grid;
     height: 100vh;
+    width: 100vw;
     grid-template-columns: auto 700px auto;
     grid-template-rows:100px 30px auto ;
     grid-template-areas: ". header ."

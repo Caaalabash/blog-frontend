@@ -1,7 +1,7 @@
 <template>
   <div class="manage_right">
     <el-table :data="blogList">
-      <el-table-column type="expand" v-show="isShow">
+      <el-table-column type="expand" v-if="'false'">
         <template slot-scope="scope">
           <el-button type="primary" @click="changeIdea(scope.row.blogDate)">修改</el-button>
           <el-button type="danger" @click="_deleteIdea(scope.row.blogDate)">删除</el-button>
@@ -20,7 +20,8 @@
         label="状态">
       </el-table-column>
       <el-table-column
-        label="操作" v-show="!isShow">
+        label="操作"
+        v-if="'false'">
         <template slot-scope="scope">
           <el-button type="primary" @click="changeIdea(scope.row.blogDate)">修改</el-button>
           <el-button type="danger" @click="_deleteIdea(scope.row.blogDate)">删除</el-button>
@@ -73,6 +74,7 @@
       },
       handleResize(){
         this.isShow = window.innerWidth<420
+        console.log(window.innerWidth)
       }
     },
     mounted(){
@@ -83,6 +85,7 @@
     },
     created(){
       this._getIdeaList()
+      console.log(this.isShow)
     }
   }
 </script>

@@ -11,13 +11,16 @@ export default {
 </script>
 
 <style>
-
   body {
     font-size: 16px;
     word-spacing: 1px;
     color: #666;
     margin: 0;
     padding: 0;
+  }
+  #app{
+    height: 100%;
+    width: 100%;
   }
   img {
     border: none;

@@ -66,21 +66,23 @@ export default{
       this.$refs['form'].resetFields()
       this.$emit('closeDialog')
     },
+    sendType(){
+      async function a(){
+        if(this.activeName==='login'){
+          await this.login(this.form)
+        }else{
+          await this.register(this.form)
+        }
+        this.handleClose()
+      }
+      a.bind(this)()
+    },
     sendRequest(){
-      let self =this
       this.$refs['form'].validate((valid)=>{
         if(valid){
-          if(self.activeName==='login'){
-            self.login(self.form)
-          }else{
-            self.register(self.form)
-            setTimeout(()=>{
-              self.handleClose()
-            },1000)
-          }
+          this.sendType()
         }
       })
-
     }
   }
 }

@@ -24,7 +24,6 @@
 <script type="text/ecmascript-6">
 import {mapActions,mapGetters} from 'vuex'
 import {formatDate} from '../../lib/lib'
-
 export default{
   props:['blogDate','users'],
   data(){
@@ -58,7 +57,21 @@ export default{
     update:_.debounce(function (e) {
       this.idea.blogContent = e.target.value
     }, 300),
-
+    _send(){
+      async function a(){
+        if(this.blogDate){
+          await this.updateIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.users.userName}))
+        }
+        await this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
+        this.clearForm()
+      }
+      a.bind(this)()
+    },
+    clearForm(){
+      this.idea.blogTitle=''
+      this.idea.blogContent=''
+      this.idea.blogType='public'
+    },
     sendIdea(){
       this.$refs['form'].validate((valid)=>{
         if(valid){
@@ -66,16 +79,7 @@ export default{
             this.$message.error('文章内容不能为空')
           }else{
             this.idea.blogDate = formatDate()
-            this.blogDate ?
-              this.updateIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.users.userName})):
-              this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
-            //发布成功
-            //在没有async await之前
-            setTimeout(()=>{
-              this.idea.blogTitle=''
-              this.idea.blogContent=''
-              this.idea.blogType='public'
-            },1000)
+            this._send()
           }
         }
       })
