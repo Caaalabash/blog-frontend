@@ -1,11 +1,13 @@
 <template>
-  <div class="index-container">
-    <blog-index-header :user="user" :users="users" ></blog-index-header>
-    <blog-index-links @openDialog="openDialog" :user="user" :users="users"></blog-index-links>
-    <transition name="move" mode="out-in">
-      <router-view :users="users"></router-view>
-    </transition>
-    <login-dialog :openLoginDialog="openLoginDialog" @closeDialog="closeDialog"></login-dialog>
+  <div class="page-container">
+    <div class="index-container">
+      <blog-index-header :user="user" :users="users" ></blog-index-header>
+      <blog-index-links @openDialog="openDialog" :user="user" :users="users"></blog-index-links>
+      <transition name="move" mode="out-in">
+        <router-view :users="users"></router-view>
+      </transition>
+      <login-dialog :openLoginDialog="openLoginDialog" @closeDialog="closeDialog"></login-dialog>
+    </div>
   </div>
 </template>
 
@@ -53,6 +55,12 @@
 </script>
 
 <style >
+  .page-container{
+    display: flex;
+    justify-content: center;
+    width: inherit;
+    height: inherit;
+  }
   .index-container{
     display: flex;
     flex-direction: column;

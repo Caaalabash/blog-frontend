@@ -22,10 +22,6 @@ export default {
     margin: 0;
     padding: 0;
   }
-  #app{
-    display: flex;
-    justify-content: center;
-  }
   img {
     border: none;
   }

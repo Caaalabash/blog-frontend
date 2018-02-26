@@ -1,7 +1,9 @@
 <template>
-  <div class="manage-container">
-    <manage-side-bar :users="users" ></manage-side-bar>
-    <router-view :users="users"></router-view>
+  <div class="container">
+    <div class="manage-container">
+      <manage-side-bar :users="users" ></manage-side-bar>
+      <router-view :users="users"></router-view>
+    </div>
   </div>
 </template>
 
@@ -24,7 +26,10 @@ export default{
 </script>
 
 <style>
-#app{
+.container{
+  display: flex;
+  width: 100%;
+  height: 100%;
   justify-content: flex-start;
 }
 .manage-container{
