@@ -1,7 +1,7 @@
 <template>
-  <div class="manage_right">
+  <div class="manage-right">
     <el-table :data="blogList">
-      <el-table-column type="expand" v-if="'false'">
+      <el-table-column type="expand" v-if="isShow">
         <template slot-scope="scope">
           <el-button type="primary" @click="changeIdea(scope.row.blogDate)">修改</el-button>
           <el-button type="danger" @click="_deleteIdea(scope.row.blogDate)">删除</el-button>
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        v-if="'false'">
+        v-if="!isShow">
         <template slot-scope="scope">
           <el-button type="primary" @click="changeIdea(scope.row.blogDate)">修改</el-button>
           <el-button type="danger" @click="_deleteIdea(scope.row.blogDate)">删除</el-button>
@@ -85,11 +85,7 @@
     },
     created(){
       this._getIdeaList()
-      console.log(this.isShow)
     }
   }
 </script>
 
-<style scoped>
-
-</style>

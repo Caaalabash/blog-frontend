@@ -11,6 +11,10 @@ export default {
 </script>
 
 <style>
+  html,body,#app{
+    height: 100%;
+    width: 100%;
+  }
   body {
     font-size: 16px;
     word-spacing: 1px;
@@ -19,8 +23,8 @@ export default {
     padding: 0;
   }
   #app{
-    height: 100%;
-    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   img {
     border: none;
@@ -30,7 +34,7 @@ export default {
     text-decoration: none;
     transition: color 0.2s ease, border-color 0.2s ease;
   }
-  .header,
+  .index-header,
   h1,
   h2,
   h3,
@@ -41,7 +45,6 @@ export default {
     font-weight: 400;
     color: #444;
   }
-
   textarea {
     border: 1px solid #ccc;
     resize: none;
@@ -50,9 +53,7 @@ export default {
     font-size: 14px;
     font-family: 'Monaco', courier, monospace;
   }
-  code {
-    color: #f66;
-  }
+
   .gutter pre {
     color: #999;
   }
@@ -271,29 +272,7 @@ export default {
     display: block;
     max-width: 100%;
   }
-  .blog-nav {
-    position: fixed;
-    bottom: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-family: "Montserrat", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, sans-serif;
-    font-size: 15px;
-    color: #999;
-    text-decoration: none;
-    cursor: pointer;
-    letter-spacing: 1px;
-    border-bottom: 3px solid transparent;
-  }
-  .blog-nav:hover {
-    color: #333;
-    border-bottom-color: #333;
-  }
-  #newer {
-    left: 40px;
-  }
-  #older {
-    right: 40px;
-  }
+
   .show-comments {
     font-family: "Montserrat", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, sans-serif;
     text-align: center;
@@ -305,24 +284,8 @@ export default {
   .show-comments a:hover {
     color: #666;
   }
-  @media screen and (max-width: 950px) {
-    .blog-nav {
-      position: absolute;
-      bottom: 30px;
-    }
-    #newer {
-      left: 0;
-    }
-    #older {
-      right: 0;
-    }
-    .operator{
-      position: relative;
-      height: 60px;
-    }
-  }
   @media screen and (max-width: 420px) {
-    .main {
+    .index-main {
       margin-top: 32px;
     }
     .post h1 {
@@ -355,5 +318,6 @@ export default {
       color: #444;
     }
   }
+
 
 </style>

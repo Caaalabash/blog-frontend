@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="index-main">
     <div class="post">
       <h1>{{idea.blogTitle}}</h1>
       <h3 class="date" v-text="formatDate"></h3>
@@ -67,6 +67,48 @@
     }
   }
 </script>
+
+<style>
+  .blog-nav {
+    position: fixed;
+    bottom: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-family: "Montserrat", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, sans-serif;
+    font-size: 15px;
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    border-bottom: 3px solid transparent;
+  }
+  .blog-nav:hover {
+    color: #333;
+    border-bottom-color: #333;
+  }
+  #newer {
+    left: 40px;
+  }
+  #older {
+    right: 40px;
+  }
+  @media screen and (max-width: 950px) {
+    .blog-nav {
+      position: absolute;
+      bottom: 30px;
+    }
+    #newer {
+      left: 0;
+    }
+    #older {
+      right: 0;
+    }
+    .operator{
+      position: relative;
+      height: 60px;
+    }
+  }
+</style>
 
 
 

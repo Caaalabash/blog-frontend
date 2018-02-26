@@ -1,5 +1,5 @@
 <template>
-  <div class="manage_right">
+  <div class="manage-right">
     <el-input v-model="userInfo.twitter">
       <template slot="prepend">Twitter</template>
     </el-input>

@@ -1,20 +1,20 @@
 <template>
-  <div class="manage_right">
-    <el-form ref="form" :rules="rules" :model="idea" class="form_grid">
-      <el-form-item prop="blogTitle" class="g_title">
+  <div class="manage-right">
+    <el-form ref="form" :rules="rules" :model="idea" class="form-container">
+      <el-form-item prop="blogTitle" class="title">
         <el-input style="width: 50%" v-model="idea.blogTitle" placeholder="文章标题"></el-input>
       </el-form-item>
-      <el-form-item class="g_type">
+      <el-form-item class="type">
         <el-radio v-model="idea.blogType" label="public">公开</el-radio>
         <el-radio v-model="idea.blogType" label="private">私密</el-radio>
       </el-form-item>
-      <el-form-item class="g_text">
+      <el-form-item class="text">
         <div id="editor" class="post">
-          <textarea :value="idea.blogContent" @input="update" class="youridea"></textarea>
-          <div v-html="compiledMarkdown" class="content"></div>
+          <textarea :value="idea.blogContent" @input="update" class="text-textarea"></textarea>
+          <div v-html="compiledMarkdown" class="text-content"></div>
         </div>
       </el-form-item>
-      <el-form-item class="g_submit">
+      <el-form-item class="submit">
         <el-button plain style="margin-top: 20px" @click="sendIdea">发布</el-button>
       </el-form-item>
     </el-form>
@@ -98,49 +98,32 @@ export default{
 </script>
 
 <style scoped>
-  .form_grid{
-    display: grid;
+  .form-container{
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    grid-template-rows: 60px 60px auto auto;
-    grid-template-areas: "title "
-                         "type  "
-                         "texts "
-                         "submit";
-  }
-  .g_submit{
-    grid-area: submit;
-  }
-  .g_text{
-    grid-area: texts;
-  }
-  .g_title{
-    grid-area: title;
-  }
-  .g_type{
-    grid-area: type;
   }
   #editor{
-    display: grid;
-    grid-template-columns: 50% 50%;
+    display: flex;
+    flex-direction: row;
+    min-height: 50vh;
   }
-  .youridea{
-    min-height: 60vh;
+  .text-textarea{
+    min-height: 50vh;
+    flex:0 1 400px;
   }
-  .content{
+  .text-content{
+    flex:0 1 400px;
+    min-height: 50vh;
     background-color: rgba(0,0,0,.1);
   }
   @media screen and (max-width: 600px) {
-    .form_grid{
-      grid-template-rows: 40px 40px auto auto;
-    }
     #editor{
-      grid-template-columns: none;
-      grid-template-rows: 400px 400px;
-      grid-row-gap: 20px;
+      flex-direction: column;
     }
-    .youridea,.content{
-      width: 200px;
-      min-height: 400px;
+    .text-textarea,.text-content{
+      flex:0 1 100%;
+      margin: 5px;
     }
   }
 </style>

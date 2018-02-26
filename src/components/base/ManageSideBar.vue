@@ -1,7 +1,7 @@
 <template>
   <el-menu
     default-active="new-idea"
-    class="el-menu-vertical-demo"
+    class="el-menu-vertical-demo manage-left"
     router="true"
     :collapse="isCollapse"
   >
@@ -60,7 +60,7 @@ export default{
 </script>
 
 <style>
-  .el-aside{
+  .manage-left{
     height: 100%;
     border-right: 1px solid #c9c9c9;
   }

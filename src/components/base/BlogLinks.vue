@@ -1,5 +1,5 @@
 <template>
-  <div class="links">
+  <div class="index-links">
     <a  :href="infoList.twitter" target="_blank">
       <img src="../../assets/twitter.png" alt="">
     </a>

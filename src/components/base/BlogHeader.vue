@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="index-header">
     <a :href="`/${user}`">{{user}}</a>
   </div>
 </template>

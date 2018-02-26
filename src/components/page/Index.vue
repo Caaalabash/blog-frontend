@@ -1,7 +1,7 @@
 <template>
-  <div class="gird-container">
-    <blog-header :user="user" :users="users" ></blog-header>
-    <blog-links @openDialog="openDialog" :user="user" :users="users"></blog-links>
+  <div class="index-container">
+    <blog-index-header :user="user" :users="users" ></blog-index-header>
+    <blog-index-links @openDialog="openDialog" :user="user" :users="users"></blog-index-links>
     <transition name="move" mode="out-in">
       <router-view :users="users"></router-view>
     </transition>
@@ -18,8 +18,8 @@
     name:'index',
     props:['user'],
     components:{
-      'blog-header':BlogHeader,
-      'blog-links':BlogLinks,
+      'blog-index-header':BlogHeader,
+      'blog-index-links':BlogLinks,
       'login-dialog':LoginDialog
     },
     data(){
@@ -53,56 +53,40 @@
 </script>
 
 <style >
-  .gird-container{
-    display: grid;
-    height: 100vh;
-    width: 100vw;
-    grid-template-columns: auto 700px auto;
-    grid-template-rows:100px 30px auto ;
-    grid-template-areas: ". header ."
-    ". links  ."
-    ". main   .";
+  .index-container{
+    display: flex;
+    flex-direction: column;
+    flex:0 1 700px;
+    width: inherit;
+    height: inherit;
   }
-  .header{
-    grid-area: header;
-    padding-top: 50px;
+  .index-header{
+    margin-top: 50px;
     letter-spacing: 5px;
-    text-align: center;
-  }
-  .header a {
-    font-size: 15px;
-    color: #444;
-  }
-  .links{
-    grid-area:links;
-    text-align: center;
-    font-family: "Roboto", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, serif;
-    color: #999;
-    font-size: 24px;
-  }
-  .links a {
     cursor: pointer;
-    padding: 2px;
-    margin: 0 3px;
+    text-align: center;
   }
-  .links img {
+  .index-links{
+    margin-top: 20px;
+    text-align: center;
+  }
+  .index-main{
+    margin-top: 20px;
+  }
+  .index-links a {
+    cursor: pointer;
+    margin: 0 5px;
+  }
+  .index-links img {
     width: 15px;
     height: 15px;
   }
-  .main{
-    grid-area:main;
-  }
-  @media screen and (max-width: 420px) {
-    .header {
-      padding-top: 40px;
-    }
-    .header a {
-      font-size: 14px;
-    }
-    .gird-container{
-      grid-template-columns: auto 70vw auto;
+  @media screen and (max-width: 700px) {
+    .index-main{
+      margin: 10px;
     }
   }
+
 </style>
 
 
