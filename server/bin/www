@@ -6,8 +6,9 @@
 
 var app = require('../app');
 var debug = require('debug')('server:server');
+var https = require('https');
 var http = require('http');
-
+var fs = require('fs')
 /**
  * Get port from environment and store in Express.
  */
@@ -16,10 +17,21 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
+ * 读取文件
+ * */
+/*const options = {
+  key: fs.readFileSync('/alidata/server/nginx-1.4.4/cert/214519498570301.key'),
+  cert: fs.readFileSync('/alidata/server/nginx-1.4.4/cert/214519498570301.pem')
+};*/
+/**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+
+/*
+var server = https.createServer(options,app);
+*/
 
 /**
  * Listen on provided port, on all network interfaces.

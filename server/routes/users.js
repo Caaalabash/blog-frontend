@@ -145,9 +145,21 @@ router.post('/createNewIdea',function(req,res){
 *
 * */
 router.post('/getIdeaList',function (req,res) {
-  /*后端数据校验部分*/
+/*  const pageSize = 2
+  const {userName,type,currentPage}  = req.body
+  let params = {}
+  if(type!=='all'){
+    params={'blogList.$.blogType':'public'}
+  }*/
+  /*.exec((err,doc)=>{
+   if(err){
+   return res.json(response(1,'','该用户没有文章'))
+   }else{
+   return res.json(response(0,doc,''))
+   }
+   })*/
   if(1){//校验通过
-    users.findOne({'userName':req.body.userName}).exec().then(function(doc){
+    users.findOne({'userName':req.body.userName}).then(function(doc){
       if(doc){
         let data = doc.blogList.filter((item)=>item.blogType==='public')
         if(req.body.type==='all'){

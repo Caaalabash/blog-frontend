@@ -38,9 +38,15 @@ const mutations = {
   [types.CHANGE_IDEA](state,data){
     state.users.blogList.map((item,index)=>{
       if(item.blogDate===data.blogDate){
-        state.users.blogList[index] = data
+        for (const key in data) {
+          state.users.blogList[index][key] = data[key];
+        }
       }
     })
+  },
+  /*返回首页 ,给currentUser重新赋值*/
+  [types.BACK_INDEX](state){
+    state.currentBlogList = state.users.blogList.filter((item)=>item.blogType==='public')
   },
   /*删除某条博客*/
   [types.DELETE_IDEA](state,data){

@@ -61,8 +61,9 @@ export default{
       async function a(){
         if(this.blogDate){
           await this.updateIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.users.userName}))
+        }else{
+          await this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
         }
-        await this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
         this.clearForm()
       }
       a.bind(this)()

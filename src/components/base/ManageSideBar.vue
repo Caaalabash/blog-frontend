@@ -17,7 +17,7 @@
       <icon class="el-icon-setting"></icon>
       <span slot="title">个人设置</span>
     </el-menu-item>
-    <el-menu-item :index="`/${users.userName}`">
+    <el-menu-item :index="`/${users.userName}`" @click="back2index">
       <icon class="el-icon-back"></icon>
       <span  slot="title">返回首页</span>
     </el-menu-item>
@@ -40,8 +40,12 @@ export default{
   },
   methods:{
     ...mapMutations([
-      'LOG_OUT'
+      'LOG_OUT',
+      'BACK_INDEX'
     ]),
+    back2index(){
+
+    },
     logout(){
       this.LOG_OUT()
       this.$router.push('/')
