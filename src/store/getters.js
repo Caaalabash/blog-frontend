@@ -1,17 +1,10 @@
-/**
- * Created by 11210 on 2017/8/8.
- */
-
-export const currentBlogList = state=>state.currentBlogList
-
-export const users = state=>state.users
-
-export const userName = state=>state.users.userName
-
-export const loginStatus = state=>state.loginStatus
-
-export const openLoginDialog = state=>state.ui.openLoginDialog
-
-export const userInfo = state=>state.users.userInfo
-
-export const blogList = state=>state.users.blogList
+var getters = {
+    currentBlogList: function (state) { return state.currentBlogList; },
+    users: function (state) { return state.users; },
+    userName: function (state) { return state.users.userName; },
+    loginStatus: function (state) { return state.loginStatus; },
+    openLoginDialog: function (state) { return state.openLoginDialog; },
+    userInfo: function (state) { return state.users.userInfo; },
+    blogList: function (state) { return state.users.blogList; },
+};
+export default getters;

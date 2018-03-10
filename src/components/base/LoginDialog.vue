@@ -26,64 +26,59 @@
   </el-dialog>
 </template>
 
-<script type="text/ecmascript-6">
-import {mapGetters,mapActions} from 'vuex'
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop , Watch } from 'vue-property-decorator'
+import { State, Action, Getter ,Mutation} from "vuex-class";
+import {ElForm}  from 'element-ui/types/form'
+@Component
+export default class LoginDialog extends Vue{
+  //data
+  activeName='login'
+  form={
+    userName:'',
+    userPwd:''
+  }
+  rules={
+    userName:[{ required: true, message: '请输入用户名', trigger: 'blur' },
+              { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }],
+    userPwd:[{ required: true, message: '请输入密码', trigger: 'blur' },
+              { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }]
+  }
+  //props
+  @Prop()
+    openLoginDialog:boolean
+  //computed
+  get signIn(){
+    return this.activeName==='login'? 'LOG IN': 'SIGN UP'
+  }
+  @Action login:any
+  @Action register:any
+  //methods
+  handleClose(){
+    (this.$refs['form'] as ElForm).resetFields()
+    this.$emit('closeDialog')
+  }
+  sendType(){
+    let _this = this
+    async function a(){
+      if(_this.activeName==='login'){
+        await _this.login(_this.form)
+      }else{
+        await _this.register(_this.form)
+      }
+      _this.handleClose()
+    }
+    a.bind(this)()
+  }
+  sendRequest(){
+    (this.$refs['form'] as ElForm).validate((valid:any)=>{
+      if(valid){
+        this.sendType()
+      }
+    })
 
-export default{
-  name:'LoginDialog',
-  props:{
-    openLoginDialog:{
-      type:Boolean,
-      default:false
-    }
-  },
-  computed:{
-    signIn(){
-      return this.activeName==='login'? 'LOG IN': 'SIGN UP'
-    }
-  },
-  data(){
-    return{
-      activeName:'login',
-      form:{
-        userName:'',
-        userPwd:''
-      },
-      rules:{
-        userName:[{ required: true, message: '请输入用户名', trigger: 'blur' },
-                  { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }],
-        userPwd:[{ required: true, message: '请输入密码', trigger: 'blur' },
-                  { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }]
-      }
-    }
-  },
-  methods:{
-    ...mapActions([
-      'login',
-      'register'
-    ]),
-    handleClose(){
-      this.$refs['form'].resetFields()
-      this.$emit('closeDialog')
-    },
-    sendType(){
-      async function a(){
-        if(this.activeName==='login'){
-          await this.login(this.form)
-        }else{
-          await this.register(this.form)
-        }
-        this.handleClose()
-      }
-      a.bind(this)()
-    },
-    sendRequest(){
-      this.$refs['form'].validate((valid)=>{
-        if(valid){
-          this.sendType()
-        }
-      })
-    }
   }
 }
 </script>

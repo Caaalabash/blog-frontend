@@ -37,52 +37,48 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import {getStorage,formatDateEng} from '../../lib/lib'
-  import {mapActions,mapGetters} from 'vuex'
-  export default{
-    name:'ManageIdea',
-    props:['users'],
-    data(){
-      return{
-        isShow:window.innerWidth<420,
-        currentPage:2
-      }
-    },
-    computed:{
-      ...mapGetters([
-        'blogList'
-      ])
-    },
-    methods:{
-      ...mapActions([
-        'getIdeaList',
-        'deleteIdea'
-      ]),
-      _changePage(currentPage){
-        this.getIdeaList({userName:this.users.userName,type:'all',currentPage})
-      },
-      _getIdeaList(){
-        this.getIdeaList({userName:this.users.userName,type:'all'})
-      },
-
-      _deleteIdea(id){
-        this.deleteIdea({userName:this.users.userName,blogDate:id})
-      },
-      changeIdea(id){
-        this.$router.push({name:'new-idea',query:{blogDate:id}})
-      },
-      handleResize(){
-        this.isShow = window.innerWidth<420
-        console.log(window.innerWidth)
-      }
-    },
+<script lang='ts'>
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import { Prop , Watch } from 'vue-property-decorator'
+  import { State, Action, Getter ,Mutation} from "vuex-class";
+  import {formatDateEng} from '../../lib/lib'
+  
+  @Component
+  export default class ManageIdea extends Vue{
+    //data
+    isShow=window.innerWidth<420
+    currentPage=2
+    //props
+    @Prop()
+      users:any
+    //state
+    @Getter blogList:any
+    @Action getIdeaList:any
+    @Action deleteIdea:any
+    //methods
+    _changePage(currentPage :any){
+      this.getIdeaList({userName:this.users.userName,type:'all',currentPage})
+    }
+    _getIdeaList(){
+      this.getIdeaList({userName:this.users.userName,type:'all'})
+    }
+    _deleteIdea(id:any){
+      this.deleteIdea({userName:this.users.userName,blogDate:id})
+    }
+    changeIdea(id:any){
+      this.$router.push({name:'new-idea',query:{blogDate:id}})
+    }
+    handleResize(){
+      this.isShow = window.innerWidth<420
+      console.log(window.innerWidth)
+    }
     mounted(){
       window.addEventListener('resize', this.handleResize)
-    },
+    }
     beforeDestroy(){
       window.removeEventListener('resize', this.handleResize)
-    },
+    }
     created(){
       this._getIdeaList()
     }

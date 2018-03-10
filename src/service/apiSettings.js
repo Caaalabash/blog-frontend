@@ -1,7 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
 import {Message} from 'element-ui'
-
 class BaseModule{
   constructor(){
     this.$http = axios.create({
