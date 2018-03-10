@@ -4,8 +4,6 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const PrerenderSpaPlugin = require('prerender-spa-plugin')
-
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -15,11 +13,7 @@ function resolve (dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
-  },
-  externals:{
-    'vue':'Vue',
-    'element-ui':'ELEMENT'
+    app: './src/main.ts'
   },
   output: {
     path: config.build.assetsRoot,
@@ -29,18 +23,29 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.ts'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
     }
   },
+  plugins:[
+    new BundleAnalyzerPlugin(),
+  ],
   module: {
     rules: [
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules|vue\/src/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        }
       },
       {
         test: /\.js$/,
@@ -73,20 +78,6 @@ module.exports = {
       }
     ]
   },
-  plugins:[
-    new BundleAnalyzerPlugin(),
-    new PrerenderSpaPlugin(
-      // Absolute path to compiled SPA
-      path.join(__dirname, '../dist'),
-      // List of routes to prerender
-      [ '/' ],
-      {
-        phantomPageSettings: {
-          loadImages: false
-        },
-      }
-    )
-  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).

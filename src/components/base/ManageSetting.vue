@@ -13,23 +13,25 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-import {mapGetters,mapActions} from 'vuex'
-export default{
-  name:'ManageSetting',
-  props:['user','users'],
-  data(){
-    return{
-    }
-  },
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop , Watch } from 'vue-property-decorator'
+import { State, Action, Getter ,Mutation} from "vuex-class";
+@Component
+export default class ManageSetting extends Vue{
+  //data
+  //props
+  @Prop()
+    user:string
+  @Prop()
+    users:any
+  //state
+  @Action updateUserInfo:any
 
-  methods:{
-    ...mapActions([
-      'updateUserInfo'
-    ]),
-    _changeUserInfo(){
+  //method
+  _changeUserInfo(){
       this.updateUserInfo(Object.assign(this.users.userInfo,{userName:this.users.userName}))
-    }
   }
 }
 </script>

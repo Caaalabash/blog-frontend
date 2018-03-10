@@ -4,15 +4,17 @@
   </div>
 </template>
 
-<script>
-  export default{
-    name:'BlogHeader',
-    props:['user','users'],
-    data(){
-      return{
-
-      }
-    }
+<script lang='ts'>
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import { Prop , Watch } from 'vue-property-decorator'
+  import { State, Action, Getter ,Mutation} from "vuex-class";
+  @Component
+  export default class BlogHeader extends Vue{
+    @Prop()
+      user:any
+    @Prop()
+      users:any
   }
 </script>
 

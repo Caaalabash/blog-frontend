@@ -4,13 +4,16 @@
 </h1>
 </template>
 
-<script type="text/ecmascript-6">
-export default{
-  name:'error',
-  props:['type'],
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from 'vue-property-decorator'
+
+@Component
+export default class error extends Vue{
+  @Prop()
+    type:string = ''
 }
 </script>
 
-<style scoped>
 
-</style>

@@ -1,55 +1,51 @@
 <template>
   <div class="page-container">
     <div class="index-container">
-      <blog-index-header :user="user" :users="users" ></blog-index-header>
-      <blog-index-links @openDialog="openDialog" :user="user" :users="users"></blog-index-links>
-      <transition name="move" mode="out-in">
+      <blog-header :user="user" :users="users" ></blog-header>
+      <blog-links :user="user" :users="users" @openDialog="openDialog"></blog-links>
+     <transition name="move" mode="out-in">
         <router-view :users="users"></router-view>
       </transition>
-      <login-dialog :openLoginDialog="openLoginDialog" @closeDialog="closeDialog"></login-dialog>
+       <login-dialog :openLoginDialog="openLoginDialog" @closeDialog="closeDialog"></login-dialog>
     </div>
   </div>
+
 </template>
 
-<script type="text/ecmascript-6">
-  import BlogHeader from '../base/BlogHeader'
-  import BlogLinks from  '../base/BlogLinks'
-  import LoginDialog from '../base/LoginDialog'
-  import {mapMutations,mapGetters} from 'vuex'
-  export default{
-    name:'index',
-    props:['user'],
-    components:{
-      'blog-index-header':BlogHeader,
-      'blog-index-links':BlogLinks,
-      'login-dialog':LoginDialog
-    },
-    data(){
-      return{
+<script lang="ts">
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {  Prop , Watch } from 'vue-property-decorator'
+  import { State, Action, Getter,Mutation } from "vuex-class"
+  import BlogHeader from '../base/BlogHeader.vue'
+  import BlogLinks from  '../base/BlogLinks.vue'
+  import LoginDialog from '../base/LoginDialog.vue'
 
-      }
-    },
-    computed:{
-      ...mapGetters([
-        'openLoginDialog',
-        'loginStatus',
-        'users'
-      ])
-    },
-    methods:{
-      ...mapMutations([
-        'OPEN_LOGIN_DIALOG'
-      ]),
-      openDialog(){
-        if(!this.loginStatus){
+  @Component({
+    components:{
+      'blog-header':BlogHeader,
+      "blog-links":BlogLinks,
+      "login-dialog":LoginDialog
+    }
+  })
+  export default class Index extends Vue{
+    //prop
+    @Prop({default:''})
+      user:any
+    @Getter openLoginDialog:any
+    @Getter loginStatus:any
+    @Getter users:any
+    @Mutation OPEN_LOGIN_DIALOG:any
+    //method
+    closeDialog(){
+      this.OPEN_LOGIN_DIALOG(false)
+    }
+    openDialog(){
+      if(!this.loginStatus){
           this.OPEN_LOGIN_DIALOG(true)
         }else{
           this.$router.push({path:`/${this.users.userName}/manage`})
         }
-      },
-      closeDialog(){
-        this.OPEN_LOGIN_DIALOG(false)
-      },
     }
   }
 </script>
@@ -58,13 +54,14 @@
   .page-container{
     display: flex;
     justify-content: center;
-    width: inherit;
+    width: 750px;
+    padding: 10px;
     height: inherit;
   }
   .index-container{
     display: flex;
     flex-direction: column;
-    flex:0 1 700px;
+    flex:0 1 750px;
     width: inherit;
     height: inherit;
   }
@@ -73,6 +70,9 @@
     letter-spacing: 5px;
     cursor: pointer;
     text-align: center;
+  }
+  .index-header>a{
+    font-size: 20px;
   }
   .index-links{
     margin-top: 20px;
@@ -89,11 +89,11 @@
     width: 15px;
     height: 15px;
   }
-  @media screen and (max-width: 700px) {
+  /*@media screen and (max-width: 700px) {
     .index-main{
       margin: 10px;
     }
-  }
+  }*/
 
 </style>
 

@@ -21,75 +21,80 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-import {mapActions,mapGetters} from 'vuex'
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop , Watch } from 'vue-property-decorator'
+import { State, Action, Getter ,Mutation} from "vuex-class";
 import {formatDate} from '../../lib/lib'
-export default{
-  props:['blogDate','users'],
-  data(){
-    return{
-      rules:{
+import {ElForm}  from 'element-ui/types/form'
+import marked from 'marked'
+import debounce from 'lodash/debounce'
+export default class ManageYourIear extends Vue{
+  //data
+  rules={
         blogTitle:[{ required: true, message: '请输入文章标题', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }]
-      },
-      idea:{
-        blogId:'',
-        blogTitle:'',
-        blogDate:'',
-        blogContent:'',
-        blogType:'public'
-      }
-    }
-  },
-  computed: {
-    compiledMarkdown: function () {
+          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }]
+  }
+  idea={
+    blogId:'',
+    blogTitle:'',
+    blogDate:'',
+    blogContent:'',
+    blogType:'public'
+  }
+  @Prop()
+    blogDate:string
+  @Prop()
+    users:any
+  //computed
+  get compiledMarkdown() {
       return marked(this.idea.blogContent, { sanitize: true })
-    },
-    ...mapGetters({
-      blogList:'blogList'
-    })
-  },
-  methods: {
-    ...mapActions([
-      'createNewIdea',
-      'updateIdea',
-    ]),
-    update:_.debounce(function (e) {
-      this.idea.blogContent = e.target.value
-    }, 300),
-    _send(){
-      async function a(){
-        if(this.blogDate){
-          await this.updateIdea(Object.assign(this.idea,{blogDate:this.blogDate},{userName:this.users.userName}))
-        }else{
-          await this.createNewIdea(Object.assign({userName:this.users.userName},this.idea))
-        }
-        this.clearForm()
+  }
+  //state
+  @Getter blogList:any
+  @Action createNewIdea:any
+  @Action updateIdea:any
+  //methods
+  update(){
+    let _this = this
+    debounce(function (e:any) {
+      _this.idea.blogContent = e.target.value
+    }, 300)
+  }
+  _send(){
+    let _this = this
+    async function a(){
+      if(_this.blogDate){
+        await _this.updateIdea(Object.assign(_this.idea,{blogDate:_this.blogDate},{userName:_this.users.userName}))
+      }else{
+        await _this.createNewIdea(Object.assign({userName:_this.users.userName},_this.idea))
       }
-      a.bind(this)()
-    },
-    clearForm(){
-      this.idea.blogTitle=''
-      this.idea.blogContent=''
-      this.idea.blogType='public'
-    },
-    sendIdea(){
-      this.$refs['form'].validate((valid)=>{
-        if(valid){
-          if(this.idea.blogContent===''){
-            this.$message.error('文章内容不能为空')
-          }else{
-            this.idea.blogDate = formatDate()
-            this._send()
-          }
-        }
-      })
+      _this.clearForm()
     }
-  },
-  beforeRouteEnter (to, from, next) {
+    a.bind(this)()
+  }
+  clearForm(){
+    this.idea.blogTitle=''
+    this.idea.blogContent=''
+    this.idea.blogType='public'
+  }
+  sendIdea(){
+    (this.$refs['form'] as ElForm).validate((valid:Boolean)=>{
+      if(valid){
+        if(this.idea.blogContent===''){
+          this.$message.error('文章内容不能为空')
+        }else{
+          this.idea.blogDate = formatDate()
+          this._send()
+        }
+      }
+    })
+  }
+  beforeRouteEnter (to:any, from:any, next:any) {
     if(to.query.blogDate){
-      next(vm => {
-        vm.idea = vm.blogList.filter(item=>item.blogDate===to.query.blogDate)[0]
+      next((vm:any) => {
+        vm.idea = vm.blogList.filter((item:any)=>item.blogDate===to.query.blogDate)[0]
       })
     }else{
       next()

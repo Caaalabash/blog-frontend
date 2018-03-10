@@ -7,21 +7,20 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop , Watch } from 'vue-property-decorator'
+import { State, Action, Mutation,Getter } from "vuex-class"
 import ManageSideBar from '../base/ManageSideBar.vue'
-import {mapGetters} from 'vuex'
 
-export default{
-  name:'Manage',
-  computed:{
-    ...mapGetters([
-      'users'
-    ])
-  },
+@Component({
   components:{
-    'manage-side-bar':ManageSideBar
+    "manage-side-bar":ManageSideBar
   }
+})
+export default class Manage extends Vue{
+  @Getter users:any
 }
 </script>
 

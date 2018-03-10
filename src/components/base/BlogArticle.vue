@@ -12,60 +12,70 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import { mapActions ,mapGetters} from 'vuex'
-  import {formatDateEng,getStorage} from '../../lib/lib'
-  export default{
-    props:['id','user','users'],
-    data(){
-      return{
-        idea:{
-          blogTitle:'',
-          blogContent:'',
-          blogDate:'',
-          nextBlogDate:'',
-          lastBlogDate:''
-        },
-      }
-    },
-    watch: {
-      // 如果路由有变化，会再次执行该方法
-      '$route': 'getIdea'
-    },
-    computed: {
-      compiledMarkdown: function () {
-        return marked(this.idea.blogContent, { sanitize: true })
-      },
-      formatDate(){
-        return formatDateEng(this.idea.blogDate)
-      },
-      ...mapGetters([
-        'currentBlogList'
-      ])
-    },
-    methods: {
-      getIdea(){
-        this.currentBlogList.forEach((item,index,arr)=>{
-          if(this.id === item.blogDate){
-            this.idea = Object.assign({},item,{nextBlogDate:this.hasSiblings(arr)(index+1)('blogDate'),lastBlogDate:this.hasSiblings(arr)(index-1)('blogDate')})
-          }
-        })
-      },
-      hasSiblings(arr){
-        return index=>property=>arr[index]?arr[index][property]:'0'
-      },
-      openOtherBlogs(value){
-        if(value && value!=='0'){
-          this.$router.push(`${value}`)
-        }else{
-          this.$message.info('没有啦！')
-        }
-      }
-    },
-    created(){
-      this.getIdea()
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop , Watch } from 'vue-property-decorator'
+import { State, Action, Getter } from "vuex-class"
+import {formatDateEng} from '../../lib/lib.js'
+import marked from 'marked'
+
+@Component
+export default class BlogArticle extends Vue{
+  //data
+  idea = {
+      blogTitle:'',
+      blogContent:'',
+      blogDate:'',
+      nextBlogDate:'',
+      lastBlogDate:''
+  }
+  //prop
+  @Prop({default:''})
+    id:string
+  @Prop({default:''})
+    user:string
+  @Prop({default:''})
+    users:any
+  //store
+  @Getter currentBlogList:any
+  //computed
+  get compiledMarkdown():string{
+    return marked(this.idea.blogContent, { sanitize: true })
+  }
+  get formatDate():string{
+  return formatDateEng(this.idea.blogDate)
+  }
+  //methods
+
+  hasSiblings(arr:any):any{
+    return (index:any)=>(property:any)=>arr[index]?arr[index][property]:'0'
+  }
+  openOtherBlogs(value:string){
+    if(value && value !=='0'){
+      this.$router.push(`${value}`)
+    }else{
+      this.$message.info('没有啦宝贝')
     }
   }
+  getIdea():void{
+    this.currentBlogList.forEach((item:any,index:any,arr:any)=>{
+        if(this.id === item.blogDate){
+        this.idea = Object.assign({},item,{nextBlogDate:this.hasSiblings(arr)(index+1)('blogDate'),lastBlogDate:this.hasSiblings(arr)(index-1)('blogDate')})
+        }
+    })
+  }
+  //watch
+  @Watch('$route')
+    _getArticle(){
+      this.getIdea()
+    }
+  //hooks
+  created(){
+    this.getIdea()
+  }
+
+}
 </script>
 
 <style>

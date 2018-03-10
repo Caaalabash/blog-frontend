@@ -1,12 +1,12 @@
 <template>
   <div class="index-links">
-    <a  :href="infoList.twitter" target="_blank">
+    <a  :href="users.userInfo.twitter" target="_blank">
       <img src="../../assets/twitter.png" alt="">
     </a>
-    <a  :href="infoList.github" target="_blank">
+    <a  :href="users.userInfo.github" target="_blank">
       <img src="../../assets/github.png" alt="">
     </a>
-    <a  :href="infoList.weibo" target="_blank">
+    <a  :href="users.userInfo.weibo" target="_blank">
       <img src="../../assets/weibo.png" alt="">
     </a>
     <a href="" @click.prevent="login">
@@ -15,19 +15,22 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  export default{
-    name:'BlogLinks',
-    props:['user','users'],
-    data(){
-      return{
-        infoList:this.users.userInfo
-      }
-    },
-    methods:{
-      login(){
-        this.$emit('openDialog')
-      },
+<script lang='ts'>
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import { Prop , Watch } from 'vue-property-decorator'
+  import { State, Action, Getter ,Mutation} from "vuex-class";
+  @Component
+  export default class BlogLinks extends Vue {
+    //data
+    //props
+    @Prop({default:''})
+      user:string
+    @Prop({default:''})
+      users:any
+    //method
+    login(){
+      this.$emit('openDialog')
     }
 
   }

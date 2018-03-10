@@ -1,4 +1,4 @@
-import BaseModule from './apiSettings'
+import BaseModule from './apiSettings.js'
 
 /*因为规模不大 全部写在一个js中好了- -*/
 class apiManage extends BaseModule {
@@ -7,7 +7,7 @@ class apiManage extends BaseModule {
   }
   //登录注册
   createUser(obj){
-    return this.$http.post('createUser',obj)
+    return  this.$http.post('createUser',obj)
   }
   checkUser(obj){
     return this.$http.post('checkUser',obj)

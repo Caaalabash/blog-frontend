@@ -1,7 +1,7 @@
 <template>
   <div class="index-main">
     <ul class="list">
-      <li v-for="n in currentBlogList">
+      <li v-for="(n,i) in currentBlogList" :key=i>
         <span class="date">{{formatDate(n.blogDate)}}</span>
         <span class="title">
           <router-link :to="'articles/'+n.blogDate" append>{{n.blogTitle}}</router-link>
@@ -11,31 +11,32 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script lang='ts'>
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop , Watch } from 'vue-property-decorator'
+import { State, Action, Getter ,Mutation} from "vuex-class";
 import {getStorage,formatDateEng} from '../../lib/lib'
-import { mapActions ,mapGetters} from 'vuex'
-export default{
-  name:'BlogBody',
-  props:['user','users'],
-  data(){
-    return{
+import mutations from '../../store/mutations';
 
-    }
-  },
-  computed:{
-    ...mapGetters([
-      'currentBlogList'
-    ])
-  },
-  methods:{
-    ...mapActions([
-      'getCurrentBlogList'
-    ]),
+@Component
+export default class BlogBody extends Vue{
+  //data
+  //props
+  @Prop({default:''})
+    user:string
+  @Prop({default:''})
+    users:any
+  //state
+  @Getter currentBlogList:any
 
-    formatDate(value){
+  @Action getCurrentBlogList:any
+  //methods
+  formatDate(value:string){
       return formatDateEng(value)
-    }
-  },
+  }
+  //watch
+  //hooks
   created(){
     this.getCurrentBlogList({userName:this.user,type:'public',currentPage:1})
   }
@@ -71,11 +72,11 @@ export default{
   .title:hover{
     color: #f33;
   }
-  @media screen and (max-width: 420px) {
+  /*@media screen and (max-width: 420px) {
     .list>li{
       margin: 20px 0 20px;
     }
-  }
+  }*/
 </style>
 
 
