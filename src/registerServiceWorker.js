@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
-import { register } from 'register-service-worker'
+import { register } from './register-service-worker'
 
 if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+  register(`/service-worker.js`, {
     ready () {
       console.log(
         'App is being served from cache by a service worker.\n' +
@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     cached () {
       console.log('Content has been cached for offline use.')
+
     },
     updated () {
       console.log('New content is available; please refresh.')
