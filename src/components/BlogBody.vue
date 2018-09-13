@@ -5,6 +5,13 @@
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="busy"
         infinite-scroll-distance="10">
+      <li v-for="n in stickyBlog">
+        <span class="date">{{formatDate(n.blogDate)}}</span>
+        <span class="title">
+          <router-link :to="'articles/'+n.blogDate" append>{{n.blogTitle}}</router-link>
+        </span>
+        <span class="sticky">[置顶]</span>
+      </li>
       <li v-for="n in currentBlogList">
         <span class="date">{{formatDate(n.blogDate)}}</span>
         <span class="title">
@@ -17,6 +24,7 @@
 
 <script type="text/ecmascript-6">
 import {formatDateEng} from '../lib/lib'
+import apiManage from '../service/apiManage'
 import { mapActions, mapMutations } from 'vuex'
 export default{
   name: 'BlogBody',
@@ -25,10 +33,17 @@ export default{
     return {
       busy: false,
       pgN: 1,
-      pgS: 8
+      pgS: 8,
+      stickyPgS: 3,
+      stickyBlog: []
     }
   },
   created () {
+    apiManage.getIdeaList({userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS}).then((res) => {
+      if(res.errno === 0){
+        this.stickyBlog = res.res
+      }
+    })
     this.getCurrentBlogList({userName: this.user, type: 'public', pgN: 1, pgS: this.pgS})
   },
   methods: {
@@ -109,6 +124,10 @@ export default{
           @media (max-width: 420px){
             font-size: 14px;
           }
+        }
+        .sticky {
+          line-height: 56px;
+          margin-left: auto;
         }
       }
     }

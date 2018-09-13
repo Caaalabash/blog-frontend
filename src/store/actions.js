@@ -93,7 +93,7 @@ export const updateUserInfo = function({commit,state},data){
 
   })
 }
-/*获取博文列表:可以和获取当前博文列表合并*/
+/*获取博文列表*/
 export const getIdeaList = function({commit,state},data){
   apiManage.getIdeaList(data).then(res=>{
     if(res.errno===0){

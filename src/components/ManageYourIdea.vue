@@ -8,6 +8,7 @@
       <el-form-item class="type">
         <el-radio v-model="idea.blogType" label="public">公开</el-radio>
         <el-radio v-model="idea.blogType" label="private">私密</el-radio>
+        <el-radio v-model="idea.blogType" label="sticky">置顶</el-radio>
       </el-form-item>
       <!--编辑/查看区域-->
       <el-form-item class="text">

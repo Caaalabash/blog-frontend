@@ -74,7 +74,8 @@ const mutations = {
   },
   /*获取博客列表*/
   [types.GET_IDEA_LIST](state,data){
-    state.users.blogList = data
+    let {blogList,...other} = state.users
+    state.users = {blogList:data,...other}
   },
   /*设置喜欢列表*/
   [types.SET_LIKELIST](state,data){

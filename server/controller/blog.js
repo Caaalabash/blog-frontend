@@ -79,7 +79,7 @@ async function getBlog(req,res){
 async function getBlogList(req,res) {
   let {pgN,pgS,userName,type} = req.query
   let list = []
-  if (type==='public'){
+  if (type==='public' || type=== 'sticky'){
      list = await blog.find({"author":userName,"blogType":type},{"_id":0,"blogDate":1,"blogTitle":1}).sort({"blogDate":-1}).skip((pgN-1)*pgS).limit(parseInt(pgS))
   }
   if (type==='all'){
