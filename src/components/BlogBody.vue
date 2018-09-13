@@ -77,6 +77,7 @@ export default{
 
     .list{
       list-style-type: none;
+      padding-left: 0;
       li {
         position:relative;
         .fl-row;
@@ -86,7 +87,8 @@ export default{
         border-bottom: 1px solid @indexBorderColor;
 
         @media (max-width: 420px){
-          margin: 20px 0 20px;
+          margin: 20px 10px 20px 10px;
+
         }
 
         &::before{
@@ -128,6 +130,9 @@ export default{
         .sticky {
           line-height: 56px;
           margin-left: auto;
+          @media (max-width: 420px){
+            font-size: 14px;
+          }
         }
       }
     }
