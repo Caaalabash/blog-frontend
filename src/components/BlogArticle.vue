@@ -1,6 +1,10 @@
 <template>
   <div class="index-main"
        v-loading.fullscreen.lock="fullScreenLoading"
+       v-touch="{
+         left: () => openOtherBlogs(idea.lastBlogDate),
+         right: () => openOtherBlogs(idea.nextBlogDate)
+       }"
   >
     <!--文章内容区域-->
     <div class="post">
@@ -92,7 +96,7 @@ export default{
       if (value && value !== '0') {
         this.$router.push(`${value}`)
       } else {
-        this.$message.info('暂不可用！')
+        this.$message.info('没有啦！')
       }
     },
     scaleImg (e) {
