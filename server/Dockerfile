@@ -1,7 +1,17 @@
-FROM node:8.9
-COPY . /app
+FROM node:8.9-alpine
+
+MAINTAINER Caaalabash
+
 WORKDIR /app
-ENV NODE_ENV production
+
+COPY package.json /app
+
 RUN npm install
+
+ENV NODE_ENV production
+
+COPY . /app
+
 EXPOSE 3000
-CMD npm run online
+
+CMD ["npm", "run", "online"]
