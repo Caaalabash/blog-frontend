@@ -88,12 +88,16 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+  import VueSocketio from 'vue-socket.io';
+  import store from '../store'
+  import socketio from 'socket.io-client';
   import '../service/apiManage'
   import {mapGetters,mapActions} from 'vuex'
   import apiManage from "../service/apiManage"
   import {timestampToTime} from '../lib/lib'
   import {getRecordFile,startRecord,stopRecord} from '../lib/record'
-
+  Vue.use(VueSocketio, socketio(process.env.VUE_APP_SOCKET), store);
   export default {
     name: "Chat",
     data(){

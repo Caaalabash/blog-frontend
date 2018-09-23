@@ -9,8 +9,9 @@
   ],
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "local": "vue-cli-service serve --mode local",
+    "online": "vue-cli-service serve --mode prod",
+    "build": "vue-cli-service build --mode prod",
     "upload": "node ./upload.js"
   },
   "dependencies": {

@@ -4,38 +4,31 @@
  */
 const app = require('../app');
 const debug = require('debug')('server:server');
-const https = require('https');
 const http = require('http');
 const spdy = require('spdy');
 const fs = require('fs');
-const cluster = require('cluster');
-/**
- * Get port from environment and store in Express.
- */
 
-
-
-/**
- * 读取文件
- * */
-// const options = {
-//   key: fs.readFileSync('../ssl/214519498570301.key'),
-//   cert: fs.readFileSync('../ssl/214519498570301.pem')
-// };
-/**
- * Create HTTP server.
- */
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-const server = http.createServer(app).listen(3000);
+
+let server
+
+if (process.env.NODE_ENV === 'production') {
+  const options = {
+    key: fs.readFileSync('../ssl/214519498570301.key'),
+    cert: fs.readFileSync('../ssl/214519498570301.pem')
+  }
+  server = spdy.createServer(options, app).listen(port)
+} else {
+  server = http.createServer(app).listen(port);
+}
+
 const io = require('socket.io')(server);
 app.io(io);
 
 
 server.on('error', onError);
 server.on('listening', onListening);
-// const server = spdy.createServer(options,app).listen(port);
-
 /**
  * Listen on provided port, on all network interfaces.
  */

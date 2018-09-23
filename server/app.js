@@ -38,9 +38,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*app.use(expressJwt({secret:'secret'}).unless({path:['/api/createUser','/api/createUser']}))*/
+app.use('/api/v1',users)
 app.use('/api/v2',chats)
-app.use('/api/v1',users);
 app.use('/api/v3',moniter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,23 +1,21 @@
 const webpush = require('web-push')
-const initProxy = require('../lib/getProxy')
+const config = require('../config.js')
 
 const vapidKeys = {
-  publicKey:'BGO_lp81VuXZtSNm4WMK6_lsyspLAtP7bEvjS-wVFw093ctm5QFIV0Jze2bKsFofQl1PrGd6jaCMW6AeXzLFlto',
-  privateKey:'dIt1TtlVJ4HrSkhXBl4A6t1BY1b8aA7vRpRv_3iwjLA'
+  publicKey: config.webpush.publicKey,
+  privateKey: config.webpush.privateKey
 }
 
 webpush.setVapidDetails(
-  'mailto:1121062986@qq.com',
+  config.webpush.mailto,
   vapidKeys.publicKey,
   vapidKeys.privateKey
 )
 
-
 module.exports = async function pushMessage(subscription,payload='Nothing',options={}){
   let subscriptionObj = JSON.parse(subscription)
   if(/^https:\/\/fcm/.test(subscriptionObj.endpoint)){
-    await initProxy()
-    options.proxy = 'http://127.0.0.1:1080'
+    return 'DO NOT SUPPORT GOOGLE'
   }
   return webpush.sendNotification(subscriptionObj,payload,options)
     .then((data)=>{

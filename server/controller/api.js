@@ -27,7 +27,7 @@ async function sendMyLove(req,res){
         })
       }
       return item
-    })
+    }).join('\n')
   }
   //首字母大写,加句号
   if(type==='2'){
@@ -49,10 +49,21 @@ async function sendMyLove(req,res){
       }else{
         return item
       }
-    })
+    }).join('\n')
+  }
+  // 去除空行加语句拼接
+  if (type === '3'){
+    let noEmptyRow = list.filter(item => item.trim() !==  '')
+    for (let n of noEmptyRow){
+      if(/^[a-z]/.test(n)){
+        data += ` ${n}`
+      } else {
+        data += `\n${n}`
+      }
+    }
   }
   return res.json(rsp(0,{
-    content:data.join('\n'),
+    content:data,
     deleteList:deleteList.join('\n')
   },''))
 }

@@ -5,6 +5,7 @@ const mongoose = require('../mongodb/index')
 const middleware = require('../middleware/index')
 const userController = require('../controller/user')
 const blogController = require("../controller/blog")
+
 router.use(middleware.cors)
 //记录IP
 router.use(middleware.collectIP)

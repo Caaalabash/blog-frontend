@@ -57,7 +57,6 @@ function checkSensitiveWord(sensitiveMap, txt, index) {
 }
 
 function filterSensitiveWord(txt) {
-  console.time("a")
   let matchResult = { flag: false, sensitiveWord: '',use:''};
   // 过滤掉除了中文、英文、数字之外的
   const txtTrim = txt.replace(/[^\u4e00-\u9fa5\u0030-\u0039\u0061-\u007a\u0041-\u005a]+/g, '');
@@ -69,7 +68,6 @@ function filterSensitiveWord(txt) {
       break;
     }
   }
-  console.timeEnd("a")
   return matchResult;
 }
 

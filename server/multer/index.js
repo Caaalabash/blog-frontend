@@ -1,13 +1,13 @@
 const multer = require('multer');
-
+const config = require('../config')
 const storage = multer.diskStorage({
   //设置上传后文件路径，uploads文件夹会自动创建。
   destination: function (req, file, cb) {
     let path
     if(file.fieldname==='audio'){
-      path = '/alidata/www/blog/blob/'
+      path = config.upload.audio
     }else{
-      path = '/alidata/www/blog/img/'
+      path = config.upload.img
     }
     cb(null, path);
   },

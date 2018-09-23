@@ -1,6 +1,6 @@
 module.exports = {
   devServer: {
-    proxy: 'http://localhost:3000'
+    proxy: process.env.VUE_APP_SERVICE
   },
   productionSourceMap: false
 }
