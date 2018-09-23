@@ -11,7 +11,7 @@
   "scripts": {
     "local": "vue-cli-service serve --mode local",
     "online": "vue-cli-service serve --mode prod",
-    "build": "vue-cli-service build --mode prod",
+    "build": "vue-cli-service build",
     "upload": "node ./upload.js"
   },
   "dependencies": {
@@ -21,7 +21,7 @@
     "echarts": "^4.1.0",
     "element-ui": "^2.0.11",
     "lodash": "^4.17.5",
-    "node-ssh": "^5.1.1",
+    "node-ssh": "^5.1.2",
     "qs": "^6.5.2",
     "register-service-worker": "^1.0.0",
     "socket.io-client": "^2.1.1",

@@ -14,9 +14,10 @@ app.set('port', port);
 let server
 
 if (process.env.NODE_ENV === 'production') {
+  // dockerfile中设置了工作目录,因此这里路径使用 ./ 而不是 ../
   const options = {
-    key: fs.readFileSync('../ssl/214519498570301.key'),
-    cert: fs.readFileSync('../ssl/214519498570301.pem')
+    key: fs.readFileSync('./ssl/214519498570301.key'),
+    cert: fs.readFileSync('./ssl/214519498570301.pem')
   }
   server = spdy.createServer(options, app).listen(port)
 } else {
