@@ -10,8 +10,8 @@ module.exports = {
     password: process.env.NODE_ENV === 'production' ? '' : ''
   },
   upload: {
-    audio: process.env.NODE_ENV === 'production' ? '/alidata/www/blog/blob/' : '',
-    img: process.env.NODE_ENV === 'production' ? '/alidata/www/blog/img/' : '',
+    audio: process.env.NODE_ENV === 'production' ? '/data/blob' : '',
+    img: process.env.NODE_ENV === 'production' ? '/data/img/' : '',
   },
   mongodb: {
     url: process.env.NODE_ENV === 'production' ? 'mongodb://myMongoDB:27017/blog' : 'mongodb://127.0.0.1:27017/blog'
