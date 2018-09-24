@@ -69,7 +69,7 @@ async function getBlog(req,res){
   //解决同一页面刷新重复计数的问题,但是如果两个文章间切换还是存在问题
   if(req.cookies.Cal === undefined || req.cookies.Cal !== blogDate){
     filterObj.count = await redisTool._incr(blogDate) || ''
-    res.cookie('Cal',blogDate,{maxAge:1000*60*10,secure:true,path:'/api/ideas'})
+    res.cookie('Cal',blogDate,{maxAge:1000*60*10})
   }else{
     filterObj.count = await redisTool._getValue(blogDate)
   }
