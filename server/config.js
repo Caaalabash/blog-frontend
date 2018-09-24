@@ -14,6 +14,6 @@ module.exports = {
     img: process.env.NODE_ENV === 'production' ? '/alidata/www/blog/img/' : '',
   },
   mongodb: {
-    url: process.env.NODE_ENV === 'production' ? 'mongodb://172.17.0.2:27017/blog' : 'mongodb://127.0.0.1:27017/blog'
+    url: process.env.NODE_ENV === 'production' ? 'mongodb://myMongoDB:27017/blog' : 'mongodb://127.0.0.1:27017/blog'
   }
 }
