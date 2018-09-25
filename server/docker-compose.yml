@@ -1,0 +1,18 @@
+version: "3"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blog-backend
+    ports:
+      - 3000:3000
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /alidata/www/blog/img:/data/img
+      - /alidata/www/blog/blob:/data/blob
+    network_mode: bridge
+    restart: unless-stopped
+    external_links:
+      - myMongoDB
+      - myRedis
