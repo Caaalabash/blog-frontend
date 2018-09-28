@@ -40,7 +40,8 @@
     "babel-plugin-component": "^1.1.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "webpack-bundle-analyzer": "^3.0.2"
   },
   "repository": {
     "type": "git",
