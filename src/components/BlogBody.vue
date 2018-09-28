@@ -1,10 +1,7 @@
 <template>
   <div class="index-main">
     <!--文章列表-->
-    <ul class="list fl-column"
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="busy"
-        infinite-scroll-distance="10">
+    <ul class="list fl-column">
       <li v-for="n in stickyBlog">
         <span class="date">{{formatDate(n.blogDate)}}</span>
         <span class="title">
@@ -19,16 +16,21 @@
         </span>
       </li>
     </ul>
+    <Observer :handleInterSection="loadMore"/>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import Observer from './Observer'
 import {formatDateEng} from '../lib/lib'
 import apiManage from '../service/apiManage'
 import { mapActions, mapMutations } from 'vuex'
 export default{
   name: 'BlogBody',
   props: ['user', 'currentBlogList'],
+  components: {
+    Observer
+  },
   data () {
     return {
       busy: false,

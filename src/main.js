@@ -1,11 +1,10 @@
+import 'intersection-observer'
 import Vue from 'vue'
-import infiniteScroll from 'vue-infinite-scroll'
 import App from './App'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import touchDirective from './directives/touch'
-
 import {
   Select,
   Option,
@@ -60,7 +59,6 @@ Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;
 
-Vue.use(infiniteScroll)
 Vue.directive('touch',touchDirective)
 Vue.config.productionTip = false
 
