@@ -23,3 +23,9 @@
     },
   };
 </script>
+
+<style scoped>
+  .observer {
+    height: 1px;
+  }
+</style>
