@@ -24,7 +24,7 @@
 import Observer from './Observer'
 import {formatDateEng} from '../lib/lib'
 import apiManage from '../service/apiManage'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default{
   name: 'BlogBody',
   props: ['user', 'currentBlogList'],
@@ -53,20 +53,14 @@ export default{
       'getCurrentBlogList',
       'getMoreBlog'
     ]),
-    ...mapMutations([
-      'LOAD_MORE'
-    ]),
     formatDate (value) {
       return formatDateEng(value)
     },
-    loadMore () {
-      async function getNext () {
-        this.busy = true
-        this.pgN++
-        let res = await this.getMoreBlog({userName: this.user, type: 'public', pgN: this.pgN, pgS: this.pgS})
-        res === 'gg' ? this.busy = true : this.busy = false
-      }
-      getNext.bind(this)()
+    async loadMore () {
+      this.busy = true
+      this.pgN++
+      let res = await this.getMoreBlog({userName: this.user, type: 'public', pgN: this.pgN, pgS: this.pgS})
+      res === 'gg' ? this.busy = true : this.busy = false
     }
   }
 }

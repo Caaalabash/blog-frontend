@@ -85,22 +85,17 @@ export default {
       return data
     }
   },
-
-  mounted(){
-  },
   created () {
     this.getPv()
   },
   methods: {
-    getPv () {
-      (async function () {
-        let res = await api.getPv({date: this.date, userName: this.userName})
-        if (res.errno === 0) {
-          this.originData = await pvData(res.res)
-        } else {
-          this.$message.error('出现错误')
-        }
-      }.bind(this))()
+    async getPv () {
+      const res = await api.getPv({date: this.date, userName: this.userName})
+      if (res.errno === 0) {
+        this.originData = await pvData(res.res)
+      } else {
+        this.$message.error('出现错误')
+      }
     }
   }
 }

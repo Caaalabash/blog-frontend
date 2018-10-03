@@ -4,6 +4,7 @@
 
 <script>
   export default {
+    name: 'Observer',
     props: ['options', 'handleInterSection'],
     data: () => ({
       observer: null,
@@ -26,6 +27,6 @@
 
 <style scoped>
   .observer {
-    height: 1px;
+    min-height: 1px;
   }
 </style>

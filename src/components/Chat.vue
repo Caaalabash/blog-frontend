@@ -132,7 +132,7 @@
       }
     },
     sockets:{
-      connect: function(){
+      connect(){
         console.log('socket connected')
       },
       recvMsg(val){

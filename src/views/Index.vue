@@ -168,8 +168,6 @@ export default{
     })
     resizeReset()
     setup()
-    let test = []
-    console.log(test?.[0]?.name)
   },
   methods: {
     ...mapMutations([

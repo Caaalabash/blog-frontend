@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "local": "vue-cli-service serve --mode local",
-    "online": "vue-cli-service serve --mode production",
+    "online": "vue-cli-service serve --mode beta",
     "build": "vue-cli-service build",
     "upload": "node ./upload.js"
   },

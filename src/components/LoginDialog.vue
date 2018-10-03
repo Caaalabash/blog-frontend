@@ -13,9 +13,7 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="userPwd">
-        <el-input type="password" v-model="form.userPwd" placeholder="密码" @keyup.enter="sendRequest">
-
-        </el-input>
+        <el-input type="password" v-model="form.userPwd" placeholder="密码" @keyup.enter="sendRequest"></el-input>
       </el-form-item>
       <el-form-item >
         <el-button v-html="signIn" type="primary" @click="sendRequest" plain></el-button>
@@ -65,16 +63,13 @@ export default{
       this.$refs['form'].resetFields()
       this.$emit('closeDialog')
     },
-    sendType () {
-      async function a () {
-        if (this.activeName === 'login') {
-          await this.login(this.form)
-        } else {
-          await this.register(this.form)
-        }
-        this.handleClose()
+    async sendType () {
+      if (this.activeName === 'login') {
+        await this.login(this.form)
+      } else {
+        await this.register(this.form)
       }
-      a.bind(this)()
+      this.handleClose()
     },
     sendRequest () {
       this.$refs['form'].validate((valid) => {

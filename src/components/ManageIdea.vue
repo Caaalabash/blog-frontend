@@ -1,5 +1,5 @@
 <template>
-  <div class="manage-right">
+  <div class="manage-right" v-resize="handleResize">
     <el-table :data="blogList">
       <el-table-column type="expand" v-if="isShow">
         <template slot-scope="scope">
@@ -54,12 +54,6 @@ export default{
     ...mapGetters([
       'blogList'
     ])
-  },
-  mounted () {
-    window.addEventListener('resize', this.handleResize)
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.handleResize)
   },
   created () {
     this._getIdeaList()

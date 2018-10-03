@@ -8,8 +8,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import ManageSideBar from '../components/ManageSideBar.vue'
 import {mapGetters} from 'vuex'
+import ManageSideBar from '../components/ManageSideBar.vue'
 
 export default{
   name: 'Manage',
@@ -19,7 +19,6 @@ export default{
   computed: {
     ...mapGetters([
       'users',
-      'token'
     ])
   }
 }

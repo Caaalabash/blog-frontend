@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import touchDirective from './directives/touch'
+import resizeDirective from './directives/resize'
 import {
   Select,
   Option,
@@ -60,6 +61,7 @@ Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;
 
 Vue.directive('touch',touchDirective)
+Vue.directive('resize',resizeDirective)
 Vue.config.productionTip = false
 
 new Vue({

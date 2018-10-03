@@ -160,7 +160,6 @@ export default {
         blogDate: this.blogDate,
         userName: this.user,
         user: this.currentUser,
-        avatar: '',
         text: this.textarea,
         date: new Date().toLocaleString('zh', {hour12: false})
       }).then(res => {

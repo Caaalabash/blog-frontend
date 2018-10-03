@@ -58,8 +58,10 @@ export default{
   data () {
     return {
       rules: {
-        blogTitle: [{ required: true, message: '请输入文章标题', trigger: 'blur' },
-          { min: 4, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }]
+        blogTitle: [
+          { required: true, message: '请输入文章标题', trigger: 'blur' },
+          { min: 4, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
+        ]
       },
       idea: {
         blogTitle: '',
@@ -73,20 +75,20 @@ export default{
     }
   },
   computed: {
-    compiledMarkdown: function () {
-      return marked(this.idea.blogContent, { sanitize: true })
-    },
     ...mapGetters([
       'token',
       'blogList'
-    ])
+    ]),
+    compiledMarkdown(){
+      return marked(this.idea.blogContent, { sanitize: true })
+    },
   },
   methods: {
     ...mapActions([
       'createNewIdea',
       'updateIdea'
     ]),
-    // 赋值功能
+    // 复制
     copy () {
       let that = this
       const clipboard = new ClipboardJS('.btn')
@@ -138,16 +140,13 @@ export default{
       localStorage.setItem(key, JSON.stringify(this.idea))
       this.idea.blogContent = e.target.value
     }, 300),
-    _send () {
-      async function a () {
-        if (this.blogDate) {
-          await this.updateIdea(Object.assign(this.idea, {blogDate: this.blogDate}, {userName: this.users.userName}))
-        } else {
-          await this.createNewIdea(Object.assign({userName: this.users.userName}, this.idea))
-        }
-        this.clearForm()
+    async _send () {
+      if (this.blogDate) {
+        await this.updateIdea(Object.assign(this.idea, {blogDate: this.blogDate}, {userName: this.users.userName}))
+      } else {
+        await this.createNewIdea(Object.assign({userName: this.users.userName}, this.idea))
       }
-      a.bind(this)()
+      this.clearForm()
     },
     clearForm () {
       this.idea.blogTitle = ''
@@ -235,6 +234,4 @@ export default{
       }
     }
   }
-
-
 </style>

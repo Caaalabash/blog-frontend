@@ -4,6 +4,7 @@
     class="manage-left el-menu-vertical-demo "
     :router="true"
     :collapse="isCollapse"
+    v-resize="handleResize"
   >
     <el-menu-item index="new-idea">
       <i class="el-icon-edit-outline"></i>
@@ -57,12 +58,6 @@ export default{
     ...mapGetters([
       'userName'
     ])
-  },
-  mounted () {
-    window.addEventListener('resize', this.handleResize)
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
     ...mapMutations([

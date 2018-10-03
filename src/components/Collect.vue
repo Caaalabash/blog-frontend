@@ -64,7 +64,6 @@
 </template>
 
 <script>
-  import api from '../service/apiManage'
   import {mapGetters,mapActions} from 'vuex'
   export default {
     name: "Collect",
@@ -105,7 +104,7 @@
         this.$emit('close')
       },
       collect(title){
-        let {user,id} = this.$route.params
+        const {user,id} = this.$route.params
         this.addToCollectList({
           userName:this.userName,
           author:user,
