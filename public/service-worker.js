@@ -13,7 +13,7 @@ self.addEventListener('push', function (e) {
 });
 
 self.addEventListener('notificationclick',function(e){
-  event.waitUntil(
+  e.waitUntil(
     // examplePage 就是当前页面的 url
     clients.openWindow('/Calabash')
   );
