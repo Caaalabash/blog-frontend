@@ -11,7 +11,7 @@
   "scripts": {
     "local": "vue-cli-service serve --mode local",
     "online": "vue-cli-service serve --mode beta",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode production",
     "upload": "node ./upload.js"
   },
   "dependencies": {
