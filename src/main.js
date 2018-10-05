@@ -14,6 +14,7 @@ import {
   Input,
   Pagination,
   Dialog,
+  Notification,
   Upload,
   Menu,
   Submenu,
@@ -59,6 +60,7 @@ Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;
+Vue.prototype.$notify = Notification;
 
 Vue.directive('touch',touchDirective)
 Vue.directive('resize',resizeDirective)
