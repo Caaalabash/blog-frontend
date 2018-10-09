@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import api from '../service/apiManage'
 import ClipboardJS from 'clipboard'
 import {mapGetters, mapActions} from 'vuex'
 import Collect from './Collect'
@@ -156,7 +155,7 @@ export default {
         return false
       }
       this.showLoading = true
-      api.postComment({
+      this.$api.postComment({
         blogDate: this.blogDate,
         userName: this.user,
         user: this.currentUser,

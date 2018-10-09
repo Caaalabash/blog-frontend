@@ -23,7 +23,6 @@
 </template>
 
 <script>
-  import api from '../service/apiManage'
   import EChart from 'vue-echarts/components/ECharts.vue'
   import 'echarts/lib/chart/line'
   import 'echarts/lib/chart/pie'
@@ -199,7 +198,7 @@
     },
     methods:{
       getApiLog(){
-        api.getApiMonitor({url:this.chooseApi})
+        this.$api.getApiMonitor({url:this.chooseApi})
           .then(res=>{
             if(res.data && res.data.length){
               let data = res.data.reduce((acc,item)=>{
@@ -214,7 +213,7 @@
           })
       },
       getPvLog(){
-        api.getPvMonitor()
+        this.$api.getPvMonitor()
           .then(res=>{
             if(res.data && res.data.length){
               this.option1 = {
@@ -224,7 +223,7 @@
           })
       },
       getBlogDate(){
-        api.getAnalayzBlogDate()
+        this.$api.getAnalayzBlogDate()
           .then(res=>{
             if(res && res.data){
               this.analyzeBlogDate = res.data

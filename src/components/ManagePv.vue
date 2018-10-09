@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import api from '../service/apiManage'
 import {pvData} from '../lib/lib'
 import {mapGetters} from 'vuex'
 import Chart from './Chart.vue'
@@ -90,7 +89,7 @@ export default {
   },
   methods: {
     async getPv () {
-      const res = await api.getPv({date: this.date, userName: this.userName})
+      const res = await this.$api.getPv({date: this.date, userName: this.userName})
       if (res.errno === 0) {
         this.originData = await pvData(res.res)
       } else {

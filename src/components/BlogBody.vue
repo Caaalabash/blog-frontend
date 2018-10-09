@@ -23,7 +23,6 @@
 <script type="text/ecmascript-6">
 import Observer from './Observer'
 import {formatDateEng} from '../lib/lib'
-import apiManage from '../service/apiManage'
 import { mapActions } from 'vuex'
 export default{
   name: 'BlogBody',
@@ -41,7 +40,7 @@ export default{
     }
   },
   created () {
-    apiManage.getIdeaList({userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS}).then((res) => {
+    this.$api.getIdeaList({userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS}).then((res) => {
       if(res.errno === 0){
         this.stickyBlog = res.res
       }

@@ -138,7 +138,6 @@
 
 <script type="text/ecmascript-6">
 import {mapActions, mapGetters,mapMutations} from 'vuex'
-import api from '../service/apiManage'
 export default{
   name: 'ManageSetting',
   data(){
@@ -201,7 +200,7 @@ export default{
     upload () {
       let formData = new FormData()
       formData.append('avatar', this.file)
-      api.setAvatar(formData,{
+      this.$api.setAvatar(formData,{
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': this.token,

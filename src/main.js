@@ -6,6 +6,7 @@ import store from './store'
 import './registerServiceWorker'
 import touchDirective from './directives/touch'
 import resizeDirective from './directives/resize'
+import api from './service/apiManage'
 import {
   Select,
   Option,
@@ -61,6 +62,7 @@ Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;
 Vue.prototype.$notify = Notification;
+Vue.prototype.$api = api
 
 Vue.directive('touch',touchDirective)
 Vue.directive('resize',resizeDirective)

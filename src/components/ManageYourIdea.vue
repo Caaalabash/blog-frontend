@@ -50,7 +50,6 @@
 import ClipboardJS from 'clipboard'
 import {mapActions, mapGetters} from 'vuex'
 import {formatDate} from '../lib/lib'
-import api from '../service/apiManage'
 import debounce from 'lodash/debounce'
 
 export default{
@@ -101,7 +100,7 @@ export default{
     upload () {
       let formData = new FormData()
       formData.append('file', this.file)
-      api.upload(formData, {
+      this.$api.upload(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': this.token,

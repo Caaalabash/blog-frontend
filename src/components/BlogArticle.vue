@@ -40,7 +40,6 @@
 import { mapActions, mapGetters} from 'vuex'
 import {formatDateEng} from '../lib/lib'
 import Comment from './Comment.vue'
-import api from '../service/apiManage'
 export default{
   props: ['id', 'user', 'currentBlogList'],
   components: {
@@ -86,7 +85,7 @@ export default{
       this.getComment()
     },
     getComment(){
-      api.getComment({blogDate:this.id,userName:this.user}).then(res=>{
+      this.$api.getComment({blogDate:this.id,userName:this.user}).then(res=>{
         if(res.errno===0){
           this.commentList = res.res
         }

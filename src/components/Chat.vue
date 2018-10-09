@@ -92,9 +92,7 @@
   import VueSocketio from 'vue-socket.io';
   import store from '../store'
   import socketio from 'socket.io-client';
-  import '../service/apiManage'
   import {mapGetters,mapActions} from 'vuex'
-  import apiManage from "../service/apiManage"
   import {timestampToTime} from '../lib/lib'
   import {getRecordFile,startRecord,stopRecord} from '../lib/record'
   Vue.use(VueSocketio, socketio(process.env.VUE_APP_SOCKET), store);
@@ -147,7 +145,7 @@
       }
     },
     created(){
-      apiManage.getChatList({user:this.userName}).then(res=>{
+      this.$api.getChatList({user:this.userName}).then(res=>{
         if(res.errno===0){
           this.chatlist = res.data
           this._getChatData(this.chatlist[0])
@@ -200,7 +198,7 @@
         this.visible = !this.visible
       },
       getChatObj(){
-        apiManage.addChatObj({user:this.input1}).then(res=>{
+        this.$api.addChatObj({user:this.input1}).then(res=>{
           if(res.errno===0){
             this.chatlist.push(res.data)
             this.visible = false
@@ -228,7 +226,7 @@
       upload () {
         let formData = new FormData()
         formData.append('chat', this.file)
-        apiManage.uploadChatPic(formData, {
+        this.$api.uploadChatPic(formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': this.token,
@@ -245,7 +243,7 @@
       uploadAudio(){
         let formData = new FormData()
         formData.append('audio', this.audio)
-        apiManage.uploadVoiceMsg(formData, {
+        this.$api.uploadVoiceMsg(formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': this.token,
