@@ -1,5 +1,5 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 module.exports = {
   devServer: {
     proxy: process.env.VUE_APP_SERVICE
@@ -9,18 +9,16 @@ module.exports = {
     if(process.env.NODE_ENV === 'production') {
       return {
         plugins: [
-          new BundleAnalyzerPlugin()
+          new BundleAnalyzerPlugin(),
+          new SWPrecacheWebpackPlugin({
+            cacheId: 'calabash-blog',
+            filename: 'service-worker.js',
+            staticFileGlobs: ['dist/**/*.{js,html,css,svg}'],
+            minify: true,
+            stripPrefix: 'dist/'
+          })
         ]
       }
     }
   },
-  pwa: {
-    iconPaths: {},
-    // configure the workbox plugin
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      // swSrc is required in InjectManifest mode.
-      swSrc: './public/service-worker.js',
-    }
-  }
 }

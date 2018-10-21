@@ -1,12 +1,12 @@
 <template>
   <div class="index-links">
-    <a  :href="infoList.twitter" target="_blank">
+    <a  :href="infoList.twitter" target="_blank" rel="noreferrer">
       <img src="../assets/twitter.svg" alt="">
     </a>
-    <a  :href="infoList.github " target="_blank">
+    <a  :href="infoList.github " target="_blank" rel="noreferrer">
       <img src="../assets/github.svg" alt="">
     </a>
-    <a  :href="infoList.weibo" target="_blank">
+    <a  :href="infoList.weibo" target="_blank"  rel="noreferrer">
       <img src="../assets/weibo.svg" alt="">
     </a>
     <a href="" @click.prevent="login">
