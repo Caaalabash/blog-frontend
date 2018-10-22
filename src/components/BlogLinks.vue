@@ -1,15 +1,15 @@
 <template>
   <div class="index-links">
-    <a  :href="infoList.twitter" target="_blank" rel="noreferrer">
+    <a :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter">
       <img src="../assets/twitter.svg" alt="">
     </a>
-    <a  :href="infoList.github " target="_blank" rel="noreferrer">
+    <a :href="infoList.github " target="_blank" rel="noopener" aria-label="github">
       <img src="../assets/github.svg" alt="">
     </a>
-    <a  :href="infoList.weibo" target="_blank"  rel="noreferrer">
+    <a :href="infoList.weibo" target="_blank"  rel="noopener" aria-label="weibo">
       <img src="../assets/weibo.svg" alt="">
     </a>
-    <a href="" @click.prevent="login">
+    <a href="" @click.prevent="login" aria-label="login">
       <img src="../assets/user.svg" alt="">
     </a>
   </div>

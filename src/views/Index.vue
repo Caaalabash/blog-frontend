@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <main class="page-container">
     <div class="index-container">
       <!--header组件 接受参数 当前路由匹配的user-->
       <blog-index-header :user="user"></blog-index-header>
@@ -12,7 +12,7 @@
     </div>
     <!--canvas特效区域-->
     <canvas id="canvas" style="width:100%; height:100%"></canvas>
-  </div>
+  </main>
 </template>
 
 <script type="text/ecmascript-6">
