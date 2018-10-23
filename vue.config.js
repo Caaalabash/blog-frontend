@@ -1,5 +1,7 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
+const End = require('./EndWebpackPlugin')
+const upload = require('./upload')
 module.exports = {
   devServer: {
     proxy: process.env.VUE_APP_SERVICE
@@ -16,7 +18,8 @@ module.exports = {
             staticFileGlobs: ['dist/**/*.{js,html,css,svg}'],
             minify: true,
             stripPrefix: 'dist/'
-          })
+          }),
+          new End(upload)
         ]
       }
     }
