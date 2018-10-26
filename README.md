@@ -1,8 +1,10 @@
 # vue-blog
 
+起始于大三上学期, 代码不再重构(因为回头看不满意但也懒得改), 只作为新技术的试验场
+
 ## 技术栈
 
-前端：Vue全家桶 less element-ui Service-Worker PWA
+前端：vue(vue-cli 3.0) element-ui vue-router vuex axios less PWA
 
 后端：express mongodb redis socket.io
 
@@ -30,7 +32,7 @@
 
 + 个人信息、个人动态、收藏夹的管理
 
-+ 消息推送
++ ~~消息推送~~(暂时去除)
 
 技术相关
 
@@ -49,6 +51,8 @@
 + `echarts` 后台数据统计
 
 + 基于`Service Worker`的消息推送
+
++ 100/100 `Lighthouse score`
 
 ### 后端
 
@@ -112,4 +116,8 @@
 + 请求分析
 
 ![](https://blog.calabash.top/file-1528549492511.png)
+
++ Lighthouse评分
+
+![](https://blog.calabash.top/file-1540573358533.png)
 

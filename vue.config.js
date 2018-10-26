@@ -15,9 +15,19 @@ module.exports = {
           new SWPrecacheWebpackPlugin({
             cacheId: 'calabash-blog',
             filename: 'service-worker.js',
-            staticFileGlobs: ['dist/**/*.{js,html,css,svg}'],
+            staticFileGlobs: ['dist/**/*.{js,html,css,svg,woff,ttf}'],
             minify: true,
-            stripPrefix: 'dist/'
+            stripPrefix: 'dist/',
+            runtimeCaching: [
+              {
+                urlPattern: '/',
+                handler: 'networkFirst'
+              },
+              {
+                urlPattern: '/:user',
+                handler: 'networkFirst'
+              }
+            ],
           }),
           new End(upload)
         ]
