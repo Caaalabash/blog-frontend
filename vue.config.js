@@ -28,6 +28,7 @@ module.exports = {
                 handler: 'cacheFirst'
               }
             ],
+            navigateFallback: '/index.html'
           }),
           new End(upload)
         ]
