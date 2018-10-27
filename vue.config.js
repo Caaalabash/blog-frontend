@@ -21,11 +21,11 @@ module.exports = {
             runtimeCaching: [
               {
                 urlPattern: '/',
-                handler: 'networkFirst'
+                handler: 'cacheFirst'
               },
               {
                 urlPattern: '/:user',
-                handler: 'networkFirst'
+                handler: 'cacheFirst'
               }
             ],
           }),
