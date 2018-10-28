@@ -18,6 +18,7 @@ module.exports = {
             staticFileGlobs: ['dist/**/*.{js,html,css,svg,woff,ttf}'],
             minify: true,
             stripPrefix: 'dist/',
+            dontCacheBustUrlsMatching: [/./],
             runtimeCaching: [
               {
                 urlPattern: '/',
