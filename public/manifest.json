@@ -10,9 +10,9 @@
   "background_color": "#fff",
   "icons": [
     {
-    "src": "/calabash32.png",
-    "sizes": "32x32",
-    "type": "image/png"
+      "src": "/calabash32.png",
+      "sizes": "32x32",
+      "type": "image/png"
     },
     {
       "src": "/calabash64.png",

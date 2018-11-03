@@ -12,6 +12,9 @@
     <a href="" @click.prevent="login" aria-label="login">
       <img src="../assets/user.svg" alt="">
     </a>
+    <a href="" @click.prevent="prompt" aria-label="prompt" v-if="prompt_fn">
+      <img src="../assets/trigger.png" alt="">
+    </a>
   </div>
 </template>
 
@@ -19,12 +22,29 @@
 export default{
   name: 'BlogLinks',
   props: ['infoList'],
+  data: () => ({
+    prompt_fn: null,
+  }),
   methods: {
     login () {
       this.$emit('openDialog')
+    },
+    prompt() {
+      if (!this.prompt_fn) return
+      this.prompt_fn.prompt()
+      this.prompt_fn.userChoice.then(function(choice) {
+        alert(choice.outcome)
+      })
+      this.prompt_fn = null
     }
-  }
-
+  },
+  mounted() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      this.prompt_fn = e
+      e.preventDefault()
+      return false
+    })
+  },
 }
 </script>
 
