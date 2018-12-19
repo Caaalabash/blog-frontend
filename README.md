@@ -1,4 +1,5 @@
-# vue-blog
+# vue-blog [![Build Status](https://travis-ci.org/Caaalabash/vue-blog.svg?branch=publish)](https://travis-ci.org/Caaalabash/vue-blog)
+
 
 起始于大三上学期, 代码不再重构(因为回头看不满意但也懒得改), 只作为新技术的试验场
 
