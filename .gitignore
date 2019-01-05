@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+server/package-lock.json
+package-lock.json
 
 # Log files
 npm-debug.log*
