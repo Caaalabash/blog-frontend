@@ -7,7 +7,7 @@ module.exports = {
   redis: {
     port: 6379,
     host: process.env.NODE_ENV === 'production' ? '172.17.0.1' : '127.0.0.1',
-    password: process.env.NODE_ENV === 'production' ? '' : ''
+    password: process.env.NODE_ENV === 'production' ? 'wangtian' : ''
   },
   upload: {
     audio: process.env.NODE_ENV === 'production' ? '/data/blob' : '',

@@ -11,6 +11,7 @@ services:
       - /etc/localtime:/etc/localtime
       - /alidata/www/blog/img:/data/img
       - /alidata/www/blog/blob:/data/blob
+      - /mynode/vue-blog-ci/ssl:/app/ssl
     network_mode: bridge
     restart: unless-stopped
     external_links:

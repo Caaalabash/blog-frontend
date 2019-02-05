@@ -1,12 +1,20 @@
 language: node_js
 sudo: false
 os:
-  - windows
-  - linux
+- linux
 node_js:
-  - "8"
-  - "10"
-
+- '10'
 notifications:
   email:
     on_failure: always
+addons:
+  ssh_known_hosts: 60.205.219.85
+before_install:
+- openssl aes-256-cbc -K $encrypted_a6ef41ff4c30_key -iv $encrypted_a6ef41ff4c30_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+script:
+- npm run build
+- scp -o StrictHostKeyChecking=no -r ./dist root@60.205.219.85:/alidata/www/blog/dist
+after_success:
+- ssh root@60.205.219.85 -o StrictHostKeyChecking=no '/mynode/vue-blog-ci/startup.sh'

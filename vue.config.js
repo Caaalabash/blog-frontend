@@ -1,7 +1,5 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
-const End = require('./EndWebpackPlugin')
-const upload = require('./upload')
+
 module.exports = {
   devServer: {
     proxy: process.env.VUE_APP_SERVICE
@@ -11,7 +9,6 @@ module.exports = {
     if(process.env.NODE_ENV === 'production') {
       return {
         plugins: [
-          new BundleAnalyzerPlugin(),
           new SWPrecacheWebpackPlugin({
             cacheId: 'calabash-blog',
             filename: 'service-worker.js',
@@ -31,7 +28,6 @@ module.exports = {
             ],
             navigateFallback: '/index.html'
           }),
-          new End(upload)
         ]
       }
     }
