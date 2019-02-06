@@ -15,6 +15,6 @@ before_install:
 - chmod 600 ~/.ssh/id_rsa
 script:
 - npm run build
-- scp -o StrictHostKeyChecking=no -r ./dist root@60.205.219.85:/alidata/www/blog/dist
+- scp -o StrictHostKeyChecking=no -r ./dist root@60.205.219.85:/alidata/www/blog/
 after_success:
 - ssh root@60.205.219.85 -o StrictHostKeyChecking=no '/mynode/vue-blog-ci/startup.sh'
