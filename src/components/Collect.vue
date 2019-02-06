@@ -16,7 +16,7 @@
         <div v-if="collectList.length">
           <div class="list-item fl-row" v-for="item in collectList">
             <div class="text fl-column">
-              <span class="text-title">{{item.collectTitle}}<img v-if="item.collectType==='private'" src="../assets/lock.svg"></span>
+              <span class="text-title">{{ item.collectTitle }}<img v-if="item.collectType==='private'" src="../assets/lock.svg"></span>
               <span class="text-len">{{`${item.list.length}条内容`}}</span>
             </div>
             <div>
@@ -64,67 +64,69 @@
 </template>
 
 <script>
-  import {mapGetters,mapActions} from 'vuex'
-  export default {
-    name: "Collect",
-    props:{
-      visible:{
-        type:Boolean,
-        default:false
-      }
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  name: 'Collect',
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'userName',
+      'collectList'
+    ])
+  },
+  data: () => ({
+    isCreate: false,
+    form: {
+      type: 'public',
+      title: '',
+      desc: ''
     },
-    computed:{
-      ...mapGetters([
-        'userName',
-        'collectList'
-      ])
+    rule: {
+      title: [
+        { required: true, message: '请输收藏夹名称', trigger: 'blur' },
+        { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+      ]
+    }
+  }),
+  methods:{
+    ...mapActions([
+      'createCollectList',
+      'addToCollectList'
+    ]),
+    closeDialog() {
+      this.$emit('close')
     },
-    data(){
-      return{
-        isCreate:false,
-        form:{
-          type:'public',
-          title:'',
-          desc:''
-        },
-        rule:{
-          title:[
-            { required: true, message: '请输收藏夹名称', trigger: 'blur' },
-            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-          ]
-        }
-      }
+    collect(title) {
+      const { user,id } = this.$route.params
+      this.addToCollectList({
+        userName: this.userName,
+        author: user,
+        blogDate: id,
+        collect: title
+      })
     },
-    methods:{
-      ...mapActions([
-        'createCollectList',
-        'addToCollectList'
-      ]),
-      closeDialog(){
-        this.$emit('close')
-      },
-      collect(title){
-        const {user,id} = this.$route.params
-        this.addToCollectList({
-          userName:this.userName,
-          author:user,
-          blogDate:id,
-          collect:title
-        })
-      },
-      submit(){
-        this.createCollectList({...this.form,userName:this.userName}).then(()=>{
+    submit(){
+      this.$refs['form'].validate(valid => {
+        if (!valid) return
+        this.createCollectList({ ...this.form, userName: this.userName }).then(() => {
           this.isCreate = false
         })
-      },
-      createCollect(){
-        this.isCreate = true
-      },
-      back(){
-        this.isCreate = false
-      }
+      })
+    },
+    createCollect() {
+      this.isCreate = true
+    },
+    back() {
+      this.isCreate = false
     }
   }
+}
 </script>
 
 <style scoped lang="less">

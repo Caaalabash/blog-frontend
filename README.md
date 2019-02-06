@@ -1,15 +1,12 @@
 # vue-blog [![Build Status](https://travis-ci.org/Caaalabash/vue-blog.svg?branch=publish)](https://travis-ci.org/Caaalabash/vue-blog)
 
-
-起始于大三上学期, 代码不再重构(因为回头看不满意但也懒得改), 只作为新技术的试验场
-
 ## 技术栈
 
-前端：vue(vue-cli 3.0) element-ui vue-router vuex axios less PWA
+前端：Vue(vue-cli 3.0) element-ui vue-router vuex axios less PWA
 
 后端：express mongodb redis socket.io
 
-部署: Docker Nginx
+部署: Docker Nginx TravisCI
 
 ## 博客地址
 
@@ -41,11 +38,7 @@
 
 + `Axios`结合Element-UI的封装,全局错误管理,api统一管理
 
-+ `Canvas`粒子效果以及换肤功能
-
 + `Service Worker`
-
-+ 基于``node-ssh``将打包文件上传到云服务器
 
 + `vue-socket.io`实现实时聊天
 

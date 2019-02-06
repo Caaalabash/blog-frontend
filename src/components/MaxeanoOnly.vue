@@ -26,44 +26,41 @@
 </template>
 
 <script>
-  import api from '../service/apiManage'
-  import { generateVM } from '../lib/lib'
-  export default {
-    name: "MaxeanoOnly",
-    data(){
-      return{
-        form:{
-          type:'1',
-          content:''
-        },
-        result:'',
-        deleteList:''
-      }
+import { generateVM } from '../lib/lib'
+
+export default {
+  name: 'MaxeanoOnly',
+  data: () => ({
+    form: {
+      type: '1',
+      content: ''
     },
-    mounted(){
-      generateVM({
-        container: this.$refs['box'],
-        content: "我爱宝贝"
+    result: '',
+    deleteList: ''
+  }),
+  mounted() {
+    generateVM({
+      container: this.$refs['box'],
+      content: 'Maxeano'
+    })
+  },
+  methods:{
+    submit() {
+      this.$api.sendMyLove(this.form).then(res => {
+        if(res.data) {
+          this.deleteList = res.data.deleteList
+          this.result = res.data.content
+        }
       })
-    },
-    methods:{
-      submit(){
-        api.sendMyLove(this.form).then(res=>{
-          if(res.data){
-             this.deleteList = res.data.deleteList
-             this.result = res.data.content
-          }
-        })
-      }
     }
   }
+}
 </script>
 
 <style scoped lang="less">
   .box{
     width: 100%;
     height: 100%;
-
     .maxeano{
       margin: 20px;
       width:50%;

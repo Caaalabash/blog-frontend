@@ -1,6 +1,6 @@
 <template>
   <div class="container fl-column">
-    <el-tabs v-model="activeName"  type="border-card">
+    <el-tabs v-model="currentTab"  type="border-card">
       <!--访问日志区域-->
       <el-tab-pane label="访问日志" name="pv">
         <el-date-picker
@@ -14,6 +14,7 @@
         </el-date-picker>
         <el-table
           :data="originData"
+          v-loading="isProcessing"
           class="table">
           <el-table-column type="expand">
             <template slot-scope="scope">
@@ -41,45 +42,44 @@
       </el-tab-pane>
       <!--接口日志区域-->
       <el-tab-pane label="接口日志" name="api">
-        <Chart :addressData="addressData"></Chart>
+        <Chart :addressData="addressData" />
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import {pvData} from '../lib/lib'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import Chart from './Chart.vue'
+import { processPvData } from '../lib/lib'
+
 export default {
   name: 'manage-pv',
   components:{
     Chart
   },
-  data () {
-    return {
-      activeName:'pv',
-      originData: [],
-      date: new Date().toLocaleString('zh').split(' ')[0].replace(/\//g, '-')
-    }
-  },
+  data: () => ({
+    isProcessing: true,
+    currentTab:'pv',
+    originData: [],
+    date: new Date().toLocaleString('zh').split(' ')[0].replace(/\//g, '-')
+  }),
   computed: {
     ...mapGetters([
-      'token',
       'userName'
     ]),
     addressData(){
-      let list = this.originData.reduce((acc,item)=>{
+      let list = this.originData.reduce((acc, item) => {
         acc.push(item.address)
         return acc
       },[])
       let map = {}
-      for(let n of list){
-        map[n] ? map[n]++ : map[n] = 1
+      for(let location of list){
+        map[location] ? map[location]++ : map[location] = 1
       }
       let data = []
       for(let n of Object.keys(map)){
-        data.push({value:map[n],name:n})
+        data.push({ value: map[n], name: n })
       }
       return data
     }
@@ -88,13 +88,14 @@ export default {
     this.getPv()
   },
   methods: {
-    async getPv () {
-      const res = await this.$api.getPv({date: this.date, userName: this.userName})
+    async getPv() {
+      const res = await this.$api.getPv({ date: this.date, userName: this.userName })
       if (res.errno === 0) {
-        this.originData = await pvData(res.res)
+        this.originData = await processPvData(res.res)
       } else {
         this.$message.error('出现错误')
       }
+      this.isProcessing = false
     }
   }
 }

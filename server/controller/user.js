@@ -46,7 +46,7 @@ function checkStatus(req,res){
 }
 //修改个人信息
 async function updateUserInfo(req,res){
-  let {userName,userInfo} = req.body
+  const {userName, ...userInfo} = req.body
   users.update({"userName":userName},{$set:{userInfo:userInfo}},function (e,doc) {
     if(e){
       return res.json(response(1,'','修改失败'))
@@ -57,7 +57,7 @@ async function updateUserInfo(req,res){
 //获取个人信息
 async function getUserInfo(req,res){
   users.find({"userName":req.query.userName},{"_id":0,"userInfo":1},function (e,doc) {
-    if(e){
+    if(e || !doc[0]){
       return res.json(response(1,'',''))
     }
     return res.json(response(0,doc[0].userInfo,''))

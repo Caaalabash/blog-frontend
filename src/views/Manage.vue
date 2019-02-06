@@ -1,9 +1,9 @@
 <template>
-  <div class="manage-container">
+  <div class="manage-container" v-resize="handleResize">
     <!--侧边栏区域-->
-    <manage-side-bar :users="users"></manage-side-bar>
+    <manage-side-bar :users="users" :innerWidth="innerWidth"></manage-side-bar>
     <!--右侧内容区域-->
-    <router-view :users="users"></router-view>
+    <router-view :users="users" :innerWidth="innerWidth"></router-view>
   </div>
 </template>
 
@@ -16,11 +16,19 @@ export default{
   components: {
     'manage-side-bar': ManageSideBar
   },
+  data: () => ({
+    innerWidth: window.innerWidth
+  }),
   computed: {
     ...mapGetters([
       'users',
     ])
-  }
+  },
+  methods: {
+    handleResize() {
+      this.innerWidth = window.innerWidth
+    },
+  },
 }
 </script>
 

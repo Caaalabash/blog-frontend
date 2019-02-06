@@ -88,230 +88,230 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import VueSocketio from 'vue-socket.io';
-  import store from '../store'
-  import socketio from 'socket.io-client';
-  import {mapGetters,mapActions} from 'vuex'
-  import {timestampToTime} from '../lib/lib'
-  import {getRecordFile,startRecord,stopRecord} from '../lib/record'
-  Vue.use(VueSocketio, socketio(process.env.VUE_APP_SOCKET), store);
-  export default {
-    name: "Chat",
-    data(){
-      return{
-        chatlist:[],
-        friendsAvatar:'',
-        friend:'',
-        msg:'',
-        visible:false,
-        openEmoji:false,
-        input1:'',
-        peopleEmoji : '😄 😃 😀 😊 ☺ 😉 😍 😘 😚 😗 😙 😜 😝 😛 😳 😁 😔 😌 😒 😞 😣 😢 😂 😭 😪 😥 😰 😅 😓 😩 😫 😨 😱 😠 😡 😤 😖 😆 😋 😷 😎 😴 😵 😲 😟 😦 😧 😈 👿 😮 😬 😐 😕 😯 😶 😇 😏 😑 👲 👳 👮 👷 💂 👶 👦 👧 👨 👩 👴 👵 👱 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💀 👽 💩 🔥 ✨ 🌟 💫 💥 💢 💦 💧 💤 💨 👂 👀 👃 👅 👄 👍 👎 👌 👊 ✊ ✌ 👋 ✋ 👐 👆 👇 👉 👈 🙌 🙏 ☝ 👏 💪 🚶 🏃 💃 👫 👪 👬 👭 💏 💑 👯 🙆 🙅 💁 🙋 💆 💇 💅 👰 🙎 🙍 🙇 🎩 👑 👒 👟 👞 👡 👠 👢 👕 👔 👚 👗 🎽 👖 👘 👙 💼 👜 👝 👛 👓 🎀 🌂 💄 💛 💙 💜 💚 ❤ 💔 💗 💓 💕 💖 💞 💘'.split(' '),
-        emojiBoxWidth:window.innerWidth<767? 200:400,
-        file:'',
-        audio:'',
-        isRecord:false,
-        src:'',
-        autoplay:false
-      }
+import Vue from 'vue'
+import VueSocketio from 'vue-socket.io'
+import store from '../store'
+import socketio from 'socket.io-client'
+import {mapGetters,mapActions} from 'vuex'
+import {timestampToTime} from '../lib/lib'
+import {getRecordFile,startRecord,stopRecord} from '../lib/record'
+Vue.use(VueSocketio, socketio(process.env.VUE_APP_SOCKET), store)
+
+export default {
+  name: "Chat",
+  data(){
+    return{
+      chatlist:[],
+      friendsAvatar:'',
+      friend:'',
+      msg:'',
+      visible:false,
+      openEmoji:false,
+      input1:'',
+      peopleEmoji : '😄 😃 😀 😊 ☺ 😉 😍 😘 😚 😗 😙 😜 😝 😛 😳 😁 😔 😌 😒 😞 😣 😢 😂 😭 😪 😥 😰 😅 😓 😩 😫 😨 😱 😠 😡 😤 😖 😆 😋 😷 😎 😴 😵 😲 😟 😦 😧 😈 👿 😮 😬 😐 😕 😯 😶 😇 😏 😑 👲 👳 👮 👷 💂 👶 👦 👧 👨 👩 👴 👵 👱 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💀 👽 💩 🔥 ✨ 🌟 💫 💥 💢 💦 💧 💤 💨 👂 👀 👃 👅 👄 👍 👎 👌 👊 ✊ ✌ 👋 ✋ 👐 👆 👇 👉 👈 🙌 🙏 ☝ 👏 💪 🚶 🏃 💃 👫 👪 👬 👭 💏 💑 👯 🙆 🙅 💁 🙋 💆 💇 💅 👰 🙎 🙍 🙇 🎩 👑 👒 👟 👞 👡 👠 👢 👕 👔 👚 👗 🎽 👖 👘 👙 💼 👜 👝 👛 👓 🎀 🌂 💄 💛 💙 💜 💚 ❤ 💔 💗 💓 💕 💖 💞 💘'.split(' '),
+      emojiBoxWidth:window.innerWidth<767? 200:400,
+      file:'',
+      audio:'',
+      isRecord:false,
+      src:'',
+      autoplay:false
+    }
+  },
+  computed:{
+    ...mapGetters([
+      'userName',
+      'message',
+      'avatar',
+      'token'
+    ]),
+    message_filter(){
+      return this.message.filter((item)=>{
+        return item.chatid === [this.userName,this.friend].sort().join('_')
+      })
+    }
+  },
+  sockets:{
+    connect(){
+      console.log('socket connected')
     },
-    computed:{
-      ...mapGetters([
-        'userName',
-        'message',
-        'avatar',
-        'token'
-      ]),
-      message_filter(){
-        return this.message.filter((item)=>{
-          return item.chatid === [this.userName,this.friend].sort().join('_')
-        })
+    recvMsg(val){ }
+  },
+  watch:{
+    'message'(){
+      this.$nextTick(()=>{
+        let el = document.getElementById('chat-content')
+        el.scrollTop = el.scrollHeight
+      })
+    }
+  },
+  created(){
+    this.$api.getChatList({user:this.userName}).then(res=>{
+      if(res.errno===0){
+        this.chatlist = res.data
+        this._getChatData(this.chatlist[0])
       }
+    })
+  },
+  mounted(){
+    this.$socket.emit('connect','test参数'); //在这里触发connect事件
+    this.$socket.emit('online',this.userName)
+  },
+  methods:{
+    ...mapActions([
+      'socket_sendMsg',
+      'getChatData'
+    ]),
+    emitMsg(content){
+      this.$socket.emit('sendMsg',{
+        from:this.userName,
+        to:this.friend,
+        timeStamp:new Date().getTime(),
+        content:content
+      })
+      this.socket_sendMsg({
+        from:this.userName,
+        to:this.friend,
+        content:content,
+        timeStamp:new Date().getTime(),
+        chatid:[this.friend,this.userName].sort().join('_')
+      })
     },
-    sockets:{
-      connect(){
-        console.log('socket connected')
-      },
-      recvMsg(val){
+    send(){
+      if(this.msg===''){
+        this.$message.error('不能发送空消息')
+        return
       }
-    },
-    watch:{
-      'message'(){
-        this.$nextTick(()=>{
-          let el = document.getElementById('chat-content')
-          el.scrollTop = el.scrollHeight
-        })
+      if(this.friend===''){
+        this.$message.error('没有确定聊天对象')
+        return
       }
+      this.emitMsg(this.msg)
+      this.msg = ''
     },
-    created(){
-      this.$api.getChatList({user:this.userName}).then(res=>{
+    _getChatData(item){
+      let chatid = [item.to,this.userName].sort().join('_')
+      this.getChatData({chatid})
+      this.friendsAvatar = item.avatar ? item.avatar : '/calabash32.png'
+      this.friend = item.to
+    },
+    addChat(){
+      this.visible = !this.visible
+    },
+    getChatObj(){
+      this.$api.addChatObj({user:this.input1}).then(res=>{
         if(res.errno===0){
-          this.chatlist = res.data
-          this._getChatData(this.chatlist[0])
+          this.chatlist.push(res.data)
+          this.visible = false
         }
       })
     },
-    mounted(){
-      this.$socket.emit('connect','test参数'); //在这里触发connect事件
-      this.$socket.emit('online',this.userName)
+    getTime(timeStamp){
+      if(/\d+/.test(timeStamp)){
+        let [date,time] = timestampToTime(timeStamp).split(' ')
+        let today = new Date().toLocaleString('zh').split(' ')[0]
+        if(today === date){
+          return time
+        }
+        return `${date} ${time}`
+      }
+      return ''
     },
-    methods:{
-      ...mapActions([
-        'socket_sendMsg',
-        'getChatData'
-      ]),
-      emitMsg(content){
-        this.$socket.emit('sendMsg',{
-          from:this.userName,
-          to:this.friend,
-          timeStamp:new Date().getTime(),
-          content:content
-        })
-        this.socket_sendMsg({
-          from:this.userName,
-          to:this.friend,
-          content:content,
-          timeStamp:new Date().getTime(),
-          chatid:[this.friend,this.userName].sort().join('_')
-        })
-      },
-      send(){
-        if(this.msg===''){
-          this.$message.error('不能发送空消息')
-          return
+    addToMsg(i){
+      this.msg += i
+      this.openEmoji = false
+    },
+    uploadProxy(){
+      document.getElementById('upload').getElementsByTagName('input')[0].click()
+    },
+    upload () {
+      let formData = new FormData()
+      formData.append('chat', this.file)
+      this.$api.uploadChatPic(formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': this.token,
+          'userName': this.userName
         }
-        if(this.friend===''){
-          this.$message.error('没有确定聊天对象')
-          return
+      }).then(res => {
+        if (res.data) {
+          let content = `<img src="${res.data}" style="width:100%;height:100%" />`
+          this.emitMsg(content)
         }
-        this.emitMsg(this.msg)
-        this.msg = ''
-      },
-      _getChatData(item){
-        let chatid = [item.to,this.userName].sort().join('_')
-        this.getChatData({chatid})
-        this.friendsAvatar = item.avatar ? item.avatar : '/calabash32.png'
-        this.friend = item.to
-      },
-      addChat(){
-        this.visible = !this.visible
-      },
-      getChatObj(){
-        this.$api.addChatObj({user:this.input1}).then(res=>{
-          if(res.errno===0){
-            this.chatlist.push(res.data)
-            this.visible = false
-          }
-        })
-      },
-      getTime(timeStamp){
-        if(/\d+/.test(timeStamp)){
-          let [date,time] = timestampToTime(timeStamp).split(' ')
-          let today = new Date().toLocaleString('zh').split(' ')[0]
-          if(today === date){
-            return time
-          }
-          return `${date} ${time}`
+        this.file = ''
+      })
+    },
+    uploadAudio(){
+      let formData = new FormData()
+      formData.append('audio', this.audio)
+      this.$api.uploadVoiceMsg(formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': this.token,
+          'userName': this.userName
         }
-        return ''
-      },
-      addToMsg(i){
-        this.msg += i
-        this.openEmoji = false
-      },
-      uploadProxy(){
-        document.getElementById('upload').getElementsByTagName('input')[0].click()
-      },
-      upload () {
-        let formData = new FormData()
-        formData.append('chat', this.file)
-        this.$api.uploadChatPic(formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': this.token,
-            'userName': this.userName
-          }
-        }).then(res => {
-          if (res.data) {
-            let content = `<img src="${res.data}" style="width:100%;height:100%" />`
-            this.emitMsg(content)
-          }
-          this.file = ''
-        })
-      },
-      uploadAudio(){
-        let formData = new FormData()
-        formData.append('audio', this.audio)
-        this.$api.uploadVoiceMsg(formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': this.token,
-            'userName': this.userName
-          }
-        }).then(res => {
-          if (res.data) {
-            let content =
-              `[media]${res.data}`
-            this.emitMsg(content)
-          }
-          this.audio = ''
-        })
-      },
-      beforeAvatarUpload (file) {
-        const isImage = file.type.includes('image')
-        const isLt4M = file.size / 1024 / 1024 < 4
-        if (!isImage) {
-          this.$message.error('只能上传图片')
-          return false
+      }).then(res => {
+        if (res.data) {
+          let content =
+            `[media]${res.data}`
+          this.emitMsg(content)
         }
-        if (!isLt4M) {
-          this.$message.error('上传图片大小不能超过 4MB!')
-          return false
-        }
-        this.file = file
-        return true
-      },
-      startRecordVoice(){
-          if(!this.isRecord){
-            this.isRecord = true
-            startRecord()
-            this.$notify({
-              title: '提示',
-              message: '正在录音',
-              duration: 1000
-            });
-          }else{
-            let _this = this
-            this.isRecord =false
-            this.$notify({
-              title: '提示',
-              message: '录音完毕',
-              duration: 1000
-            });
-            stopRecord(function(){
-              _this.audio = getRecordFile()
-              _this.uploadAudio()
-            });
-          }
-      },
-      getHtml(content,side){
-        return /\[media]/.test(content)
-          ? side
-            ? `<img src="https://blog.calabash.top/voice_right.svg">`
-            : `<img src="https://blog.calabash.top/voice_left.svg">`
-          : content
-      },
-      play(src){
-        this.autoplay = false
-        if(/\[media]/.test(src)){
-          this.src = src.split(']')[1]
-          document.getElementById('audio').load()
-          this.autoplay = true
-        }
+        this.audio = ''
+      })
+    },
+    beforeAvatarUpload (file) {
+      const isImage = file.type.includes('image')
+      const isLt4M = file.size / 1024 / 1024 < 4
+      if (!isImage) {
+        this.$message.error('只能上传图片')
+        return false
+      }
+      if (!isLt4M) {
+        this.$message.error('上传图片大小不能超过 4MB!')
+        return false
+      }
+      this.file = file
+      return true
+    },
+    startRecordVoice(){
+      if(!this.isRecord){
+        this.isRecord = true
+        startRecord()
+        this.$notify({
+          title: '提示',
+          message: '正在录音',
+          duration: 1000
+        });
+      }else{
+        let _this = this
+        this.isRecord =false
+        this.$notify({
+          title: '提示',
+          message: '录音完毕',
+          duration: 1000
+        });
+        stopRecord(function(){
+          _this.audio = getRecordFile()
+          _this.uploadAudio()
+        });
+      }
+    },
+    getHtml(content,side){
+      return /\[media]/.test(content)
+        ? side
+          ? `<img src="https://blog.calabash.top/voice_right.svg">`
+          : `<img src="https://blog.calabash.top/voice_left.svg">`
+        : content
+    },
+    play(src){
+      this.autoplay = false
+      if(/\[media]/.test(src)){
+        this.src = src.split(']')[1]
+        document.getElementById('audio').load()
+        this.autoplay = true
       }
     }
   }
+}
 </script>
 
 <style scoped lang="less">
@@ -499,6 +499,7 @@
           justify-content: flex-start;
           width: 100%;
           height: 40px;
+          flex-shrink: 0;
           .avatar{
             width: 35px;
             height: 35px;

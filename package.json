@@ -11,8 +11,7 @@
   "scripts": {
     "local": "vue-cli-service serve --mode local",
     "online": "vue-cli-service serve --mode beta",
-    "build": "vue-cli-service build --mode production",
-    "upload": "node ./upload.js"
+    "build": "vue-cli-service build --mode production"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -39,9 +38,7 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "sw-precache-webpack-plugin": "^0.11.5",
-    "vue-template-compiler": "^2.5.17",
-    "webpack-bundle-analyzer": "^3.0.2",
-    "node-ssh": "^5.1.2"
+    "vue-template-compiler": "^2.5.17"
   },
   "repository": {
     "type": "git",

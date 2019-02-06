@@ -1,5 +1,5 @@
 <template>
-  <div class="index-main"
+  <div class="blog-content"
        v-loading.fullscreen.lock="fullScreenLoading"
        v-touch="{
          left: () => openOtherBlogs(idea.lastBlogDate),
@@ -8,15 +8,14 @@
   >
     <!--文章内容区域-->
     <div class="post">
-      <h1>{{idea.blogTitle}}</h1>
-      <h3 class="date" >{{formatDate}}&nbsp;&nbsp;&nbsp;&nbsp;浏览次数:{{idea.count}}次</h3>
-      <div v-html="compiledMarkdown" class="markdown-body" @click="scaleImg($event)"></div>
+      <h1>{{ idea.blogTitle }}</h1>
+      <h3 class="date" >{{ idea.blogDate | formatDateEng }}&nbsp;&nbsp;&nbsp;&nbsp;浏览次数:{{ idea.count }}次</h3>
+      <div class="markdown-body" v-html="compiledMarkdown" @click="scaleImg($event)"></div>
       <!--评论区域-->
       <Comment
         :commentList="commentList"
         :blogDate="idea.blogDate"
         :user="user"
-        :currentUser="userName"
         :blogTitle="idea.blogTitle"
         :likeCount.sync="idea.likeCount"
         @commitSuccess="getComment"
@@ -25,73 +24,59 @@
     </div>
     <!--翻页按钮-->
     <div class="operator">
-      <a id="newer" class="blog-nav" @click.prevent="openOtherBlogs(idea.lastBlogDate)">&nbsp;&lt;上一篇</a>
+      <a id="newer" class="blog-nav" @click.prevent="openOtherBlogs(idea.lastBlogDate)">&lt;&nbsp;上一篇</a>
       <a id="older" class="blog-nav" @click.prevent="openOtherBlogs(idea.nextBlogDate)">下一篇&nbsp;&gt;</a>
     </div>
     <!--图片查看遮罩-->
-    <el-dialog :visible.sync="dialogVisble"
-               custom-class="fake">
+    <el-dialog :visible.sync="dialogVisible" custom-class="fake">
       <img :src="dialogSrc" alt="" class="dialogSrc">
     </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { mapActions, mapGetters} from 'vuex'
-import {formatDateEng} from '../lib/lib'
+import { formatDateEng } from '../lib/lib'
 import Comment from './Comment.vue'
+
 export default{
-  props: ['id', 'user', 'currentBlogList'],
+  props: ['id', 'user'],
   components: {
     Comment
   },
-  data () {
-    return {
-      dialogVisble: false,
-      dialogSrc: '',
-      commentList: [],
-      fullScreenLoading:false
-    }
-  },
+  data: () => ({
+    dialogVisible: false,
+    dialogSrc: '',
+    commentList: [],
+    fullScreenLoading:false,
+    idea: {},
+  }),
   computed: {
-    compiledMarkdown: function () {
+    compiledMarkdown() {
+      if (!marked || !this.idea.blogContent) return ''
       return marked(this.idea.blogContent, { sanitize: true })
     },
-    formatDate () {
-      return formatDateEng(this.idea.blogDate)
-    },
-    ...mapGetters({
-      idea:'currentBlog',
-      userName:'userName'
-    })
+  },
+  filters: {
+    formatDateEng,
   },
   watch: {
-    // 如果路由有变化，会再次执行该方法
-    '$route': '_getIdea'
-  },
-  created () {
-    this._getIdea()
+    '$route': 'getIdea'
   },
   methods: {
-    ...mapActions([
-      'getCurrentBlogList',
-      'getIdea'
-    ]),
-    _getIdea () {
+    getIdea() {
       this.fullScreenLoading = true
-      this.getIdea({userName: this.user, blogDate: this.id}).then(()=>{
+      this.$api.getIdea({ userName: this.user, blogDate: this.id }).then(res=>{
+        this.idea = res.res
         this.fullScreenLoading = false
+        this.getComment()
       })
-      this.getComment()
     },
     getComment(){
-      this.$api.getComment({blogDate:this.id,userName:this.user}).then(res=>{
-        if(res.errno===0){
-          this.commentList = res.res
-        }
+      this.$api.getComment({ blogDate: this.id, userName: this.user }).then(res => {
+        this.commentList = res.res
       })
     },
-    openOtherBlogs (value) {
+    openOtherBlogs(value) {
       if (value && value !== '0') {
         this.$router.push(`${value}`)
       } else {
@@ -101,17 +86,20 @@ export default{
     scaleImg (e) {
       if (e.target.src) {
         this.dialogSrc = e.target.src
-        this.dialogVisble = true
+        this.dialogVisible = true
       }
     }
-  }
+  },
+  created () {
+    this.getIdea()
+  },
 }
 </script>
 
 <style lang="less" scoped>
   @import "../assets/style/index.less";
 
-  .index-main{
+  .blog-content{
     margin-top: 20px;
     @media (max-width: 700px) {
       margin: 10px;

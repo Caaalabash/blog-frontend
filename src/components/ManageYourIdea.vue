@@ -24,7 +24,7 @@
       </el-form-item>
     </el-form>
     <!--上传图片弹窗-->
-    <el-dialog :visible="dialogVisble"
+    <el-dialog :visible="dialogVisible"
                @close="closeDialog">
       <el-upload
         class="upload-demo"
@@ -39,7 +39,7 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">只能上传图片文件，且不超过4MB</div>
       </el-upload>
-      <el-input placeholder="文件路径" v-model="imgpath" id="target">
+      <el-input placeholder="文件路径" v-model="imgPath" id="target">
         <el-button slot="append" @click="copy" data-clipboard-target="#target" class="btn">复制</el-button>
       </el-input>
     </el-dialog>
@@ -48,56 +48,52 @@
 
 <script type="text/ecmascript-6">
 import ClipboardJS from 'clipboard'
-import {mapActions, mapGetters} from 'vuex'
-import {formatDate} from '../lib/lib'
+import { mapState } from 'vuex'
+import { formatDate } from '../lib/lib'
 import debounce from 'lodash/debounce'
 
 export default{
   props: ['blogDate', 'users'],
-  data () {
-    return {
-      rules: {
-        blogTitle: [
-          { required: true, message: '请输入文章标题', trigger: 'blur' },
-          { min: 4, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
-        ]
-      },
-      idea: {
-        blogTitle: '',
-        blogDate: '',
-        blogContent: '',
-        blogType: 'public'
-      },
-      dialogVisble: false,
-      imgpath: '',
-      fileList: []
-    }
-  },
+  data: () => ({
+    rules: {
+      blogTitle: [
+        { required: true, message: '请输入文章标题', trigger: 'blur' },
+        { min: 4, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
+      ]
+    },
+    idea: {
+      blogTitle: '',
+      blogDate: '',
+      blogContent: '',
+      blogType: 'public'
+    },
+    dialogVisible: false,
+    imgPath: '',
+    fileList: []
+  }),
   computed: {
-    ...mapGetters([
-      'token',
-      'blogList'
-    ]),
-    compiledMarkdown(){
+    ...mapState(['token']),
+    compiledMarkdown() {
+      if (!marked || !this.idea.blogContent) return ''
       return marked(this.idea.blogContent, { sanitize: true })
     },
   },
   methods: {
-    ...mapActions([
-      'createNewIdea',
-      'updateIdea'
-    ]),
+    clearForm() {
+      this.idea.blogTitle = ''
+      this.idea.blogContent = ''
+      this.idea.blogType = 'public'
+    },
     // 复制
-    copy () {
-      let that = this
+    copy() {
       const clipboard = new ClipboardJS('.btn')
-      clipboard.on('success', function (e) {
-        that.$message.success('已复制到粘贴板')
+      clipboard.on('success', e => {
+        this.$message.success('已复制到粘贴板')
         e.clearSelection()
       })
     },
     // 文件上传
-    upload () {
+    upload() {
       let formData = new FormData()
       formData.append('file', this.file)
       this.$api.upload(formData, {
@@ -108,11 +104,11 @@ export default{
         }
       }).then(res => {
         if (res.res) {
-          this.imgpath = res.res
+          this.imgPath = res.res
         }
       })
     },
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isImage = file.type.includes('image')
       const isLt4M = file.size / 1024 / 1024 < 4
       if (!isImage) {
@@ -126,32 +122,19 @@ export default{
       this.file = file
       return true
     },
-    closeDialog () {
-      this.dialogVisble = false
+    closeDialog() {
+      this.dialogVisible = false
       this.fileList = []
-      this.imgpath = ''
+      this.imgPath = ''
     },
-    openDialog () {
-      this.dialogVisble = true
+    openDialog() {
+      this.dialogVisible = true
     },
-    update: debounce(function (e) {
+    update: debounce(function(e) {
       let key = this.blogDate ? `article${this.blogDate}` : 'manuscript'
       localStorage.setItem(key, JSON.stringify(this.idea))
       this.idea.blogContent = e.target.value
     }, 300),
-    async _send () {
-      if (this.blogDate) {
-        await this.updateIdea(Object.assign(this.idea, {blogDate: this.blogDate}, {userName: this.users.userName}))
-      } else {
-        await this.createNewIdea(Object.assign({userName: this.users.userName}, this.idea))
-      }
-      this.clearForm()
-    },
-    clearForm () {
-      this.idea.blogTitle = ''
-      this.idea.blogContent = ''
-      this.idea.blogType = 'public'
-    },
     sendIdea () {
       this.$refs['form'].validate((valid) => {
         if (valid) {
@@ -163,30 +146,33 @@ export default{
           }
         }
       })
+    },
+    async _send () {
+      const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+      if (this.blogDate) {
+        await this.$api.changeIdea({ userName: this.users.userName, ...this.idea })
+      } else {
+        await this.$api.createNewIdea({ userName: this.users.userName, ...this.idea })
+      }
+      this.clearForm()
+      localStorage.removeItem(cacheKey)
+    },
+  },
+  created() {
+    const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+    const cache = localStorage.getItem(cacheKey)
+
+    if (cache) {
+      this.idea = JSON.parse(cache)
+      this.$notify({
+        title: '提示',
+        message: '已采用缓存中的内容',
+        duration: 2000,
+      })
+    } else if (this.blogDate) {
+      this.idea = this.$route.params.idea
     }
   },
-  beforeRouteEnter (to, from, next) {
-    let key = to.query.blogDate ? `article${to.query.blogDate}` : 'manuscript'
-    // 如果是修改文章
-    if (to.query.blogDate) {
-      next(vm => {
-        vm.idea = vm.blogList.filter(item => item.blogDate === to.query.blogDate)[0]
-      })
-    }
-    // 如果浏览器缓存中存在该文章的缓存,则读取它
-    if (localStorage.getItem(key)) {
-      next(vm => {
-        vm.idea = JSON.parse(localStorage.getItem(key))
-        vm.$notify({
-          title: '提示',
-          message: '已采用缓存中的内容',
-          duration: 2000
-        })
-      })
-    } else {
-      next()
-    }
-  }
 }
 </script>
 

@@ -1,75 +1,85 @@
 <template>
-  <div class="index-main">
-    <!--文章列表-->
+  <div class="blog-list">
+    <!-- 文章列表 -->
     <ul class="list fl-column">
-      <li v-for="n in stickyBlog">
-        <span class="date">{{formatDate(n.blogDate)}}</span>
+      <!-- 置顶文章 -->
+      <li v-for="n in stickyBlog" :key="n.blogDate">
+        <span class="date">{{ n.blogDate | formatDateEng }}</span>
         <span class="title">
-          <router-link :to="'articles/'+n.blogDate" append>{{n.blogTitle}}</router-link>
+          <router-link :to="`articles/${n.blogDate}`" append>{{ n.blogTitle }}</router-link>
         </span>
         <span class="sticky">[置顶]</span>
       </li>
-      <li v-for="n in currentBlogList">
-        <span class="date">{{formatDate(n.blogDate)}}</span>
+      <!-- 普通文章 -->
+      <li v-for="n in normalBlog" :key="n.blogDate">
+        <span class="date">{{ n.blogDate | formatDateEng }}</span>
         <span class="title">
-          <router-link :to="'articles/'+n.blogDate" append>{{n.blogTitle}}</router-link>
+          <router-link :to="`articles/${n.blogDate}`" append>{{ n.blogTitle }}</router-link>
         </span>
       </li>
     </ul>
-    <Observer :handleInterSection="loadMore"/>
+    <!-- 滚动加载器 -->
+    <div class="observer" v-observer="handleObserver"></div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import Observer from './Observer'
-import {formatDateEng} from '../lib/lib'
-import { mapActions } from 'vuex'
+import { formatDateEng } from '../lib/lib'
+
 export default{
   name: 'BlogBody',
-  props: ['user', 'currentBlogList'],
-  components: {
-    Observer
+  props: ['user'],
+  data: () => ({
+    busy: false,
+    pgN: 1,
+    pgS: 8,
+    stickyPgS: 3,
+    stickyBlog: [],
+    normalBlog: [],
+  }),
+  watch: {
+    user: 'initBlogList'
   },
-  data () {
-    return {
-      busy: false,
-      pgN: 1,
-      pgS: 8,
-      stickyPgS: 3,
-      stickyBlog: []
+  filters: {
+    formatDateEng
+  },
+  methods: {
+    initBlogList() {
+      this.$api.getIdeaList({ userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS }).then(res => {
+        this.stickyBlog = res.res
+      })
+      this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: 1, pgS: this.pgS }).then(res => {
+        if(res.res.length){
+          this.normalBlog = res.res
+        }
+        else{
+          this.$router.push('/Calabash')
+        }
+      })
+    },
+    async loadMore () {
+      if (this.busy) {
+        this.$message.info('没有更多啦!')
+        return false
+      }
+      const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: this.pgN++, pgS: this.pgS })
+      this.normalBlog = [...this.normalBlog, ...res.res]
+      this.busy = (res.res.length < this.pgS)
+    },
+    handleObserver(el, status) {
+      status && this.loadMore()
     }
   },
   created () {
-    this.$api.getIdeaList({userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS}).then((res) => {
-      if(res.errno === 0){
-        this.stickyBlog = res.res
-      }
-    })
-    this.getCurrentBlogList({userName: this.user, type: 'public', pgN: 1, pgS: this.pgS})
+    this.initBlogList()
   },
-  methods: {
-    ...mapActions([
-      'getCurrentBlogList',
-      'getMoreBlog'
-    ]),
-    formatDate (value) {
-      return formatDateEng(value)
-    },
-    async loadMore () {
-      this.busy = true
-      this.pgN++
-      let res = await this.getMoreBlog({userName: this.user, type: 'public', pgN: this.pgN, pgS: this.pgS})
-      res === 'gg' ? this.busy = true : this.busy = false
-    }
-  }
 }
 </script>
 
 <style scoped lang="less">
   @import "../assets/style/index.less";
-  .index-main{
+  .blog-list{
     min-height:900px;
-
     .list{
       list-style-type: none;
       padding-left: 0;
@@ -83,9 +93,7 @@ export default{
 
         @media (max-width: 420px){
           margin: 20px 10px 20px 10px;
-
         }
-
         &::before{
           position:absolute;
           content:'';
@@ -102,34 +110,36 @@ export default{
           transform-origin: 0 0;
           transform:scaleX(1);
         }
-
-        .date{
-          white-space: nowrap;
-          line-height: 56px;
-          font-size: @timeFont;
-          color: #999;
-        }
-        .title{
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          line-height: 56px;
-          margin-left: 30px;
-          font-size: 20px;
-          letter-spacing: 1px;
-          color: @indexDateColor;
-          @media (max-width: 420px){
-            font-size: 14px;
-          }
-        }
-        .sticky {
-          line-height: 56px;
-          margin-left: auto;
-          @media (max-width: 420px){
-            font-size: 14px;
-          }
-        }
       }
+    }
+    .date{
+      white-space: nowrap;
+      line-height: 56px;
+      font-size: @timeFont;
+      color: #999;
+    }
+    .title{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 56px;
+      margin-left: 30px;
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: @indexDateColor;
+      @media (max-width: 420px){
+        font-size: 14px;
+      }
+    }
+    .sticky {
+      line-height: 56px;
+      margin-left: auto;
+      @media (max-width: 420px){
+        font-size: 14px;
+      }
+    }
+    .observer {
+      min-height: 1px;
     }
   }
 </style>

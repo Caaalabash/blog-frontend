@@ -4,7 +4,6 @@
     class="manage-left el-menu-vertical-demo "
     :router="true"
     :collapse="isCollapse"
-    v-resize="handleResize"
   >
     <el-menu-item index="new-idea">
       <i class="el-icon-edit-outline"></i>
@@ -22,56 +21,51 @@
       <i class="el-icon-message"></i>
       <span slot="title">站内信</span>
     </el-menu-item>
-    <el-menu-item index="pv" v-if="userName==='Calabash'">
+    <el-menu-item index="pv" v-if="isAdmin">
       <i class="el-icon-bell"></i>
-      <span  slot="title">日志</span>
+      <span slot="title">日志</span>
     </el-menu-item>
-    <el-menu-item index="MaxeanoOnly" v-if="userName==='maxeano'">
+    <el-menu-item index="MaxeanoOnly" v-if="isMaxeano">
       <i class="el-icon-star-off"></i>
-      <span  slot="title">宝贝专属</span>
+      <span slot="title">猪猪专属</span>
     </el-menu-item>
     <el-menu-item :index="`/${userName}`" >
       <i class="el-icon-back"></i>
-      <span  slot="title">我的首页</span>
+      <span slot="title">我的首页</span>
     </el-menu-item>
     <el-menu-item index="/" >
       <i class="el-icon-back"></i>
-      <span  slot="title">网站首页</span>
+      <span slot="title">网站首页</span>
     </el-menu-item>
     <el-menu-item index="/" @click="_logout">
       <i class="el-icon-close"></i>
-      <span  slot="title">退出登录</span>
+      <span slot="title">退出登录</span>
     </el-menu-item>
   </el-menu>
 </template>
 
 <script type="text/ecmascript-6">
-import {mapMutations, mapActions, mapGetters} from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'ManageSideBar',
-  data () {
-    return {
-      isCollapse: window.innerWidth < 480
-    }
-  },
+  props: ['innerWidth'],
   computed: {
     ...mapGetters([
-      'userName'
-    ])
+      'userName',
+      'isMaxeano',
+      'isAdmin'
+    ]),
+    isCollapse() {
+      return this.innerWidth <= 480
+    },
   },
   methods: {
-    ...mapMutations([
-      'BACK_INDEX'
-    ]),
     ...mapActions([
       'logout'
     ]),
     _logout () {
-      this.logout({userName: this.userName})
+      this.logout({ userName: this.userName })
     },
-    handleResize () {
-      this.isCollapse = window.innerWidth < 480
-    }
   }
 }
 </script>

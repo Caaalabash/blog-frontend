@@ -1,17 +1,15 @@
 import api from '../service/apiManage'
 
 export function formatDate(){
-  let myDate = new Date();
+  const myDate = new Date();
   function gtTen(num){
     return num>9?num:'0'+num
   }
   return `${myDate.getFullYear()}${gtTen(myDate.getMonth()+1)}${gtTen(myDate.getDate())}${gtTen(myDate.getHours())}${gtTen(myDate.getMinutes())}${gtTen(myDate.getSeconds())}`
-
 }
+
 export function formatDateEng(value){
-  if(!value){
-    return
-  }
+  if(!value) return
   let year = value.substr(0,4),
     month = value.substr(4,2),
     day = value.substr(6,2)
@@ -33,25 +31,35 @@ export function formatDateEng(value){
   }
   return `${formatMonth(month)} ${day}, ${year}`
 }
-
-export async function pvData(arr){
-  let res = []
-  let ipArr = [...new Set(arr.reduce((acc,i)=>{
+// 接收一个数组, ip-time-request
+// 转换为一个对象
+// {
+//   ip,
+//   address: 根据阿里云api查询api地址
+//   list: [{ time, request }]
+// }
+export async function processPvData(arr) {
+  // 分离出所有IP并去重
+  const ipList = [...new Set(arr.reduce((acc,i) => {
     acc.push(i.split('-')[0])
     return acc
-  },[]))]
-  for(let n of ipArr){
-    let ipaddress = await api.getIpAddress({ip:n}),address=' '
-    if(ipaddress.code===0){
+  }, []))]
+  // 获取对应的地址
+  let res = []
+  for(let n of ipList){
+    let ipaddress = await api.getIpAddress({ ip: n }),
+      address=' '
+    if(ipaddress.code === 0){
       address = `${ipaddress.data.country}-${ipaddress.data.region}-${ipaddress.data.city}-${ipaddress.data.isp}`
     }
-    res.push({ip:n,list:[],address:address})
+    res.push({ ip:n, list:[], address:address })
   }
+  // 分离出所有请求
   for(let n of arr){
-    let [ip,date,path] = n.split('-')
+    let [ip, date, path] = n.split('-')
     for(let m of res){
-      if(m.ip===ip){
-        m.list.push({date,path})
+      if(m.ip === ip){
+        m.list.push({ date, path })
       }
     }
   }
