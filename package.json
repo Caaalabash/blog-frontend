@@ -48,5 +48,8 @@
   "bugs": {
     "url": "https://github.com/Caaalabash/vue-blog/issues"
   },
-  "homepage": "https://github.com/Caaalabash/vue-blog#readme"
+  "homepage": "https://github.com/Caaalabash/vue-blog#readme",
+  "resolutions": {
+    "ajv": "6.8.1"
+  }
 }
