@@ -49,12 +49,8 @@ export default{
     ]),
     async openDialog() {
       // token过期则需要重新登录
-      if (this.token) {
-        await this.checkStatus({userName: this.userName})
-        if (!this.loginStatus) this.showLoginDialog = true
-      } else {
-        this.showLoginDialog = true
-      }
+      if (this.token) await this.checkStatus({ userName: this.userName })
+      if (!this.loginStatus) this.showLoginDialog = true
     },
     closeDialog() {
       this.showLoginDialog && (this.showLoginDialog = false)

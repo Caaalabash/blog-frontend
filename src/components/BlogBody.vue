@@ -62,7 +62,7 @@ export default{
         this.$message.info('没有更多啦!')
         return false
       }
-      const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: this.pgN++, pgS: this.pgS })
+      const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: ++this.pgN, pgS: this.pgS })
       this.normalBlog = [...this.normalBlog, ...res.res]
       this.busy = (res.res.length < this.pgS)
     },

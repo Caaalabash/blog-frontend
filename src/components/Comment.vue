@@ -84,7 +84,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      likeList: 'lieList',
+      likeList: 'likeList',
       currentUser: 'userName'
     }),
     likeIt () {

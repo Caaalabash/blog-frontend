@@ -16,7 +16,7 @@ export const setUserInfo = function({ commit }, data) {
 }
 // 检查token状态
 export const checkStatus = function({ commit, state }, data) {
-  apiManage.checkStatus(data).then(res => {
+  return apiManage.checkStatus(data).then(res => {
     //未登录
     if(res.errno === 1) {
       commit(types.SET_LOGIN_STATUS, false)
