@@ -7,6 +7,7 @@ import touchDirective from './directives/touch'
 import resizeDirective from './directives/resize'
 import observerDirective from './directives/observer'
 import api from './service/apiManage'
+import './registerServiceWorker'
 import {
   Select,
   Option,

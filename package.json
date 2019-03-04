@@ -21,6 +21,7 @@
     "intersection-observer": "^0.5.0",
     "lodash": "^4.17.5",
     "qs": "^6.5.2",
+    "register-service-worker": "^1.5.2",
     "socket.io-client": "^2.1.1",
     "vue": "^2.5.17",
     "vue-echarts": "^3.0.7",
@@ -30,14 +31,13 @@
     "vuex-persistedstate": "^2.4.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.1",
-    "@vue/cli-plugin-pwa": "^3.0.1",
-    "@vue/cli-service": "^3.0.1",
     "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-pwa": "^3.4.1",
+    "@vue/cli-service": "^3.0.1",
     "babel-plugin-component": "^1.1.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "sw-precache-webpack-plugin": "^0.11.5",
     "vue-template-compiler": "^2.5.17"
   },
   "repository": {
