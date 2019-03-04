@@ -4,6 +4,13 @@ module.exports = {
   },
   productionSourceMap: false,
   pwa: {
+    iconPaths: {
+      favicon32: '/calabash32.png',
+      favicon16: '/calabash16.png',
+      appleTouchIcon: '/calabash160.png',
+      maskIcon: '/calabash16.png',
+      msTileImage: '/calabash144.png'
+    },
     workboxOptions: {
       // 用于缓存workbox使用的名称
       cacheId: 'calabash-blog',
