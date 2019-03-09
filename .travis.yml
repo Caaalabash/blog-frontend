@@ -14,7 +14,7 @@ before_install:
   -in id_rsa.enc -out ~/.ssh/id_rsa -d
 - chmod 600 ~/.ssh/id_rsa
 script:
-- npm run build --ossak=$PROD_OSS_AK --osssk=$PROD_OSS_SK
+- npm run build
 - scp -o StrictHostKeyChecking=no -r ./dist root@60.205.219.85:/alidata/www/blog/backup
 after_success:
 - ssh root@60.205.219.85 -o StrictHostKeyChecking=no '/mynode/vue-blog-ci/startup.sh'

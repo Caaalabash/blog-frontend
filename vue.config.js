@@ -17,13 +17,14 @@ module.exports = {
             importWorkboxFrom: 'disabled',
             swDest: 'service-worker.js',
             swSrc: path.join('./src', 'service-worker.js'),
-            dontCacheBustUrlsMatching: /\.\w{8}\./
+            dontCacheBustUrlsMatching: /\.\w{8}\./,
+            exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /index\.html/],
           }),
           new WebpackAliyunOssPlugin({
             region: 'oss-cn-beijing',
             bucket: 'calabash-static',
-            ak: process.env.ossak,
-            sk: process.env.osssk,
+            ak: process.env.PROD_OSS_AK,
+            sk: process.env.PROD_OSS_SK,
             filter: function (asset) {
               return !/(\.html|\.map)$/.test(asset)
             },
