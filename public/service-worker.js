@@ -16,20 +16,24 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 // 清除过期资源
 workbox.precaching.cleanupOutdatedCaches();
 // 指定APP SHELL
-workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./index.html"));
+workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./index.html") || "./index.html");
+
 // 缓存图片资源
 workbox.routing.registerRoute(
   new RegExp('^https://static.calabash.top/img'),
-  new workbox.strategies.StaleWhileRevalidate({
-    "cacheName":"calabash-blog-media",
-    plugins: [
-      new workbox.expiration.Plugin({
-        maxEntries: 60,
-        maxAgeSeconds: 864000,
-        purgeOnQuotaError: false
-      })
-    ]
-  }),
+  ({url, event}) => {
+    const webpURL = event.request.url += '?x-oss-process=style/webp'
+    return new workbox.strategies.StaleWhileRevalidate({
+      "cacheName":"calabash-blog-media",
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxEntries: 60,
+          maxAgeSeconds: 864000,
+          purgeOnQuotaError: false
+        })
+      ]
+    }).handle({request: webpURL})
+  },
   'GET'
 );
 // 缓存API请求
