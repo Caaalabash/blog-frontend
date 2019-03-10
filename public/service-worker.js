@@ -1,7 +1,8 @@
 // 从OSS上获取Workbox资源
 importScripts("https://static.calabash.top/workbox-v4.0.0/workbox-sw.js");
 workbox.setConfig({
-  modulePathPrefix: 'https://static.calabash.top/workbox-v4.0.0'
+  modulePathPrefix: 'https://static.calabash.top/workbox-v4.0.0',
+  // debug: true
 });
 
 // ServiceWorker跳过waiting生命周期并在激活后立即控制客户端

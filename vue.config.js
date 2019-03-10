@@ -16,8 +16,7 @@ module.exports = {
           new InjectManifest({
             importWorkboxFrom: 'disabled',
             swDest: 'service-worker.js',
-            swSrc: path.join('./src', 'service-worker.js'),
-            dontCacheBustUrlsMatching: /\.\w{8}\./,
+            swSrc: path.join('./public', 'service-worker.js'),
             exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /index\.html/],
           }),
           new WebpackAliyunOssPlugin({
