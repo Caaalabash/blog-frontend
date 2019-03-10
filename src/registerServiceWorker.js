@@ -2,7 +2,7 @@
 
 import { register } from 'register-service-worker'
 
-const baseURL = process.env.NODE_ENV === 'production' ? 'https://blog.calabash.top' : '/'
+const baseURL = process.env.NODE_ENV === 'production' ? 'https://blog.calabash.top' : location.origin
 
 register(`${baseURL}/service-worker.js`, {
   ready () {
