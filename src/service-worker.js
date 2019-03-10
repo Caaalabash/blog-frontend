@@ -18,7 +18,7 @@ workbox.precaching.cleanupOutdatedCaches();
 workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./index.html"));
 // 缓存图片资源
 workbox.routing.registerRoute(
-  /\.(?:png|svg|webp|jpg|jpeg|gif)$/,
+  /\.(?:png|svg|webp|jpg|jpeg|gif|json)$/,
   new workbox.strategies.StaleWhileRevalidate({
     "cacheName":"calabash-blog-media",
     plugins: [
