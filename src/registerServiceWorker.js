@@ -31,7 +31,7 @@ if ('serviceWorker' in navigator) {
         message: '有新的内容可用, 关闭后将自动更新',
         duration: 0,
         onClose: () => {
-          registration.waiting.postMessage({ data: 'skipWaiting' })
+          registration.waiting.postMessage('skipWaiting')
           refresh = true
         }
       })
