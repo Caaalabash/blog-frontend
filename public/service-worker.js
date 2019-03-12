@@ -22,7 +22,9 @@ workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./
 workbox.routing.registerRoute(
   new RegExp('^https://static.calabash.top/img'),
   ({url, event}) => {
-    const webpURL = event.request.url += '?x-oss-process=style/webp'
+    // 需要转换为webp的资源: accept字段中含有webp && 资源为jpg/png
+    const supportWebp = event.request.headers.has('accept') && event.request.headers.get('accept').includes('webp') && /\.jpg$|.png$/.test(event.request.url)
+    const request = supportWebp ? event.request.url += '?x-oss-process=style/webp' : event.request.url
     return new workbox.strategies.StaleWhileRevalidate({
       "cacheName":"calabash-blog-media",
       plugins: [
@@ -32,7 +34,7 @@ workbox.routing.registerRoute(
           purgeOnQuotaError: false
         })
       ]
-    }).handle({request: webpURL})
+    }).handle({ request })
   },
   'GET'
 );

@@ -17,7 +17,7 @@ module.exports = {
             importWorkboxFrom: 'disabled',
             swDest: 'service-worker.js',
             swSrc: path.join('./public', 'service-worker.js'),
-            exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /index\.html/],
+            exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /index\.html/, /^service-worker\.js$/],
           }),
           new WebpackAliyunOssPlugin({
             region: 'oss-cn-beijing',
