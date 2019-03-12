@@ -5,8 +5,9 @@ workbox.setConfig({
   // debug: true
 });
 
-// ServiceWorker跳过waiting生命周期并在激活后立即控制客户端
-workbox.core.skipWaiting();
+// ServiceWorker跳过waiting生命周期
+// workbox.core.skipWaiting();
+// activated后立即接管页面
 workbox.core.clientsClaim();
 
 // 加载预缓存资源
@@ -54,3 +55,8 @@ workbox.routing.registerRoute(
   }),
   'GET'
 );
+// new content avaliable
+self.addEventListener('message', e => {
+  if (!e.data) return
+  if (e.data === 'skipWaiting') self.skipWaiting()
+})
