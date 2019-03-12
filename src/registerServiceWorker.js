@@ -25,18 +25,15 @@ if ('serviceWorker' in navigator) {
     updated (registration) {
       console.log('New content is available; please refresh.')
       let refresh
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refresh) return
-        Notification({
-          title: '更新',
-          message: '有新的内容可用, 关闭后将自动更新',
-          duration: 0,
-          onClose: () => {
-            registration.waiting.postMessage({ data: 'skipWaiting' })
-            window.location.reload()
-            refresh = true
-          }
-        })
+      if (refresh) return
+      Notification({
+        title: '更新',
+        message: '有新的内容可用, 关闭后将自动更新',
+        duration: 0,
+        onClose: () => {
+          registration.waiting.postMessage({ data: 'skipWaiting' })
+          refresh = true
+        }
       })
     },
     offline () {
