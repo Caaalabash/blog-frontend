@@ -4,10 +4,12 @@ import apiManage from '../service/apiManage'
 // 登录
 export const login = function({ commit, state }, data) {
   apiManage.checkUser(data).then(res => {
-    commit(types.SET_USER, res.res)
-    commit(types.SET_LOGIN_STATUS, true)
-    commit(types.SET_TOKEN, res.token)
-    commit(types.REDIRECT_TO, `/${res.res.userName}/manage`)
+    if(res.errno === 0) {
+      commit(types.SET_USER, res.res)
+      commit(types.SET_LOGIN_STATUS, true)
+      commit(types.SET_TOKEN, res.token)
+      commit(types.REDIRECT_TO, `/${res.res.userName}/manage`)
+    }
   })
 }
 // 设置用户信息
