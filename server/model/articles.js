@@ -1,20 +1,20 @@
 const mongoose = require('mongoose')
 
 let articleSchema = new mongoose.Schema({
-  "blogTitle":String,
-  "blogDate":String,
-  "blogContent":String,
-  "blogType":String,
-  "likeCount":{
-    type:Number,
-    default:0
+  'blogTitle': String,
+  'blogDate': String,
+  'blogContent': String,
+  'blogType': String,
+  'likeCount': {
+    type: Number,
+    default: 0
   },
-  "comment":[{
-    "user":String,
-    "date":String,
-    "text":String
+  'comment':[{
+    'user': String,
+    'date': String,
+    'text': String
   }],
-  "author":String
+  'author': String
 })
 
-module.exports = mongoose.model('article',articleSchema)
+module.exports = mongoose.model('article', articleSchema)
