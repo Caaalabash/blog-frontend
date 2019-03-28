@@ -141,7 +141,6 @@ export default{
           if (this.idea.blogContent === '') {
             this.$message.error('文章内容不能为空')
           } else {
-            this.idea.blogDate = formatDate()
             this._send()
           }
         }
@@ -152,6 +151,7 @@ export default{
       if (this.blogDate) {
         await this.$api.changeIdea({ userName: this.users.userName, ...this.idea })
       } else {
+        this.idea.blogDate = formatDate()
         await this.$api.createNewIdea({ userName: this.users.userName, ...this.idea })
       }
       this.clearForm()
