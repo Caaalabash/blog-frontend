@@ -1,33 +1,49 @@
-// 从OSS上获取Workbox资源
+// get workbox from my OSS
 importScripts("https://static.calabash.top/workbox-v4.0.0/workbox-sw.js");
 workbox.setConfig({
   modulePathPrefix: 'https://static.calabash.top/workbox-v4.0.0',
   // debug: true
 });
 
-// ServiceWorker跳过waiting生命周期
-// workbox.core.skipWaiting();
-// activated后立即接管页面
+// Take over this tab after activated
 workbox.core.clientsClaim();
 
-// 加载预缓存资源
+// Set precache list
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-// 清除过期资源
+// Delete outdated cache
 workbox.precaching.cleanupOutdatedCaches();
-// 指定APP SHELL
-workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./index.html") || "./index.html");
-
-// 缓存图片资源
+//
+workbox.routing.registerRoute(
+  // Filter navigate request
+  ({event}) => event.request.mode === 'navigate',
+  // Cache App shell: index.html
+  ({url}) => {
+    return new workbox.strategies.NetworkFirst({
+      cacheName: 'calabash-blog-navigator',
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxEntries: 3,
+          maxAgeSeconds: 864000,
+          purgeOnQuotaError: false
+        })
+      ]
+    }).handle({ request: `${url.origin}/index.html` })
+  }
+)
+// Cache media
 workbox.routing.registerRoute(
   new RegExp('^https://static.calabash.top/img'),
   ({url, event}) => {
-    // 需要转换为webp的资源: accept字段中含有webp && 资源为jpg/png
-    const supportWebp = event.request.headers.has('accept') && event.request.headers.get('accept').includes('webp') && /\.jpg$|.png$/.test(event.request.url)
+    // Support webp?
+    const supportWebp = event.request.headers.has('accept') &&
+      event.request.headers.get('accept').includes('webp') &&
+      /\.jpg$|.png$/.test(event.request.url)
     const request = supportWebp ? event.request.url += '?x-oss-process=style/webp' : event.request.url
+
     return new workbox.strategies.StaleWhileRevalidate({
-      "cacheName":"calabash-blog-media",
+      cacheName: 'calabash-blog-media',
       plugins: [
         new workbox.expiration.Plugin({
           maxEntries: 60,
@@ -39,12 +55,12 @@ workbox.routing.registerRoute(
   },
   'GET'
 );
-// 缓存API请求
+// Cache API
 workbox.routing.registerRoute(
   /api/,
   new workbox.strategies.NetworkFirst({
-    "cacheName":"calabash-blog-api",
-    "networkTimeoutSeconds":7,
+    cacheName: 'calabash-blog-api',
+    networkTimeoutSeconds: 7,
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 10,
@@ -55,7 +71,7 @@ workbox.routing.registerRoute(
   }),
   'GET'
 );
-// new content avaliable
+// New content avaliable
 self.addEventListener('message', e => {
   if (!e.data) return
   if (e.data === 'skipWaiting') self.skipWaiting()
