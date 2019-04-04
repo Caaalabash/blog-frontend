@@ -32,7 +32,7 @@
       <el-button class="send" @click="send" :loading="showLoading" plain>发送</el-button>
     </div>
     <!--评论-->
-    <div class="section2">
+    <div class="section2" v-show="commentList.length">
       <div v-for="item in commentList" class="comment">
         <img class="avatar" :src="item.avatar || defaultAvatarBase64" alt="">
         <div class="comment-body">
@@ -121,10 +121,6 @@ export default {
       this.collectDialogVisible = false
     },
     like () {
-      if (this.user === this.currentUser) {
-        this.$message.error('不准给自己点赞:(')
-        return
-      }
       this.likethis({
         blogDate: this.blogDate,
         blogTitle:this.blogTitle,
@@ -165,13 +161,13 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import '../assets/style/index.less';
   .red{
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCI+PHBhdGggZmlsbD0iIzc0Q0E0NiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNOS4xMzEgMTYuMzU4di4wNDJsLS4wMzEtLjAyMS0uMDMxLjAyMXYtLjA0MmMtLjg3LS41ODktMTAuNDM1LTcuMjI2LTcuNTE3LTEyLjM0OC43NjMtMS4zNCAxLjgwMy0xLjcgMi42OS0xLjkxNiAyLjQ4LS42MDYgNC41OCAxLjkwOCA0Ljg1OCAyLjI1OS4yNzktLjM1MSAyLjM3Ny0yLjg2NSA0Ljg1OS0yLjI2Ljg4Ni4yMTcgMS45MjYuNTc4IDIuNjkgMS45MTdDMTkuNTY1IDkuMTMyIDEwIDE1Ljc2OSA5LjEzIDE2LjM1OHoiLz48L3N2Zz4K)!important;
   }
   .section0,.section1,.section2{
-    .fl-column;
-    background-color: @grayColor;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(247,247,247);
     padding:10px;
     margin: 10px 0;
   }
@@ -204,8 +200,8 @@ export default {
       height: 36px;
       width: 36px;
       margin: 10px;
-      border:1px solid @borderColor;
-      background-color: @grayColor;
+      border:1px solid #c9c9c9;
+      background-color: rgb(247,247,247);
       cursor:pointer;
       border-radius: 50%;
 
@@ -246,7 +242,8 @@ export default {
       }
     }
     .comment-body{
-      .fl-column;
+      display: flex;
+      flex-direction: column;
       align-content: space-around;
       width: 100%;
       padding: 10px;
@@ -259,10 +256,10 @@ export default {
       .time{
         align-self: flex-end;
         padding: 5px;
-        border: 1px solid @borderColor;
+        border: 1px solid #c9c9c9;
         border-radius: 15px;
-        background-color: @grayColor;
-        font-size: @timeFont;
+        background-color: rgb(247,247,247);
+        font-size: 12px;
       }
     }
   }

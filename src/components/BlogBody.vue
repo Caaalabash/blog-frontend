@@ -1,9 +1,9 @@
 <template>
   <div class="blog-list">
     <!-- 文章列表 -->
-    <ul class="list fl-column">
+    <ul class="list">
       <!-- 置顶文章 -->
-      <li v-for="n in stickyBlog" :key="n.blogDate">
+      <li class="list-item" v-for="n in stickyBlog" :key="n.blogDate">
         <span class="date">{{ n.blogDate | formatDateEng }}</span>
         <span class="title">
           <router-link :to="`articles/${n.blogDate}`" append>{{ n.blogTitle }}</router-link>
@@ -11,7 +11,7 @@
         <span class="sticky">[置顶]</span>
       </li>
       <!-- 普通文章 -->
-      <li v-for="n in normalBlog" :key="n.blogDate">
+      <li class="list-item" v-for="n in normalBlog" :key="n.blogDate">
         <span class="date">{{ n.blogDate | formatDateEng }}</span>
         <span class="title">
           <router-link :to="`articles/${n.blogDate}`" append>{{ n.blogTitle }}</router-link>
@@ -77,71 +77,81 @@ export default{
 </script>
 
 <style scoped lang="less">
-  @import "../assets/style/index.less";
-  .blog-list{
-    min-height:900px;
-    .list{
+  .blog-list {
+    .list {
+      display: flex;
+      flex-direction: column;
       list-style-type: none;
       padding-left: 0;
-      li {
-        position:relative;
-        .fl-row;
-        flex-basis: 56px;
-        align-content: center;
-        margin: 30px 0 30px;
-        border-bottom: 1px solid @indexBorderColor;
-
-        @media (max-width: 420px){
-          margin: 20px 10px 20px 10px;
-        }
-        &::before{
-          position:absolute;
-          content:'';
-          left:0;
-          bottom:0;
-          width: 100%;
-          height: 2px;
-          background-color: @indexFontColor;
-          transform-origin: 100% 0;
-          transform:scaleX(0);
-          transition: transform .5s;
-        }
-        &:hover::before{
-          transform-origin: 0 0;
-          transform:scaleX(1);
-        }
+    }
+    .list-item {
+      position: relative;
+      display: flex;
+      align-content: center;
+      margin: 30px 0;
+      border-bottom: 1px solid rgba(6, 8, 40, .08);
+      &::before {
+        position:absolute;
+        content:'';
+        left:0;
+        bottom:0;
+        width: 100%;
+        height: 2px;
+        background-color: #666;
+        transform-origin: 100% 0;
+        transform:scaleX(0);
+        transition: transform .5s;
       }
-    }
-    .date{
-      white-space: nowrap;
-      line-height: 56px;
-      font-size: @timeFont;
-      color: #999;
-    }
-    .title{
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      line-height: 56px;
-      margin-left: 30px;
-      font-size: 20px;
-      letter-spacing: 1px;
-      color: @indexDateColor;
-      @media (max-width: 420px){
-        font-size: 14px;
+      &:hover::before {
+        transform-origin: 0 0;
+        transform:scaleX(1);
       }
-    }
-    .sticky {
-      line-height: 56px;
-      margin-left: auto;
-      @media (max-width: 420px){
+      .date,
+      .title,
+      .sticky {
+        line-height: 56px;
+      }
+      .date {
+        margin-right: 30px;
         font-size: 14px;
+        color: #999;
+        flex-shrink: 0;
+      }
+      .title {
+        font-size: 20px;
+        letter-spacing: 1px;
+        color: #444;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .sticky {
+        margin-left: auto;
+        font-size: 14px;
+        flex-shrink: 0;
       }
     }
     .observer {
       min-height: 1px;
     }
   }
+  @media (max-width: 768px) {
+    .blog-list {
+      .list-item {
+        margin: 20px 0;
+        .date {
+          font-size: 12px;
+        }
+        .title {
+          font-size: 16px;
+        }
+        .sticky {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
 </style>
 
 

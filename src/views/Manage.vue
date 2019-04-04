@@ -33,7 +33,6 @@ export default{
 </script>
 
 <style scoped lang="less">
-  @import '../assets/style/index.less';
   .manage-container{
     display: flex;
     width: 100%;
@@ -42,7 +41,7 @@ export default{
   .manage-left{
     flex:0 0 64px;
     height: 100%;
-    border-right: 1px solid @borderColor;
+    border-right: 1px solid #c9c9c9;
   }
   .manage-right{
     flex:1 1 900px;

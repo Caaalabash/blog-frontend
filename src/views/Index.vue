@@ -1,13 +1,8 @@
 <template>
-  <main class="page-container">
-    <div class="index-container">
-      <!-- header组件 -->
-      <blog-index-header :user="user" :infoList="infoList" @openDialog="openDialog"></blog-index-header>
-      <!-- 文章列表部分 -->
-      <router-view></router-view>
-      <!-- 登陆弹窗部分 -->
-      <login-dialog :openLoginDialog="showLoginDialog" @closeDialog="closeDialog"></login-dialog>
-    </div>
+  <main class="index-layout">
+    <BlogHeader :user="user" :infoList="infoList" @open="openDialog" />
+    <router-view class="index-layout-content" />
+    <LoginDialog :visible="showLoginDialog" @close="closeDialog" />
   </main>
 </template>
 
@@ -16,13 +11,12 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 import BlogHeader from '../components/BlogHeader'
 import LoginDialog from '../components/LoginDialog'
 
-export default{
+export default {
   name: 'index',
-  // 来源为router动态参数
   props: ['user'],
   components: {
-    'blog-index-header': BlogHeader,
-    'login-dialog': LoginDialog
+    BlogHeader,
+    LoginDialog
   },
   data: () => ({
     infoList: {
@@ -48,12 +42,11 @@ export default{
       'setUserInfo'
     ]),
     async openDialog() {
-      // token过期则需要重新登录
       if (this.token) await this.checkStatus({ userName: this.userName })
-      else this.showLoginDialog = true
+      if (!this.loginStatus) this.showLoginDialog = true
     },
     closeDialog() {
-      this.showLoginDialog && (this.showLoginDialog = false)
+      this.showLoginDialog = false
     },
     getInfo() {
       this.$api.getUserInfo({ userName: this.user }).then(res => {
@@ -68,38 +61,19 @@ export default{
 }
 </script>
 
-<style lang="less" >
-  @import '../assets/style/index.less';
-  .page-container{
-    display: flex;
-    justify-content: center;
-    width: inherit;
-    height: inherit;
-
-    .index-container{
-      .fl-column;
-      flex:0 1 700px;
-      width: inherit;
-      height: inherit;
+<style lang="less">
+  .index-layout {
+    padding: 50px 30px 0;
+    &-content {
+      width: 700px;
+      margin: 0 auto;
     }
   }
-  /*用于假装遮罩层*/
-  .fake{
-    .fl-column;
-    align-items: center;
-    box-shadow: none;
-    background-color: transparent;
-    visibility: hidden;
-
-    .dialogSrc{
-      visibility: visible;
-      width: 40vw;
-
-      @media (max-width:950px){
-        width: 50vw;
-      }
-      @media (max-width:480px){
-        width:70vw;
+  @media (max-width: 768px) {
+    .index-layout {
+      padding: 50px 24px 0;
+      &-content {
+        width: 100%;
       }
     }
   }

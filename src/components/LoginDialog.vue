@@ -1,9 +1,7 @@
 <template>
-  <el-dialog :visible.sync="openLoginDialog"
-             width="50vmin"
-             :before-close="handleClose">
+  <el-dialog :visible.sync="visible" :before-close="handleClose">
 
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="tab">
       <el-tab-pane label="Login" name="login"></el-tab-pane>
       <el-tab-pane label="Register" name="Register"></el-tab-pane>
     </el-tabs>
@@ -30,13 +28,13 @@ import { mapActions } from 'vuex'
 export default{
   name: 'LoginDialog',
   props: {
-    openLoginDialog: {
+    visible: {
       type: Boolean,
       default: false
     }
   },
   data: () => ({
-    activeName: 'login',
+    tab: 'login',
     form: {
       userName: '',
       userPwd: ''
@@ -53,8 +51,11 @@ export default{
     }
   }),
   computed: {
+    isLogin() {
+      return this.tab === 'login'
+    },
     signIn () {
-      return this.activeName === 'login' ? 'LOG IN' : 'SIGN UP'
+      return this.isLogin ? 'LOG IN' : 'SIGN UP'
     }
   },
   methods: {
@@ -63,10 +64,10 @@ export default{
     ]),
     handleClose () {
       this.$refs['form'].resetFields()
-      this.$emit('closeDialog')
+      this.$emit('close')
     },
     async sendType () {
-      if (this.activeName === 'login') {
+      if (this.isLogin) {
         await this.login(this.form)
       } else {
         await this.$api.createUser(this.form)
@@ -81,5 +82,13 @@ export default{
   }
 }
 </script>
+
+<style scoped>
+  @media (max-width: 768px) {
+    /deep/ .el-dialog {
+      width: 70%;
+    }
+  }
+</style>
 
 

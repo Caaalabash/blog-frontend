@@ -177,7 +177,6 @@ export default{
 </script>
 
 <style scoped lang="less">
-  @import '../assets/style/index.less';
   /*针对el-upload的响应式css*/
   .upload-demo{
     /deep/ .el-upload-dragger{
@@ -190,11 +189,12 @@ export default{
   .form-container{
     width: 100%;
     .text #editor{
-      .fl-row;
+      display: flex;
+      flex-direction: row;
       min-height: 50vh;
 
       textarea {
-        border: 1px solid @borderColor;
+        border: 1px solid #c9c9c9;
         resize: none;
         outline: none;
       }
@@ -209,7 +209,7 @@ export default{
     }
     .text-content{
       padding: 15px;
-      background-color: @grayColor;
+      background-color: rgb(247,247,247);
     }
     @media (max-width: 600px) {
       .text-textarea,

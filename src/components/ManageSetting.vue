@@ -207,18 +207,16 @@ export default{
 </script>
 
 <style scoped lang="less">
-  @import '../assets/style/index.less';
-
   .margin-right{
     .el-upload--text{
-      border: 1px dashed @borderColor;
+      border: 1px dashed #c9c9c9;
       border-radius: 6px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
 
       &:hover{
-        border-color: @blueBorder;
+        border-color: #409EFF;
       }
     }
   }

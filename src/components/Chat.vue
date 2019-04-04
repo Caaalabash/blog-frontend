@@ -315,8 +315,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import '../assets/style/index.less';
-
   .chat-container{
     display: flex;
     justify-content: center;
@@ -474,7 +472,7 @@ export default {
         }
         .send{
           justify-content: flex-end;
-          font-size: @timeFont;
+          font-size: 12px;
           .send_btn{
             background-color: #3a8ee6;
             line-height: 27px;

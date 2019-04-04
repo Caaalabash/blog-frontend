@@ -130,7 +130,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import '../assets/style/index.less';
   /deep/ .el-dialog__body{
     padding-top: 0;
   }
@@ -153,7 +152,7 @@ export default {
       .list-item{
         justify-content: space-between;
         padding: 8px 0;
-        border-bottom: 1px solid @borderColor;
+        border-bottom: 1px solid #c9c9c9;
         .text{
           justify-content: space-between;
           .text-title{

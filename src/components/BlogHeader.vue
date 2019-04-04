@@ -1,9 +1,9 @@
 <template>
   <div class="blog-header">
     <!-- 用户名称 -->
-    <a class="name" :href="`/${user}`">{{ user }}</a>
+    <a class="blog-header-name" :href="`/${user}`">{{ user }}</a>
     <!-- 外部链接 -->
-    <div class="links">
+    <div class="blog-header-links">
       <a :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter">
         <img src="../assets/twitter.svg" alt="">
       </a>
@@ -41,7 +41,7 @@ export default{
   }),
   methods: {
     login () {
-      this.$emit('openDialog')
+      this.$emit('open')
     },
     prompt() {
       if (!this.prompt_fn) return
@@ -66,16 +66,15 @@ export default{
 }
 </script>
 
-<style scoped lang="less">
-  .blog-header{
-    margin-top: 50px;
+<style lang="less" scoped>
+  .blog-header {
     letter-spacing: 5px;
     text-align: center;
     font-weight: 400;
-    a {
+    &-name {
       cursor: pointer;
     }
-    .links{
+    &-links {
       margin-top: 20px;
       a {
         margin: 0 5px;
