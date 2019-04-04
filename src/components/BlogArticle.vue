@@ -23,8 +23,8 @@
       </Comment>
     </article>
     <!--翻页按钮-->
-    <a class="nav prev" @click.prevent="openOtherBlogs(idea.lastBlogDate)">&lt;&nbsp;上一篇</a>
-    <a class="nav next" @click.prevent="openOtherBlogs(idea.nextBlogDate)">下一篇&nbsp;&gt;</a>
+    <a class="nav prev" @click.prevent="openOtherBlogs(idea.lastBlogDate)"><i class="iconfont iconleft"></i>上一篇</a>
+    <a class="nav next" @click.prevent="openOtherBlogs(idea.nextBlogDate)">下一篇<i class="iconfont iconright"></i></a>
   </div>
 </template>
 
@@ -107,6 +107,8 @@ export default{
     }
     .nav {
       position: fixed;
+      display: inline-flex;
+      align-items: center;
       bottom: 20px;
       height: 20px;
       line-height: 20px;

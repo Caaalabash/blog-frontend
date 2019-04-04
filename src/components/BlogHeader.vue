@@ -4,21 +4,11 @@
     <a class="blog-header-name" :href="`/${user}`">{{ user }}</a>
     <!-- 外部链接 -->
     <div class="blog-header-links">
-      <a :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter">
-        <img src="../assets/twitter.svg" alt="">
-      </a>
-      <a :href="infoList.github " target="_blank" rel="noopener" aria-label="github">
-        <img src="../assets/github.svg" alt="">
-      </a>
-      <a :href="infoList.weibo" target="_blank"  rel="noopener" aria-label="weibo">
-        <img src="../assets/weibo.svg" alt="">
-      </a>
-      <a href="" @click.prevent="login" aria-label="login">
-        <img src="../assets/user.svg" alt="">
-      </a>
-      <a href="" @click.prevent="prompt" aria-label="prompt" v-if="prompt_fn">
-        <img src="../assets/plane.svg" alt="">
-      </a>
+      <a class="iconfont icontwitter-circle-fill" :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter"></a>
+      <a class="iconfont icongithub-fill" :href="infoList.github " target="_blank" rel="noopener" aria-label="github"></a>
+      <a class="iconfont iconweibo-circle-fill" :href="infoList.weibo" target="_blank"  rel="noopener" aria-label="weibo"></a>
+      <a class="iconfont iconlogin" href="" @click.prevent="login" aria-label="login"></a>
+      <a class="iconfont icongift" href="" @click.prevent="prompt" aria-label="prompt" v-if="prompt_fn"></a>
     </div>
   </div>
 </template>
@@ -76,12 +66,10 @@ export default{
     }
     &-links {
       margin-top: 20px;
-      a {
+      .iconfont {
+        font-size: 16px;
+        width: 16px;
         margin: 0 5px;
-      }
-      img {
-        width: 15px;
-        height: 15px;
       }
     }
   }
