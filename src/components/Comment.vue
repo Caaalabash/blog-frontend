@@ -6,7 +6,7 @@
         <el-badge class="mark" :value="likeCount" />
       </div>
       <div @click="collect" class="iconfont iconstar"></div>
-      <div @click="share" class="iconfont iconshare"></div>
+      <div @click="share" class="iconfont iconshare share"></div>
     </div>
     <!--移动端样式-->
     <div class="operate-mob">
@@ -14,7 +14,7 @@
         <el-badge class="mark" :value="likeCount" />
       </div>
       <div class="iconfont iconstar" @click="collect"></div>
-      <div class="iconfont iconshare" @click="share"></div>
+      <div class="iconfont iconshare share" @click="share"></div>
     </div>
     <!--评论区域-->
     <div class="comment-input">
@@ -94,9 +94,7 @@ export default {
     share () {
       const baseUrl = 'https://blog.calabash.top'
       const clipboard = new ClipboardJS('.share', {
-        text () {
-          return `${this.user}的文章 ${this.blogTitle} ${baseUrl + this.$route.fullPath}`
-        }
+        text: () => `${this.user}的文章 ${this.blogTitle} ${baseUrl + this.$route.fullPath}`
       })
       clipboard.on('success', e => {
         this.$message.success('已复制到粘贴板')

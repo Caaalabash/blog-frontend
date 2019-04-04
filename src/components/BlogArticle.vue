@@ -10,7 +10,7 @@
     <article class="article">
       <h1 class="title">{{ idea.blogTitle }}</h1>
       <h3 class="date" >{{ idea.blogDate | formatDateEng }}&nbsp;&nbsp;&nbsp;&nbsp;浏览次数:{{ idea.count }}次</h3>
-      <div class="markdown-body" v-html="compiledMarkdown" @click="scaleImg($event)"></div>
+      <div class="markdown-body" v-html="compiledMarkdown"></div>
       <!--评论区域-->
       <Comment
         :commentList="commentList"
