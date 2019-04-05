@@ -11,7 +11,7 @@
             @click="_getChatData(item)"
             v-if="item.to">
         </span>
-        <img src="../assets/add32.svg" alt="" class="avatar" @click="addChat">
+        <i class="avatar iconfont icon-adduser" @click="addChat"></i>
 
         <el-popover
           placement="top"
@@ -48,14 +48,13 @@
           <el-popover
             class="emoji-popover"
             placement="top"
-            :width="emojiBoxWidth"
             v-model="openEmoji">
            <div class="fl-row emojiBox">
              <i v-for="i in peopleEmoji" @click="addToMsg(i)">{{i}}</i>
            </div>
           </el-popover>
           <!--表情-->
-          <img src="../assets/smile16.svg" alt="" class="emoji" @click="openEmoji = !openEmoji">
+          <i class="emoji iconfont icon-smileface" @click="openEmoji = !openEmoji"></i>
           <!--用于上传的隐藏组件-->
           <el-upload
             id="upload"
@@ -66,13 +65,13 @@
             :before-upload="beforeAvatarUpload">
           </el-upload>
           <!--发送图片-->
-          <img src="../assets/picture.svg" alt="" class="pic_btn" @click="uploadProxy">
+          <i class="pic_btn iconfont icon-image" @click="uploadProxy"></i>
           <!--播放语音的代码哦-->
           <audio controls="controls" id="audio" style="display: none" :autoplay="autoplay">
             <source :src="src" type="audio/mp3">
           </audio>
           <!--发送语音-->
-          <img src="../assets/voice.svg" alt="" class="pic_btn" @click="startRecordVoice">
+          <i class="pic_btn iconfont icon-microphone" @click="startRecordVoice"></i>
         </div>
         <!--输入区域-->
         <div class="msg-editor fl-column">
@@ -109,7 +108,6 @@ export default {
       openEmoji:false,
       input1:'',
       peopleEmoji : '😄 😃 😀 😊 ☺ 😉 😍 😘 😚 😗 😙 😜 😝 😛 😳 😁 😔 😌 😒 😞 😣 😢 😂 😭 😪 😥 😰 😅 😓 😩 😫 😨 😱 😠 😡 😤 😖 😆 😋 😷 😎 😴 😵 😲 😟 😦 😧 😈 👿 😮 😬 😐 😕 😯 😶 😇 😏 😑 👲 👳 👮 👷 💂 👶 👦 👧 👨 👩 👴 👵 👱 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💀 👽 💩 🔥 ✨ 🌟 💫 💥 💢 💦 💧 💤 💨 👂 👀 👃 👅 👄 👍 👎 👌 👊 ✊ ✌ 👋 ✋ 👐 👆 👇 👉 👈 🙌 🙏 ☝ 👏 💪 🚶 🏃 💃 👫 👪 👬 👭 💏 💑 👯 🙆 🙅 💁 🙋 💆 💇 💅 👰 🙎 🙍 🙇 🎩 👑 👒 👟 👞 👡 👠 👢 👕 👔 👚 👗 🎽 👖 👘 👙 💼 👜 👝 👛 👓 🎀 🌂 💄 💛 💙 💜 💚 ❤ 💔 💗 💓 💕 💖 💞 💘'.split(' '),
-      emojiBoxWidth:window.innerWidth<767? 200:400,
       file:'',
       audio:'',
       isRecord:false,
@@ -337,8 +335,10 @@ export default {
         .avatar{
           height: 50px;
           width: 50px;
+          font-size: 50px;
           border-radius: 50%;
           cursor: pointer;
+          color: rgba(0, 0, 0, .5);
         }
         img:hover{
           background-color: rgb(235,235,235);
@@ -436,6 +436,7 @@ export default {
             position: absolute;
             left:0;
             top:-212px;
+            width: 400px;
             .emojiBox{
               flex-wrap: wrap;
               word-break: break-all;
@@ -448,15 +449,10 @@ export default {
             }
 
           }
-          .emoji{
-            width: 24px;
-            height: 24px;
+          .iconfont {
             margin: 0 5px;
-          }
-          .pic_btn{
-            width: 22px;
-            height: 22px;
-            margin: 0 5px;
+            font-size: 20px;
+            cursor: pointer;
           }
         }
         .msg-editor{
@@ -501,12 +497,13 @@ export default {
           .avatar{
             width: 35px;
             height: 35px;
+            font-size: 35px;
           }
         }
         .msg-body{
           .toolbar{
             .emoji-popover{
-              width: 240px;
+              width: 200px;
               top:-400px
             }
           }

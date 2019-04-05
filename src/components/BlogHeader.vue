@@ -4,11 +4,11 @@
     <a class="blog-header-name" :href="`/${user}`">{{ user }}</a>
     <!-- 外部链接 -->
     <div class="blog-header-links">
-      <a class="iconfont icontwitter-circle-fill" :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter"></a>
-      <a class="iconfont icongithub-fill" :href="infoList.github " target="_blank" rel="noopener" aria-label="github"></a>
-      <a class="iconfont iconweibo-circle-fill" :href="infoList.weibo" target="_blank"  rel="noopener" aria-label="weibo"></a>
-      <a class="iconfont iconlogin" href="" @click.prevent="login" aria-label="login"></a>
-      <a class="iconfont icongift" href="" @click.prevent="prompt" aria-label="prompt" v-if="prompt_fn"></a>
+      <a class="iconfont icon-twitter-fill" :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter"></a>
+      <a class="iconfont icon-github-fill" :href="infoList.github " target="_blank" rel="noopener" aria-label="github"></a>
+      <a class="iconfont icon-weibo-fill" :href="infoList.weibo" target="_blank"  rel="noopener" aria-label="weibo"></a>
+      <a class="iconfont icon-login" href="" @click.prevent="login" aria-label="login"></a>
+      <a class="iconfont icon-gift" href="" @click.prevent="prompt" aria-label="prompt" v-if="prompt_fn"></a>
     </div>
   </div>
 </template>

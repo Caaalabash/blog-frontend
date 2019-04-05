@@ -11,63 +11,75 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.iconsmile:before {
-  content: "\e783";
+.icon-avatar:before {
+  content: "\e642";
 }
 
-.iconadduser:before {
+.icon-smileface:before {
+  content: "\e681";
+}
+
+.icon-microphone:before {
+  content: "\e607";
+}
+
+.icon-adduser:before {
   content: "\e7ae";
 }
 
-.iconimage:before {
+.icon-image:before {
   content: "\e7de";
 }
 
-.iconheart:before {
+.icon-heart:before {
   content: "\e7df";
 }
 
-.iconstar:before {
+.icon-star:before {
   content: "\e7e0";
 }
 
-.iconshare:before {
+.icon-share:before {
   content: "\e7e7";
 }
 
-.iconright:before {
+.icon-right:before {
   content: "\e7eb";
 }
 
-.iconleft:before {
+.icon-left:before {
   content: "\e7ec";
 }
 
-.icongift:before {
+.icon-gift:before {
   content: "\e842";
 }
 
-.iconheart-fill:before {
+.icon-heart-fill:before {
   content: "\e849";
 }
 
-.iconstar-fill:before {
+.icon-lock-fill:before {
+  content: "\e86b";
+}
+
+.icon-star-fill:before {
   content: "\e86a";
 }
 
-.icongithub-fill:before {
+.icon-github-fill:before {
   content: "\e885";
 }
 
-.icontwitter-circle-fill:before {
+.icon-twitter-fill:before {
   content: "\e88a";
 }
 
-.iconweibo-circle-fill:before {
+.icon-weibo-fill:before {
   content: "\e88b";
 }
 
-.iconlogin:before {
+.icon-login:before {
   content: "\e8ef";
 }
 

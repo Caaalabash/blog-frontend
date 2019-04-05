@@ -23,8 +23,8 @@
       </Comment>
     </article>
     <!--翻页按钮-->
-    <a class="nav prev" @click.prevent="openOtherBlogs(idea.lastBlogDate)"><i class="iconfont iconleft"></i>上一篇</a>
-    <a class="nav next" @click.prevent="openOtherBlogs(idea.nextBlogDate)">下一篇<i class="iconfont iconright"></i></a>
+    <a class="nav prev" @click.prevent="openOtherBlogs(idea.lastBlogDate)"><i class="iconfont icon-left"></i>上一篇</a>
+    <a class="nav next" @click.prevent="openOtherBlogs(idea.nextBlogDate)">下一篇<i class="iconfont icon-right"></i></a>
   </div>
 </template>
 
