@@ -4,7 +4,7 @@ module.exports = app => {
   const { mongodb } = app.app_config
 
   if (!app.blog_extend) {
-    mongoose.connect(mongodb.url, { useNewUrlParser: true })
+    mongoose.connect(mongodb.url)
 
     mongoose.connection.on('connected', function() {
       console.log('mongodb连接成功')
