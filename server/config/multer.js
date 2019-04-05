@@ -1,7 +1,8 @@
 const multer = require('multer')
-const { upload } = require('./config')
 
 module.exports = app => {
+  const { upload } = app.app_config
+
   if (!app.blog_extend) {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {

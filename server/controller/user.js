@@ -1,6 +1,8 @@
 module.exports = app => {
   const { response, redisTool } = app.helper
   const { userModel } = app.model
+  const { alioss } = app.blog_extend
+  const { upload } = app.app_config
 
   return {
     // 注册
@@ -55,8 +57,12 @@ module.exports = app => {
     },
     // 图片上传
     async uploadPic(req, res) {
-      let path = `https://blog.calabash.top/${req.file.filename}`
-      return res.json(response(0, path, ''))
+      const uploadOss = await alioss.put(`/img/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
+      if (uploadOss.res.status === 200) {
+        const path = `https://static.calabash.top/img/${req.file.filename}`
+        return res.json(response(0, path, ''))
+      }
+      return res.json(response(1, '', '上传失败'))
     },
     //头像上传
     async uploadAvatar(req, res) {

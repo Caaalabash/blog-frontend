@@ -1,7 +1,8 @@
 const Redis = require('ioredis')
-const { redis, jwt } = require('./config')
 
 module.exports = app => {
+  const { redis, jwt } = app.app_config
+
   if (!app.blog_extend) {
     const blog_redis = new Redis({
       port: redis.port,
@@ -12,8 +13,8 @@ module.exports = app => {
       console.log('redis连接成功')
     })
 
-    blog_redis.on('error', function (error) {
-      console.log(error)
+    blog_redis.on('error', function () {
+      console.log('redis连接失败')
     })
     blog_redis.jwt_secret = jwt.secret
 
