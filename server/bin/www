@@ -5,7 +5,7 @@
 const app = require('../app')
 const debug = require('debug')('server:server')
 const http = require('http')
-const spdy = require('spdy')
+const http2 = require('http2')
 const fs = require('fs')
 
 const port = normalizePort(process.env.PORT || '3000')
@@ -16,10 +16,10 @@ let server
 if (process.env.NODE_ENV === 'production') {
   // dockerfile中设置了工作目录,因此这里路径使用 ./ 而不是 ../
   const options = {
-    key: fs.readFileSync('./ssl/214519498570301.key'),
-    cert: fs.readFileSync('./ssl/214519498570301.pem')
+    key: fs.readFileSync('./ssl/blog.key'),
+    cert: fs.readFileSync('./ssl/blog.pem')
   }
-  server = spdy.createServer(options, app).listen(port)
+  server = http2.createServer(options, app).listen(port)
 } else {
   server = http.createServer(app).listen(port)
 }
