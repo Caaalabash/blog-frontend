@@ -1,3 +1,12 @@
+/**
+ * 日志表结构
+ * method: 请求方法
+ * url: 请求路径
+ * status: 状态码
+ * responseTime: 响应时间
+ * contentLength: 内容长度
+ * timeStamp: 时间戳
+ */
 const mongoose = require('mongoose')
 
 let logSchema = new mongoose.Schema({

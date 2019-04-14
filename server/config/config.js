@@ -1,3 +1,13 @@
+/**
+ * 应用配置, 包括:
+ * 1. redis配置
+ * 2. 上传文件路径配置
+ * 3. mongodb配置
+ * 4. jwt配置
+ * 5. alioss配置
+ * 6. 当前环境
+ */
+
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {

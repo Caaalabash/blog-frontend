@@ -1,14 +1,13 @@
 module.exports = {
-  //允许跨域
+  // 允许跨域
   cors: (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With')
     res.header('Access-Control-Allow-Credentials','true')
 
     next()
   },
-  //记录ip
+  // 记录ip, 从x-forwarded-for头信息中获取
   collectIP: app => {
     const { redisTool } = app.helper
     const whiteList = [
@@ -17,17 +16,15 @@ module.exports = {
       '/userinfo'
     ]
     return async (req, res, next) => {
-      const ip = req.headers['x-forwarded-for'] || // 判断是否有反向代理 IP
-        req.connection.remoteAddress || // 判断 connection 的远程 IP
-        req.socket.remoteAddress || // 判断后端的 socket 的 IP
-        req.connection.socket.remoteAddress
+      const ip = req.headers['x-forwarded-for'] || ''
+
       if(!whiteList.includes(req.path) && ip.length) {
         redisTool.setIpLog(ip, req.url)
       }
       next()
     }
   },
-  //验证token
+  // 验证token
   validateToken: app => {
     const { redisTool, response } = app.helper
     const validToken = [
@@ -44,15 +41,17 @@ module.exports = {
     ]
     return async (req, res, next) => {
       if(validToken.includes(req.method + req.path)) {
-        let tok = req.headers['authorization'] || req.body.token || '',
-          userName = req.body.userName || req.headers['username'] || req.query.userName || ''
+        let tok = req.headers['authorization'] || req.body.token || ''
+        let userName = req.body.userName || req.headers['username'] || req.query.userName || ''
+        // 垃圾代码
         if(userName !== 'Calabash' && req.path === '/pv') {
           return res.json(response(1, '', '没有权限'))
         }
         if(req.path=== '/comment' || req.path === '/like') {
           userName = req.body.user
         }
-        let data = await redisTool.check(userName, tok)
+
+        const data = await redisTool.check(userName, tok)
         if (!data) return res.json(response(1, '', '凭证失效,请重新登录'))
         else next()
       } else {
