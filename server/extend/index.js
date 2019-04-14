@@ -12,26 +12,32 @@ const model = Symbol('model')
 const extend = Symbol('extend')
 const helper = Symbol('helper')
 
-module.exports = app => ({
-  ...app,
-  get app_config() {
-    if(!this[config]) this[config] = require('../config/config')
-
-    return this[config]
-  },
-  get model() {
-    if(!this[model]) this[model] = require('../model')
-
-    return this[model]
-  },
-  get blog_extend() {
-    if(!this[extend]) this[extend] = require('../config')(this)
-
-    return this[extend]
-  },
-  get helper() {
-    if(!this[helper]) this[helper] = require('../lib')(this)
-
-    return this[helper]
-  }
-})
+module.exports = app => {
+  Object.defineProperties(app, {
+    'app_config': {
+      get() {
+        if(!this[config]) this[config] = require('../config/config')
+        return this[config]
+      }
+    },
+    'model': {
+      get() {
+        if(!this[model]) this[model] = require('../model')
+        return this[model]
+      }
+    },
+    'blog_extend': {
+      get() {
+        if(!this[extend]) this[extend] = require('../config')(this)
+        return this[extend]
+      }
+    },
+    'helper': {
+      get() {
+        if(!this[helper]) this[helper] = require('../lib')(this)
+        return this[helper]
+      }
+    }
+  })
+  return app
+}
