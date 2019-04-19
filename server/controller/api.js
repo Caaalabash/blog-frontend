@@ -1,7 +1,9 @@
 module.exports = app => {
   const { blogModel, logModel } = app.model
   const { rsp, redisTool } = app.helper
-
+  /**
+   * @description 早期对MongoDB操作不熟悉. 暂未重构
+   */
   return {
     // 分析文章发布时间
     analyzeBlogDate(req, res) {

@@ -1,7 +1,9 @@
 module.exports = app => {
   const { chatModel } = app.model
   const { getUserProp, rsp } = app.helper
-
+  /**
+   * @description 早期对MongoDB操作不熟悉. 暂未重构
+   */
   return {
     //增加聊天对象
     async addChatObj(req, res) {

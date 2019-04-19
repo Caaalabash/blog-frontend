@@ -1,7 +1,9 @@
 module.exports = app => {
   const { userModel, blogModel } = app.model
   const { response, redisTool, filterSensitiveWord, getUserProp } = app.helper
-
+  /**
+   * @description 早期对MongoDB操作不熟悉. 暂未重构
+   */
   return {
     // 发布博客
     async createBlog(req, res){
