@@ -43,7 +43,7 @@ module.exports = app => {
       const resp = await userModel.findOne({ userName: req.query.userName }, { '_id': 0, 'userInfo': 1 })
       if (!resp) return res.json(response(1, '', ''))
 
-      return res.json(response(0, resp, ''))
+      return res.json(response(0, resp.userInfo, ''))
     },
     // 图片上传
     async uploadPic(req, res) {
