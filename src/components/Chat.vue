@@ -3,21 +3,16 @@
     <div class="fl-row tim">
       <!-- 聊天列表区域 -->
       <div class="msg-list my-scrollbar">
-        <img v-for="(item, index) in chatlist"
-             :key="index"  v-if="item.to"
-             :src="item.avatar ? item.avatar : '/calabash32.png'"
+        <img v-for="(chatUser, index) in chatList"
+             v-if="chatUser.to"
+             :key="index"
+             :src="chatUser.avatar || '/calabash32.png'"
              class="avatar"
-             @click="setCurrentChatUser(item)"
+             @click="setCurrentChatUser(chatUser)"
         >
         <i class="avatar iconfont icon-adduser" @click="toggleVisible"></i>
-
-        <el-popover
-          placement="top"
-          width="200"
-          v-model="addUserPopoverVisible">
-          <el-input  placeholder="添加聊天对象"
-                     suffix-icon="el-icon-search"
-                     v-model="newUserName"></el-input>
+        <el-popover placement="top" width="200" v-model="addUserPopoverVisible">
+          <el-input v-model="newUserName" placeholder="添加聊天对象" suffix-icon="el-icon-search"></el-input>
           <el-button type="primary" size="mini" @click="getChatObj" style="margin-top: 10px">确定</el-button>
         </el-popover>
       </div>
@@ -25,17 +20,17 @@
       <div class="fl-column msg-body">
         <!-- 聊天内容区域 -->
         <div class="msg-data fl-column my-scrollbar" id="chat-content">
-          <div v-for="(item,index) in message_filter" :key="index" class="msg-section">
+          <div v-for="(payload, index) in message_filter" :key="index" class="msg-section">
             <div class="time-container">
-              <span class="time" v-show="index%10===0">{{getTime(item.timeStamp)}}</span>
+              <span class="time" v-show="index % 10 === 0">{{ getTime(payload.timeStamp) }}</span>
             </div>
-            <div v-if="item.from === userName" class="fl-row right" >
-              <span class="msg-text" v-html="getHtml(item.content,true)" @click="play(item.content)"></span>
+            <div v-if="payload.from === userName" class="fl-row right" >
+              <span class="msg-text" v-html="getHtml(payload.content, true)" @click="play(payload.content)"></span>
               <img :src="avatar" alt="" class="msg-avatar">
             </div>
-            <div v-if="item.from === currentChatUser.to && item.to === userName" class="fl-row left">
-              <img :src="currentChatUser.avatar" alt="" class="msg-avatar">
-              <span class="msg-text" v-html="getHtml(item.content,false)" @click="play(item.content)"></span>
+            <div v-if="payload.from === currentChatUser.to && payload.to === userName" class="fl-row left">
+              <img :src="currentChatUser.avatar" class="msg-avatar">
+              <span class="msg-text" v-html="getHtml(payload.content, false)" @click="play(payload.content)"></span>
             </div>
           </div>
         </div>
@@ -103,7 +98,7 @@ Vue.use(new VueSocketIO({
 export default {
   name: 'Chat',
   data: () => ({
-    chatlist: [],
+    chatList: [],
     currentChatUser: {},
     msg: '',
     file: '',
@@ -150,8 +145,8 @@ export default {
   created() {
     this.$api.getChatList({ user: this.userName }).then(res => {
       if (res.errno === 0) {
-        this.chatlist = res.data
-        this.setCurrentChatUser(this.chatlist[0])
+        this.chatList = res.data
+        this.setCurrentChatUser(this.chatList[0])
       }
     })
   },
@@ -231,7 +226,7 @@ export default {
     async getChatObj() {
       const res = await this.$api.addChatObj({ user: this.newUserName })
       if (res.errno === 0) {
-        this.chatlist.push(res.data)
+        this.chatList.push(res.data)
         this.addUserPopoverVisible = false
       }
     },

@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json /app
 
-RUN npm install
+RUN yarn --registry=https://registry.npm.taobao.org
 
 ENV NODE_ENV production
 
