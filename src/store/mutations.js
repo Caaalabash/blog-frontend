@@ -23,7 +23,7 @@ const mutations = {
   [types.LOG_OUT](state) {
     const initState = state.initState()
     for (const key in initState) {
-      state[key] = initState[key];
+      state[key] = initState[key]
     }
   },
   // 设置喜欢列表
@@ -66,13 +66,12 @@ const mutations = {
   [types.SOCKET_CONNECT](state) {
     state.connect = true
   },
-  [types.SOCKET_SEND_MSG](state, data) {
+  [types.SOCKET_SENDMSG](state, data) {
     state.message.push(data)
   },
-  [types.SOCKET_RECVMSG](state,data) {
-    if(data[0].from !== state.users.userName) {
-      state.message.push(data[0])
-    }
+  [types.SOCKET_RECVMSG](state, data) {
+    if (data.from === state.users.userName) return
+    state.message.push(data)
   },
 }
 export default  mutations

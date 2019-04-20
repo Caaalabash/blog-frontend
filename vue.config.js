@@ -4,8 +4,23 @@ const WebpackAliyunOssPlugin = require('webpack-aliyun-oss-plugin')
 
 
 module.exports = {
+  /**
+   * @description 开发环境下代理
+   * 1. 将所有 /api 开头的请求转发到 API服务器
+   * 2. 将所有 /socket 开头的websocket请求转发到API服务器
+   */
   devServer: {
-    proxy: process.env.VUE_APP_SERVICE
+    proxy: {
+      '/api': {
+        target: process.env.VUE_APP_SERVICE,
+        changeOrigin: true,
+      },
+      '/socket': {
+        target: process.env.VUE_APP_SERVICE,
+        changeOrigin: true,
+        ws: true
+      }
+    }
   },
   publicPath: process.env.NODE_ENV === 'production' ? 'https://static.calabash.top/blog' : '/',
   productionSourceMap: false,

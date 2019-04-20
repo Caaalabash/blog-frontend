@@ -11,7 +11,9 @@ app.set('port', port)
 
 const server = http.createServer(app).listen(port)
 
-const io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+  path: '/socket'
+})
 app.io(io)
 
 server.on('error', onError)

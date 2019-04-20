@@ -62,8 +62,12 @@ export const setAvatar = function({ commit, state }, data){
   })
 }
 
-export const socket_sendMsg = function({ commit, state }, data) {
-  commit(types.SOCKET_SEND_MSG, data)
+export const socketRecvMsg = function({ commit, state }, data) {
+  commit(types.SOCKET_RECVMSG, data)
+}
+
+export const socketSendMsg = function({ commit, state }, data) {
+  commit(types.SOCKET_SENDMSG, data)
 }
 //获取当前聊天对象的聊天记录
 export const getChatData = function({ commit, state }, data) {

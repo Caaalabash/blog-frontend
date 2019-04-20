@@ -1,85 +1,83 @@
 <template>
   <div class="chat-container">
     <div class="fl-row tim">
-      <!--聊天列表区域-->
+      <!-- 聊天列表区域 -->
       <div class="msg-list my-scrollbar">
-        <span v-for="(item,index) in chatlist"
-             :key="index">
-          <img :src="item.avatar?item.avatar:'/calabash32.png'"
-            alt=""
-            class="avatar"
-            @click="_getChatData(item)"
-            v-if="item.to">
-        </span>
-        <i class="avatar iconfont icon-adduser" @click="addChat"></i>
+        <img v-for="(item, index) in chatlist"
+             :key="index"  v-if="item.to"
+             :src="item.avatar ? item.avatar : '/calabash32.png'"
+             class="avatar"
+             @click="setCurrentChatUser(item)"
+        >
+        <i class="avatar iconfont icon-adduser" @click="toggleVisible"></i>
 
         <el-popover
           placement="top"
           width="200"
-          v-model="visible">
+          v-model="addUserPopoverVisible">
           <el-input  placeholder="添加聊天对象"
                      suffix-icon="el-icon-search"
-                     v-model="input1"></el-input>
+                     v-model="newUserName"></el-input>
           <el-button type="primary" size="mini" @click="getChatObj" style="margin-top: 10px">确定</el-button>
         </el-popover>
       </div>
 
       <div class="fl-column msg-body">
-        <!--聊天内容区域-->
+        <!-- 聊天内容区域 -->
         <div class="msg-data fl-column my-scrollbar" id="chat-content">
           <div v-for="(item,index) in message_filter" :key="index" class="msg-section">
             <div class="time-container">
               <span class="time" v-show="index%10===0">{{getTime(item.timeStamp)}}</span>
             </div>
-            <div v-if="item.from ===userName" class="fl-row right" >
+            <div v-if="item.from === userName" class="fl-row right" >
               <span class="msg-text" v-html="getHtml(item.content,true)" @click="play(item.content)"></span>
               <img :src="avatar" alt="" class="msg-avatar">
             </div>
-            <div v-if="item.from === friend && item.to===userName" class="fl-row left">
-              <img :src="friendsAvatar" alt="" class="msg-avatar">
+            <div v-if="item.from === currentChatUser.to && item.to === userName" class="fl-row left">
+              <img :src="currentChatUser.avatar" alt="" class="msg-avatar">
               <span class="msg-text" v-html="getHtml(item.content,false)" @click="play(item.content)"></span>
             </div>
           </div>
         </div>
 
-        <!--工具栏-->
+        <!-- 工具栏 -->
         <div class="toolbar">
-          <!--popover-->
+          <!-- popover -->
           <el-popover
             class="emoji-popover"
             placement="top"
-            v-model="openEmoji">
+            v-model="emojiPopoverVisible">
            <div class="fl-row emojiBox">
-             <i v-for="i in peopleEmoji" @click="addToMsg(i)">{{i}}</i>
+             <i v-for="emoji in emojiList" @click="addEmoji(emoji)">{{ emoji }}</i>
            </div>
           </el-popover>
-          <!--表情-->
-          <i class="emoji iconfont icon-smileface" @click="openEmoji = !openEmoji"></i>
-          <!--用于上传的隐藏组件-->
+          <!-- 表情 -->
+          <i class="emoji iconfont icon-smileface" @click="emojiPopoverVisible = !emojiPopoverVisible"></i>
+          <!-- 用于上传的隐藏组件 -->
           <el-upload
             id="upload"
             style="display: none"
             action="/files"
             ref="upload"
-            :httpRequest="upload"
+            :httpRequest="sendPicture"
             :before-upload="beforeAvatarUpload">
           </el-upload>
-          <!--发送图片-->
+          <!-- 发送图片 -->
           <i class="pic_btn iconfont icon-image" @click="uploadProxy"></i>
-          <!--播放语音的代码哦-->
+          <!-- 播放语音 -->
           <audio controls="controls" id="audio" style="display: none" :autoplay="autoplay">
             <source :src="src" type="audio/mp3">
           </audio>
-          <!--发送语音-->
+          <!-- 发送语音 -->
           <i class="pic_btn iconfont icon-microphone" @click="startRecordVoice"></i>
         </div>
-        <!--输入区域-->
+        <!-- 输入区域 -->
         <div class="msg-editor fl-column">
-          <textarea name="" id="" v-model="msg" @keyup.enter="send"></textarea>
+          <textarea v-model="msg" @keyup.enter="sendText"></textarea>
         </div>
-        <!--发送按钮-->
-        <div class="fl-row send">
-          <div class="send_btn" @click.enter="send">发送</div>
+        <!-- 发送按钮 -->
+        <div class="fl-row sendText">
+          <div class="send_btn" @click.enter="sendText">发送</div>
         </div>
       </div>
     </div>
@@ -92,141 +90,106 @@ import VueSocketIO from 'vue-socket.io'
 import store from '../store'
 import SocketIO  from 'socket.io-client'
 import { mapGetters, mapActions } from 'vuex'
-import { timestampToTime } from '../lib/lib'
+import { timestampToTime, EMOJI } from '../lib/lib'
 import { getRecordFile, startRecord, stopRecord } from '../lib/record'
 
 Vue.use(new VueSocketIO({
-  connection: SocketIO(process.env.VUE_APP_SOCKET, {}),
+  connection: SocketIO(process.env.VUE_APP_HOST, {
+    path: '/socket'
+  }),
   vuex: { store }
 }))
 
 export default {
-  name: "Chat",
-  data(){
-    return{
-      chatlist:[],
-      friendsAvatar:'',
-      friend:'',
-      msg:'',
-      visible:false,
-      openEmoji:false,
-      input1:'',
-      peopleEmoji : '😄 😃 😀 😊 ☺ 😉 😍 😘 😚 😗 😙 😜 😝 😛 😳 😁 😔 😌 😒 😞 😣 😢 😂 😭 😪 😥 😰 😅 😓 😩 😫 😨 😱 😠 😡 😤 😖 😆 😋 😷 😎 😴 😵 😲 😟 😦 😧 😈 👿 😮 😬 😐 😕 😯 😶 😇 😏 😑 👲 👳 👮 👷 💂 👶 👦 👧 👨 👩 👴 👵 👱 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💀 👽 💩 🔥 ✨ 🌟 💫 💥 💢 💦 💧 💤 💨 👂 👀 👃 👅 👄 👍 👎 👌 👊 ✊ ✌ 👋 ✋ 👐 👆 👇 👉 👈 🙌 🙏 ☝ 👏 💪 🚶 🏃 💃 👫 👪 👬 👭 💏 💑 👯 🙆 🙅 💁 🙋 💆 💇 💅 👰 🙎 🙍 🙇 🎩 👑 👒 👟 👞 👡 👠 👢 👕 👔 👚 👗 🎽 👖 👘 👙 💼 👜 👝 👛 👓 🎀 🌂 💄 💛 💙 💜 💚 ❤ 💔 💗 💓 💕 💖 💞 💘'.split(' '),
-      file:'',
-      audio:'',
-      isRecord:false,
-      src:'',
-      autoplay:false
-    }
-  },
-  computed:{
+  name: 'Chat',
+  data: () => ({
+    chatlist: [],
+    currentChatUser: {},
+    msg: '',
+    file: '',
+    audio: '',
+    newUserName: '',
+    src: '',
+    isRecord: false,
+    autoplay: false,
+    // UI
+    emojiList: EMOJI,
+    addUserPopoverVisible: false,
+    emojiPopoverVisible: false,
+  }),
+  computed: {
     ...mapGetters([
       'userName',
       'message',
       'avatar',
       'token'
     ]),
-    message_filter(){
-      return this.message.filter((item)=>{
-        return item.chatid === [this.userName,this.friend].sort().join('_')
-      })
+    chatid() {
+      return this.currentChatUser && ([this.currentChatUser.to, this.userName].sort().join('_'))
+    },
+    message_filter() {
+      return this.message.filter(item => item.chatid === this.chatid)
     }
   },
-  sockets:{
-    connect(){
+  sockets: {
+    connect() {
       console.log('socket connected')
     },
-    recvMsg(val){ }
+    recvMsg(data) {
+      this.socketRecvMsg(data)
+    }
   },
   watch:{
-    'message'(){
-      this.$nextTick(()=>{
-        let el = document.getElementById('chat-content')
+    message() {
+      this.$nextTick(() => {
+        const el = document.getElementById('chat-content')
         el.scrollTop = el.scrollHeight
       })
     }
   },
-  created(){
-    this.$api.getChatList({user:this.userName}).then(res=>{
-      if(res.errno===0){
+  created() {
+    this.$api.getChatList({ user: this.userName }).then(res => {
+      if (res.errno === 0) {
         this.chatlist = res.data
-        this._getChatData(this.chatlist[0])
+        this.setCurrentChatUser(this.chatlist[0])
       }
     })
   },
-  mounted(){
-    this.$socket.emit('connect','test参数'); //在这里触发connect事件
-    this.$socket.emit('online',this.userName)
+  mounted() {
+    this.$socket.emit('online', this.userName)
   },
   methods:{
     ...mapActions([
-      'socket_sendMsg',
+      'socketSendMsg',
+      'socketRecvMsg',
       'getChatData'
     ]),
-    emitMsg(content){
-      this.$socket.emit('sendMsg',{
-        from:this.userName,
-        to:this.friend,
-        timeStamp:new Date().getTime(),
-        content:content
-      })
-      this.socket_sendMsg({
-        from:this.userName,
-        to:this.friend,
-        content:content,
-        timeStamp:new Date().getTime(),
-        chatid:[this.friend,this.userName].sort().join('_')
-      })
+    emitMsg(content) {
+      const payload = {
+        from: this.userName,
+        to: this.currentChatUser.to,
+        timeStamp: new Date().getTime(),
+        content
+      }
+      this.$socket.emit('sendMsg', payload)
+      this.socketSendMsg({ chatid: this.chatid, ...payload })
+      this.msg = ''
+      this.file = ''
+      this.audio = ''
     },
-    send(){
-      if(this.msg===''){
-        this.$message.error('不能发送空消息')
+    sendText() {
+      if (!this.msg) {
+        this.$message.info('不能发送空消息')
         return
       }
-      if(this.friend===''){
-        this.$message.error('没有确定聊天对象')
+      if(!this.currentChatUser) {
+        this.$message.info('没有确定聊天对象')
         return
       }
       this.emitMsg(this.msg)
-      this.msg = ''
     },
-    _getChatData(item){
-      let chatid = [item.to,this.userName].sort().join('_')
-      this.getChatData({chatid})
-      this.friendsAvatar = item.avatar ? item.avatar : '/calabash32.png'
-      this.friend = item.to
-    },
-    addChat(){
-      this.visible = !this.visible
-    },
-    getChatObj(){
-      this.$api.addChatObj({user:this.input1}).then(res=>{
-        if(res.errno===0){
-          this.chatlist.push(res.data)
-          this.visible = false
-        }
-      })
-    },
-    getTime(timeStamp){
-      if(/\d+/.test(timeStamp)){
-        let [date,time] = timestampToTime(timeStamp).split(' ')
-        let today = new Date().toLocaleString('zh').split(' ')[0]
-        if(today === date){
-          return time
-        }
-        return `${date} ${time}`
-      }
-      return ''
-    },
-    addToMsg(i){
-      this.msg += i
-      this.openEmoji = false
-    },
-    uploadProxy(){
-      document.getElementById('upload').getElementsByTagName('input')[0].click()
-    },
-    upload () {
-      let formData = new FormData()
+    sendPicture() {
+      const formData = new FormData()
       formData.append('chat', this.file)
       this.$api.uploadChatPic(formData, {
         headers: {
@@ -236,14 +199,13 @@ export default {
         }
       }).then(res => {
         if (res.data) {
-          let content = `<img src="${res.data}" style="width:100%;height:100%" />`
+          const content = `<img src="${res.data}" style="width:100%;height:100%" />`
           this.emitMsg(content)
         }
-        this.file = ''
       })
     },
-    uploadAudio(){
-      let formData = new FormData()
+    sendVoice(){
+      const formData = new FormData()
       formData.append('audio', this.audio)
       this.$api.uploadVoiceMsg(formData, {
         headers: {
@@ -253,14 +215,42 @@ export default {
         }
       }).then(res => {
         if (res.data) {
-          let content =
-            `[media]${res.data}`
+          const content = `[media]${res.data}`
           this.emitMsg(content)
         }
-        this.audio = ''
       })
     },
-    beforeAvatarUpload (file) {
+    setCurrentChatUser(user) {
+      !user.avatar && (user.avatar = '/calabash32.png')
+      this.currentChatUser = user
+      this.getChatData({ chatid: this.chatid })
+    },
+    toggleVisible() {
+      this.addUserPopoverVisible = !this.addUserPopoverVisible
+    },
+    async getChatObj() {
+      const res = await this.$api.addChatObj({ user: this.newUserName })
+      if (res.errno === 0) {
+        this.chatlist.push(res.data)
+        this.addUserPopoverVisible = false
+      }
+    },
+    getTime(timeStamp) {
+      if (!/\d+/.test(timeStamp)) return ''
+      
+      const [date, time] = timestampToTime(timeStamp).split(' ')
+      const today = new Date().toLocaleString('zh').split(' ')[0]
+      if (today === date) return time
+      return `${date} ${time}`
+    },
+    addEmoji(emoji) {
+      this.msg += emoji
+      this.emojiPopoverVisible = false
+    },
+    uploadProxy() {
+      document.getElementById('upload').getElementsByTagName('input')[0].click()
+    },
+    beforeAvatarUpload(file) {
       const isImage = file.type.includes('image')
       const isLt4M = file.size / 1024 / 1024 < 4
       if (!isImage) {
@@ -274,39 +264,38 @@ export default {
       this.file = file
       return true
     },
-    startRecordVoice(){
-      if(!this.isRecord){
+    startRecordVoice() {
+      if (!this.isRecord) {
         this.isRecord = true
-        startRecord()
         this.$notify({
           title: '提示',
           message: '正在录音',
           duration: 1000
-        });
-      }else{
-        let _this = this
-        this.isRecord =false
+        })
+        startRecord()
+      } else {
+        this.isRecord = false
         this.$notify({
           title: '提示',
           message: '录音完毕',
           duration: 1000
         });
-        stopRecord(function(){
-          _this.audio = getRecordFile()
-          _this.uploadAudio()
-        });
+        stopRecord(() => {
+          this.audio = getRecordFile()
+          this.sendVoice()
+        })
       }
     },
-    getHtml(content,side){
+    getHtml(content, side) {
       return /\[media]/.test(content)
         ? side
           ? `<img src="https://blog.calabash.top/voice_right.svg">`
           : `<img src="https://blog.calabash.top/voice_left.svg">`
         : content
     },
-    play(src){
+    play(src) {
       this.autoplay = false
-      if(/\[media]/.test(src)){
+      if (/\[media]/.test(src)) {
         this.src = src.split(']')[1]
         document.getElementById('audio').load()
         this.autoplay = true
@@ -470,7 +459,7 @@ export default {
             width: 95%;
           }
         }
-        .send{
+        .sendText{
           justify-content: flex-end;
           font-size: 12px;
           .send_btn{
