@@ -7,7 +7,6 @@ module.exports = app => {
     async addChatObj(req, res) {
       const { user } = req.body
       const userAvatar = await getUserProp(user, 'avatar')
-      if (!userAvatar)  return res.json(rsp(1,'','没有该用户'))
 
       return res.json(rsp(0, { to: user, avatar: userAvatar }, ''))
     },

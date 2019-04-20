@@ -88,13 +88,17 @@
 
 <script>
 import Vue from 'vue'
-import VueSocketio from 'vue-socket.io'
+import VueSocketIO from 'vue-socket.io'
 import store from '../store'
-import socketio from 'socket.io-client'
-import {mapGetters,mapActions} from 'vuex'
-import {timestampToTime} from '../lib/lib'
-import {getRecordFile,startRecord,stopRecord} from '../lib/record'
-Vue.use(VueSocketio, socketio(process.env.VUE_APP_SOCKET), store)
+import SocketIO  from 'socket.io-client'
+import { mapGetters, mapActions } from 'vuex'
+import { timestampToTime } from '../lib/lib'
+import { getRecordFile, startRecord, stopRecord } from '../lib/record'
+
+Vue.use(new VueSocketIO({
+  connection: SocketIO(process.env.VUE_APP_SOCKET, {}),
+  vuex: { store }
+}))
 
 export default {
   name: "Chat",
