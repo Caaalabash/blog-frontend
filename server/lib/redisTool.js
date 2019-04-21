@@ -38,7 +38,7 @@ module.exports = app => {
     },
     // 记录ip
     async setIpLog(ip, path) {
-      const [key, time] = new Date().toLocaleString('zh', { hour12: false }).split(' ')
+      const [key, time] = new Date().toLocaleString('zh', { hour12: false }).replace(/\//g, '-').split(' ')
       const len = await redis.llen(key)
 
       if(len) {
