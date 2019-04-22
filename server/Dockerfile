@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json /app
 
-RUN yarn --registry=https://registry.npm.taobao.org
+RUN yarn --registry=https://registry.npm.taobao.org --prod
 
 ENV NODE_ENV=production NODE_ICU_DATA=/app/node_modules/full-icu
 

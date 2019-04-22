@@ -1,20 +1,42 @@
 language: node_js
+
 sudo: false
+
 os:
-- linux
+  - linux
+
+services:
+  - docker
+
 node_js:
-- '10'
+  - '10'
+
 notifications:
   email:
     on_failure: always
+
 addons:
   ssh_known_hosts: 60.205.219.85
+# 解密 SSH keys, 实现免密登录服务器
 before_install:
-- openssl aes-256-cbc -K $encrypted_a6ef41ff4c30_key -iv $encrypted_a6ef41ff4c30_iv
-  -in id_rsa.enc -out ~/.ssh/id_rsa -d
-- chmod 600 ~/.ssh/id_rsa
+  - openssl aes-256-cbc -K $encrypted_a6ef41ff4c30_key -iv $encrypted_a6ef41ff4c30_iv -in id_rsa.enc -out ~/.ssh/id_rsa -d
+  - chmod 600 ~/.ssh/id_rsa
+
 script:
-- npm run build
-- scp -o StrictHostKeyChecking=no -r ./dist root@60.205.219.85:/alidata/www/blog/backup
+  - npm run build
+# 登录DockerHub, 上传后端镜像, 执行服务器脚本
 after_success:
-- ssh root@60.205.219.85 -o StrictHostKeyChecking=no '/mynode/vue-blog-ci/startup.sh'
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  # 构建前端镜像 tag = 分支名 + 构建Id + FE
+  - docker build -t caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-FE .
+  # 构建后端镜像 tag = 分支名 + 构建Id + BE
+  - docker build -t caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-BE ./server
+  # 标记本地镜像
+  - docker tag vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-FE caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-FE
+  - docker tag vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-BE caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-BE
+  # 上传前端镜像
+  - docker push caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-FE
+  # 上传后端镜像
+  - docker push caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-BE
+  # 执行服务器脚本 传递构建Id
+  - ssh root@60.205.219.85 -o StrictHostKeyChecking=no "/mynode/vue-blog-ci/startup.sh $TRAVIS_BRANCH-$TRAVIS_BUILD_ID"

@@ -2,7 +2,7 @@ module.exports = app => {
   const { chatModel } = app.model
   const { getUserProp, rsp } = app.helper
   const { alioss } = app.blog_extend
-  const { ossPath } = app.app_config
+  const { ossPath, upload } = app.app_config
 
   return {
     // 增加聊天对象
@@ -46,7 +46,7 @@ module.exports = app => {
 
       return res.json(rsp(0, doc.slice(-50), ''))
     },
-    // 文件上传
+    // 图片上传
     async uploadPic(req, res) {
       const path = `${ossPath.host}/${ossPath.filePath}/${req.file.filename}`
       const uploadOss = await alioss.put(`${ossPath.filePath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
@@ -57,7 +57,7 @@ module.exports = app => {
     // 语音上传
     async uploadVoice(req, res) {
       const path = `${ossPath.host}/${ossPath.audioPath}/${req.file.filename}`
-      const uploadOss = await alioss.put(`${ossPath.audioPath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
+      const uploadOss = await alioss.put(`${ossPath.audioPath}/${req.file.filename}`, `${upload.audio}/${req.file.filename}`)
       if (uploadOss.res.status !== 200) return res.json(rsp(1, '', '上传失败'))
 
       return res.json(rsp(0, path, ''))

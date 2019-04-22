@@ -1,9 +1,15 @@
 version: "3"
 services:
+  frontend:
+    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-FE
+    container_name: blog-frontend
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /mynode/vue-blog-ci/ssl:/app/ssl
+      - /alidata/www/blog/img:/app/img
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-BE
     container_name: blog-backend
     ports:
       - 3000:3000
