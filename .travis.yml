@@ -24,6 +24,11 @@ before_install:
 
 script:
   - npm run build
+  # 设定服务器脚本的权限
+  - chmod 777 ./deploy/startup.sh
+  # 将deploy目录文件拷贝到服务器
+  - scp -o StrictHostKeyChecking=no -r -p ./deploy root@60.205.219.85:/mynode/vue-blog-ci/deploy
+  # 给start
 # 登录DockerHub, 上传后端镜像, 执行服务器脚本
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
@@ -39,4 +44,4 @@ after_success:
   # 上传后端镜像
   - docker push caaalabash/vue-blog:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID-BE
   # 执行服务器脚本 传递构建Id
-  - ssh root@60.205.219.85 -o StrictHostKeyChecking=no "/mynode/vue-blog-ci/startup.sh $TRAVIS_BRANCH-$TRAVIS_BUILD_ID"
+  - ssh root@60.205.219.85 -o StrictHostKeyChecking=no "/mynode/vue-blog-ci/deploy/startup.sh $TRAVIS_BRANCH-$TRAVIS_BUILD_ID"

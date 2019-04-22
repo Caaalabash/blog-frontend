@@ -1,0 +1,17 @@
+version: "3"
+services:
+  # Nginx 前端服务
+  frontend:
+    # 选择的镜像为 caaalabash/vue-blog + 环境变量 VUE_BLOG_TAG + FE后缀
+    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-FE
+    container_name: blog-frontend
+    # 与后端容器共享Network Namespace
+    network_mode: container:blog-backend
+    restart: unless-stopped
+    # 挂载 证书 / 图片文件目录
+    volumes:
+      - /mynode/vue-blog-ci/ssl:/app/ssl
+      - /alidata/www/blog/img:/app/img
+    # 前端服务依赖后端服务
+    depends_on:
+      - backend
