@@ -2,7 +2,7 @@ module.exports = app => {
   const { response, redisTool } = app.helper
   const { userModel } = app.model
   const { alioss } = app.blog_extend
-  const { upload } = app.app_config
+  const { upload, ossPath } = app.app_config
 
   return {
     // 注册
@@ -47,16 +47,19 @@ module.exports = app => {
     },
     // 图片上传
     async uploadPic(req, res) {
-      const path = `https://static.calabash.top/img/${req.file.filename}`
-      const uploadOss = await alioss.put(`/img/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
-      if (uploadOss.res.status === 200) return res.json(response(0, path, ''))
+      const path = `${ossPath.host}/${ossPath.filePath}/${req.file.filename}`
+      const uploadOss = await alioss.put(`${ossPath.filePath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
+      if (uploadOss.res.status !== 200) return res.json(response(1, '', '上传失败'))
 
-      return res.json(response(1, '', '上传失败'))
+      return res.json(response(0, path, ''))
     },
     // 头像上传
     async uploadAvatar(req, res) {
-      const path = `https://blog.calabash.top/${req.file.filename}`
+      const path = `${ossPath.host}/${ossPath.avatarPath}/${req.file.filename}`
       const userName = req.headers['username']
+      const uploadOss = await alioss.put(`${ossPath.avatarPath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
+      if (uploadOss.res.status !== 200) return res.json(response(1, '', '上传失败'))
+
       await userModel.updateOne({ userName }, { $set: { avatar: path }})
 
       return res.json(response(0, path, '设置成功'))

@@ -5,7 +5,8 @@
  * 3. mongodb配置
  * 4. jwt配置
  * 5. alioss配置
- * 6. 当前环境
+ * 6. OSS上传路径配置
+ * 7. 当前环境
  */
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -31,6 +32,12 @@ module.exports = {
     bucket: 'calabash-static',
     accessKeyId: isProd ? process.env.ALI_ID : '',
     accessKeySecret: isProd ? process.env.ALI_SECRET: ''
+  },
+  ossPath: {
+    host: 'https://static.calabash.top',
+    filePath: '/blog-media/file',
+    avatarPath: '/blog-media/avatar',
+    audioPath: '/blog-media/audio'
   },
   isProd
 }

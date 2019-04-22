@@ -1,6 +1,8 @@
 module.exports = app => {
   const { chatModel } = app.model
   const { getUserProp, rsp } = app.helper
+  const { alioss } = app.blog_extend
+  const { ossPath } = app.app_config
 
   return {
     // 增加聊天对象
@@ -45,13 +47,19 @@ module.exports = app => {
       return res.json(rsp(0, doc.slice(-50), ''))
     },
     // 文件上传
-    uploadPic(req, res) {
-      const path = `https://blog.calabash.top/${req.file.filename}`
+    async uploadPic(req, res) {
+      const path = `${ossPath.host}/${ossPath.filePath}/${req.file.filename}`
+      const uploadOss = await alioss.put(`${ossPath.filePath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
+      if (uploadOss.res.status !== 200) return res.json(rsp(1, '', '上传失败'))
+
       return res.json(rsp(0, path, ''))
     },
     // 语音上传
-    uploadVoice(req, res) {
-      const path = `https://blog.calabash.top/${req.file.filename}`
+    async uploadVoice(req, res) {
+      const path = `${ossPath.host}/${ossPath.audioPath}/${req.file.filename}`
+      const uploadOss = await alioss.put(`${ossPath.audioPath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
+      if (uploadOss.res.status !== 200) return res.json(rsp(1, '', '上传失败'))
+
       return res.json(rsp(0, path, ''))
     }
   }
