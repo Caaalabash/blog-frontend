@@ -14,3 +14,6 @@ docker-compose up -d
 # 运行前端服务
 # cd /mynode/vue-blog-ci/deploy
 # docker-compose up -d
+
+# 重启Nginx
+nginx -s reload
