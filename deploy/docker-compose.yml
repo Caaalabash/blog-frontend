@@ -1,3 +1,4 @@
+# 前端暂时不打包为镜像
 version: "3"
 services:
   # Nginx 前端服务
@@ -8,10 +9,6 @@ services:
     # 与后端容器共享Network Namespace
     network_mode: container:blog-backend
     restart: unless-stopped
-    # 挂载 证书 / 图片文件目录
+    # 挂载图片文件目录
     volumes:
-      - /mynode/vue-blog-ci/ssl:/app/ssl
       - /alidata/www/blog/img:/app/img
-    # 前端服务依赖后端服务
-    depends_on:
-      - backend

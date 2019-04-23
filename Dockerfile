@@ -7,5 +7,5 @@ WORKDIR /app
 COPY ["./dist/service-worker.js", "./dist/index.html", "./dist/manifest.json", "/app/dist/"]
 # 使用自定义的nginx.conf配置
 RUN rm /etc/nginx/conf.d/default.conf
-ADD default.conf /etc/nginx/conf.d
+ADD blog.conf /etc/nginx/conf.d
 

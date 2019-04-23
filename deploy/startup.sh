@@ -4,19 +4,13 @@
 echo $1
 export VUE_BLOG_TAG=$1
 
-# 拉取镜像
-docker pull caaalabash/vue-blog:$1-FE
-docker pull caaalabash/vue-blog:$1-BE
-
 # 删除旧容器
-if docker ps -a | grep -q vue-blog; then
-  docker rm -f vue-blog
-fi
+docker rm -f $(docker ps -a |  grep "blog"  | awk '{print $1}')
 
 # 首先运行后端服务
 cd /mynode/vue-blog-ci/deploy/server
 docker-compose up -d
 
 # 运行前端服务
-cd /mynode/vue-blog-ci/deploy
-docker-compose up -d
+# cd /mynode/vue-blog-ci/deploy
+# docker-compose up -d
