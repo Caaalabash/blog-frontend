@@ -1,0 +1,5 @@
+User-agent: Googlebot
+Allow: /Calabash/articles/
+
+User-agent: *
+Disallow: /

@@ -35,7 +35,7 @@ script:
   # 将nginx配置文件拷贝到nginx目录
   - scp -o StrictHostKeyChecking=no -p ./blog.conf root@60.205.219.85:/alidata/server/nginx/conf/vhosts
   # 将dist文件中的部分文件拷贝到指定目录
-  - scp -o StrictHostKeyChecking=no -p ./dist/index.html ./dist/service-worker.js ./dist/manifest.json root@60.205.219.85:/mynode/vue-blog-ci/dist
+  - scp -o StrictHostKeyChecking=no -p ./dist/robots.txt ./dist/index.html ./dist/service-worker.js ./dist/manifest.json root@60.205.219.85:/mynode/vue-blog-ci/dist
 # 登录DockerHub, 上传后端镜像, 执行服务器脚本
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"

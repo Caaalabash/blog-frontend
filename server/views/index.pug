@@ -1,0 +1,12 @@
+html
+  head
+    meta(charset="utf-8")
+    meta(name="description" content="前端技术博客")
+    meta(name="author" content=author)
+    title #{author}'s Blog
+  body
+    h1 #{author}'s Blog
+    ul
+      each article in articleList
+        li
+          a(href="/"+ author +"/articles/" + article.blogDate)= article.blogTitle
