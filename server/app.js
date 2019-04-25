@@ -28,7 +28,7 @@ app.use('/api/v3', monitorRouter(app))
 /**
  * 定时更新站点地图
  */
-schedule.scheduleJob('55 16 1 * * *', () => {
+schedule.scheduleJob('0 0 18 * * *', () => {
   app.helper.makeSiteMap()
 })
 module.exports = app
