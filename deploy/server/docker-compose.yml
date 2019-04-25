@@ -17,6 +17,7 @@ services:
       - /etc/localtime:/etc/localtime
       - /alidata/www/blog/img:/data/img
       - /alidata/www/blog/blob:/data/blob
+      - /mynode/vue-blog-ci/sitemap:/data/sitemap
     # 设定网络模式
     network_mode: bridge
     restart: unless-stopped

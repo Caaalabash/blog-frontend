@@ -1,6 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const schedule = require('node-schedule');
 
 const extend = require('./extend')
 const { log } = require('./middleware')
@@ -24,5 +25,10 @@ app.use('/robot', robotRouter(app))
 app.use('/api/v1', userRouter(app))
 app.use('/api/v2', chatRouter(app))
 app.use('/api/v3', monitorRouter(app))
-
+/**
+ * 定时更新站点地图
+ */
+schedule.scheduleJob('55 16 1 * * *', () => {
+  app.helper.makeSiteMap()
+})
 module.exports = app
