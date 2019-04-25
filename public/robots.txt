@@ -1,5 +1,10 @@
 User-agent: Googlebot
-Allow: /Calabash/articles/
+Allow: /
 
-User-agent: *
-Disallow: /
+User-agent: Baiduspider
+Allow: /
+
+User-agent: MSNBot
+Allow: /
+
+Sitemap: https://blog.calabash.top/sitemap.txt
