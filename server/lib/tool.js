@@ -17,7 +17,7 @@ const makeSiteMap = app => async () => {
   const path = '/data/sitemap/sitemap.txt'
   const string = data
     .map(({ blogDate }) => `https://blog.calabash.top/Calabash/articles/${blogDate}`)
-    .reduce((str, nextStr) => (str += nextStr + '\n'), '')
+    .reduce((str, nextStr) => (str += nextStr + '\n'), 'https://blog.calabash.top/Calabash\n')
 
   if (!fs.existsSync('/data/sitemap')) fs.mkdirSync('/data/sitemap')
   fs.writeFileSync(path, string)

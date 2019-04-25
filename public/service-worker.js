@@ -17,7 +17,10 @@ workbox.precaching.cleanupOutdatedCaches();
 //
 workbox.routing.registerRoute(
   // Filter navigate request
-  ({event}) => event.request.mode === 'navigate',
+  ({event}) => {
+    const isStaticFile = /\.\w+$/.test(event.request.url)
+    return event.request.mode === 'navigate' && !isStaticFile
+  },
   // Cache App shell: index.html
   ({url}) => {
     return new workbox.strategies.NetworkFirst({
