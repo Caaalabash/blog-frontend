@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 module.exports = app => {
-  const robotController = require('../controller/robot')(app)
+  const { robotController } = app.controller
 
   // 文章页爬虫
   router.get('/:userName/articles/:blogDate', robotController.renderArticle)

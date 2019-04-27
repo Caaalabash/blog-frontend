@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 module.exports = app => {
-  const apiController = require('../controller/api')(app)
+  const { apiController } = app.controller
 
   // 获取最近十天访问量
   router.post('/monitor', apiController.getLogByUrl)

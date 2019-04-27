@@ -1,7 +1,7 @@
 module.exports = app => {
   const { response, redisTool } = app.helper
   const { userModel } = app.model
-  const { alioss } = app.blog_extend
+  const { alioss } = app.plugin
   const { upload, ossPath } = app.app_config
 
   return {

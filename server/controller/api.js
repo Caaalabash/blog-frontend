@@ -1,12 +1,12 @@
 module.exports = app => {
-  const { blogModel, logModel } = app.model
+  const { articleModel, logModel } = app.model
   const { rsp, redisTool } = app.helper
   const ONE_DAY = 1000 * 60 * 60 * 24
 
   return {
     // 分析文章发布时间
     async analyzeBlogDate(req, res) {
-      const doc = await blogModel.find({ 'author': 'Calabash' }, { blogDate: 1, _id: 0 })
+      const doc = await articleModel.find({ 'author': 'Calabash' }, { blogDate: 1, _id: 0 })
       if (!doc) return res.json(rsp(1, '', '暂无文章'))
 
       const blogDateArr = doc.map(({ blogDate }) => blogDate.slice(8, 10))

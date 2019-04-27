@@ -4,9 +4,8 @@ const router = express.Router()
 const { cors, collectIP, validateToken } = require('../middleware')
 
 module.exports = app => {
-  const userController = require('../controller/user')(app)
-  const blogController = require('../controller/blog')(app)
-  const { multer } = app.blog_extend
+  const { blogController, userController } = app.controller
+  const { multer } = app.plugin
 
   // 允许跨域
   router.use(cors)

@@ -1,7 +1,7 @@
 module.exports = app => {
   const { chatModel } = app.model
   const { getUserProp, rsp } = app.helper
-  const { alioss } = app.blog_extend
+  const { alioss } = app.plugin
   const { ossPath, upload } = app.app_config
 
   return {

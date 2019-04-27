@@ -5,10 +5,10 @@ const logger = require('morgan')
 
 module.exports = {
   log: app => {
-    const api = require('../controller/api')(app)
+    const { apiController } = app.controller
     const dbStream = {
       write(line) {
-        api.insertLog(JSON.parse(line))
+        apiController.insertLog(JSON.parse(line))
       }
     }
     return logger(function(tokens, req, res) {

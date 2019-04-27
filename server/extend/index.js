@@ -1,41 +1,112 @@
-/**
- * 在实例化Express后拓展app, 在上面挂载如下属性:
- * 1. 挂载应用配置文件
- * 2. 挂载mongodb模型, 用于操作数据库
- * 3. 挂载各个服务的实例, 例如redis/mongodb/alioss/multer
- * 4. 挂载工具类方法(工具类方法可能会依赖1,2,3)
- *
- * 这样做的原因就是类似于egg.js, 避免在controller/service中到处require的不便
- */
-const config = Symbol('config')
-const model = Symbol('model')
-const extend = Symbol('extend')
-const helper = Symbol('helper')
+const requireContext = require('require-context')
 
+const config = Symbol('app_config')
+const model = Symbol('model')
+const plugin = Symbol('plugin')
+const helper = Symbol('helper')
+const controller = Symbol('controller')
+/**
+ * @description 参考webpack require.context语法
+ * @todo 目录层级都需要多添加 ../, 为该库的bug
+ */
+const modelContext = requireContext('../../model', false, /\.js$/)
+const pluginContext = requireContext('../../plugin', false, /\.js$/)
+const controllerContext = requireContext('../../controller', false, /\.js$/)
+const helperContext = requireContext('../../helper', false, /\.js$/)
+/**
+ * @description 应用配置
+ */
+const configObject = require('../config')
+/**
+ * @description 组装对象 { userModel, articleModel, logModel, chatModel }
+ */
+const modelObject = modelContext.keys().reduce((obj, filename) => {
+  const model =  modelContext(filename)
+  const key = model.modelName + 'Model'
+  obj[key] = model
+
+  return obj
+}, {})
+/**
+ * @description 获得插件对象
+ * @param {object} app 应用实例
+ * @return { alioss, mongodb, multer, redis }
+ */
+const getPluginObject = app => {
+  return pluginContext.keys().reduce((obj, filename) => {
+    const model = pluginContext(filename)
+    const key = filename.split('.')[0]
+    obj[key] = model(app)
+
+    return obj
+  }, {})
+}
+/**
+ * @description 获得所有工具函数
+ * @param {object} app 应用实例
+ * @return { rsp, response, redisTool, filterSensitiveWord }
+ */
+const getHelperObject = app => {
+  return helperContext.keys().reduce((obj, filename) => {
+    const model = helperContext(filename)
+    const util = typeof model === 'function' ? model(app) : model
+    obj = { ...obj, ...util }
+
+    return obj
+  })
+}
+/**
+ * @description 获得所有controller
+ * @param {object} app 应用实例
+ * @return { apiController, blogController, chatController, robotController, userController }
+ */
+const getControllerObject = app => {
+  return controllerContext.keys().reduce((obj, filename) => {
+    const key = filename.split('.')[0] + 'Controller'
+    const model = controllerContext(filename)
+    obj[key] = model(app)
+
+    return obj
+  }, {})
+}
+/**
+ * @description 在实例化 Express 后拓展 app
+ */
 module.exports = app => {
   Object.defineProperties(app, {
-    'app_config': {
-      get() {
-        if(!this[config]) this[config] = require('../config/config')
-        return this[config]
-      }
-    },
+    // 数据库模型
     'model': {
       get() {
-        if(!this[model]) this[model] = require('../model')
+        if (!this[model]) this[model] = modelObject
         return this[model]
       }
     },
-    'blog_extend': {
+    // 应用配置
+    'app_config': {
       get() {
-        if(!this[extend]) this[extend] = require('../config')(this)
-        return this[extend]
+        if (!this[config]) this[config] = configObject
+        return this[config]
       }
     },
+    // 应用插件: 依赖应用配置
+    'plugin': {
+      get() {
+        if (!this[plugin]) this[plugin] = getPluginObject(this)
+        return this[plugin]
+      }
+    },
+    // 应用工具函数: 依赖应用配置, 依赖应用插件
     'helper': {
       get() {
-        if(!this[helper]) this[helper] = require('../lib')(this)
+        if (!this[helper]) this[helper] = getHelperObject(this)
         return this[helper]
+      }
+    },
+    // 应用controller: 依赖工具函数, 依赖应用配置, 依赖应用插件
+    'controller': {
+      get() {
+        if (!this[controller]) this[controller] = getControllerObject(this)
+        return this[controller]
       }
     }
   })

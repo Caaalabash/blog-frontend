@@ -5,8 +5,8 @@ const _ = require('underscore')
 const { cors } = require('../middleware')
 
 module.exports = app => {
-  const chatController = require('../controller/chat')(app)
-  const { multer } = app.blog_extend
+  const { chatController } = app.controller
+  const { multer } = app.plugin
   const { chatModel } = app.model
 
   router.use(cors)
