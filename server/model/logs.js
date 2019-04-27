@@ -9,7 +9,7 @@
  */
 const mongoose = require('mongoose')
 
-let logSchema = new mongoose.Schema({
+const logSchema = new mongoose.Schema({
   method: {
     type: String,
     require: true

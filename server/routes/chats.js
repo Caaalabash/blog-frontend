@@ -5,22 +5,22 @@ const _ = require('underscore')
 const { cors } = require('../middleware')
 
 module.exports = app => {
+  const chatController = require('../controller/chat')(app)
   const { multer } = app.blog_extend
   const { chatModel } = app.model
-  const chatController = require('../controller/chat')(app)
 
   router.use(cors)
-
+  // 增加聊天对象
   router.post('/chatList', chatController.addChatObj)
-  //获取聊天列表(对象以及头像地址)
+  // 获取聊天列表(对象以及头像地址)
   router.get('/chatList', chatController.getChatList)
-  //获取与某一个人的聊天数据(最近五十条)
+  // 获取与某一个人的聊天数据(最近五十条)
   router.get('/chatData', chatController.getChatData)
-  //聊天图片上传
+  // 聊天图片上传
   router.post('/chatPic', multer.single('chat'), chatController.uploadPic)
-  //聊天语音上传
+  // 聊天语音上传
   router.post('/chatVoice', multer.single('audio'), chatController.uploadVoice)
-  //socket
+  // socket
   app.io = io => {
     io.on('connection', socket => {
 

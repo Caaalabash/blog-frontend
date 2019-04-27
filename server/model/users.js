@@ -13,7 +13,7 @@
  */
 const mongoose = require('mongoose')
 
-let userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   userName: String,
   userPwd: String,
   avatar: String,

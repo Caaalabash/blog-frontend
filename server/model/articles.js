@@ -10,7 +10,7 @@
  */
 const mongoose = require('mongoose')
 
-let articleSchema = new mongoose.Schema({
+const articleSchema = new mongoose.Schema({
   blogTitle: String,
   blogDate: String,
   blogContent: String,

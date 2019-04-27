@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = __dirname + '/CensorWords.txt'
 
-
 let data = fs.readFileSync(path, { encoding:'UTF-8' })
 let map = makeSensitiveMap(data.split('\n'))
 

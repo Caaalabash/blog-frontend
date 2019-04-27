@@ -9,7 +9,7 @@
  */
 const mongoose = require('mongoose')
 
-let chatSchema = new mongoose.Schema({
+const chatSchema = new mongoose.Schema({
   chatid: {
     type: String,
     require: true
