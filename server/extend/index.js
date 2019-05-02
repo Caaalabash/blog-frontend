@@ -53,7 +53,7 @@ const getHelperObject = app => {
     obj = { ...obj, ...util }
 
     return obj
-  })
+  }, {})
 }
 /**
  * @description 获得所有controller
