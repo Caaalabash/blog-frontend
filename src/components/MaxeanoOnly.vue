@@ -7,6 +7,7 @@
           </el-option>
           <el-option value="2" label="大写加句号"></el-option>
           <el-option value="3" label="去除空行 + 语句拼接"></el-option>
+          <el-option value="4" label="中英文换行"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="转换内容:">

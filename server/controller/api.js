@@ -64,6 +64,7 @@ module.exports = app => {
       const REMOVE_N = '1'
       const UPPERCASE = '2'
       const CONCAT = '3'
+      const splitEnglish = '4'
       let data = ''
       let deleteList = []
       // 去除/N
@@ -105,6 +106,14 @@ module.exports = app => {
             data += `\n${n}`
           }
         }
+      }
+      // 中英文换行
+      if (type === splitEnglish) {
+        data = list.map(row => {
+          // 不转换不包含中文的数据
+          if (!/[\u4e00-\u9fa5]/.test(row)) return row
+          return row.replace(/^([\u4e00-\u9fa5].*[\u4e00-\u9fa5])/g, '$1\n')
+        }).map(row => row.trim()).join('\n')
       }
       return res.json(rsp(0, { content: data, deleteList: deleteList.join('\n') }, ''))
     }
