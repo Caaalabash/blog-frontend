@@ -112,7 +112,7 @@ module.exports = app => {
         data = list.map(row => {
           // 不转换不包含中文的数据
           if (!/[\u4e00-\u9fa5]/.test(row)) return row
-          return row.replace(/^([\u4e00-\u9fa5].*[\u4e00-\u9fa5])/g, '$1\n')
+          return row.replace(/(.*[\u4e00-\u9fa5])/g, '$1\n')
         }).map(row => row.trim()).join('\n')
       }
       return res.json(rsp(0, { content: data, deleteList: deleteList.join('\n') }, ''))
