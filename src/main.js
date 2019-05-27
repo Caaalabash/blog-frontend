@@ -36,29 +36,31 @@ import {
   Message,
 } from 'element-ui'
 
-Vue.use(Pagination)
-Vue.use(Dialog)
-Vue.use(Menu)
-Vue.use(Submenu)
-Vue.use(MenuItem)
-Vue.use(Input)
-Vue.use(Radio)
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(Button)
-Vue.use(Table)
-Vue.use(TableColumn)
-Vue.use(DatePicker)
-Vue.use(Popover)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Tabs)
-Vue.use(TabPane)
-Vue.use(Icon)
-Vue.use(Upload)
-Vue.use(Badge)
-Vue.use(ColorPicker)
-Vue.use(Loading.directive)
+[
+  Pagination,
+  Dialog,
+  Menu,
+  Submenu,
+  MenuItem,
+  Input,
+  Radio,
+  Select,
+  Option,
+  Button,
+  Table,
+  TableColumn,
+  DatePicker,
+  Popover,
+  Form,
+  FormItem,
+  Tabs,
+  TabPane,
+  Icon,
+  Upload,
+  Badge,
+  ColorPicker,
+  Loading.directive
+].map(component => Vue.use(component))
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$message = Message
