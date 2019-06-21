@@ -20,7 +20,7 @@ module.exports = app => {
       },
       // 获得某个值
       getValue(key) {
-        return redis.get(key)
+        return redis.get(key) || 0
       },
       // 删除某个值
       deleteValue(key) {
