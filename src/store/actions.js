@@ -1,6 +1,15 @@
 import * as types from './mutation-type'
 import apiManage from '../service/apiManage'
 
+// 访问
+export const visit = function({ commit }) {
+  apiManage.visit().then(res => {
+    if (res.errno === 0) {
+      commit(types.SET_VIEW_COUNT, res.data)
+    }
+  })
+}
+
 // 登录
 export const login = function({ commit, state }, data) {
   apiManage.checkUser(data).then(res => {

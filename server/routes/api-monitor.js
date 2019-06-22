@@ -3,7 +3,8 @@ const router = express.Router()
 
 module.exports = app => {
   const { apiController } = app.controller
-
+  // 总访问记录
+  router.post('/visit', apiController.newVisitor)
   // 获取最近十天访问量
   router.post('/monitor', apiController.getLogByUrl)
   // 获取访问日志

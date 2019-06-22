@@ -5,6 +5,10 @@ class apiManage extends BaseModule {
   constructor() {
     super()
   }
+  // 访问
+  visit() {
+    return this.post('v3/visit')
+  }
   //注册
   createUser(obj) {
     return this.post('v1/register', obj)

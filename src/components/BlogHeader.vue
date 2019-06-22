@@ -1,7 +1,7 @@
 <template>
   <div class="blog-header">
     <!-- 用户名称 -->
-    <a class="blog-header-name" :href="`/${user}`">{{ user }}</a>
+    <a class="blog-header-name" :href="`/${user}`" :title="'总访问人数:' + viewCount">{{ user }}</a>
     <!-- 外部链接 -->
     <div class="blog-header-links">
       <a class="iconfont icon-twitter-fill" :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter"></a>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default{
   name: 'BlogHeader',
   props: {
@@ -29,6 +30,9 @@ export default{
   data: () => ({
     prompt_fn: null,
   }),
+  computed: {
+    ...mapState(['viewCount'])
+  },
   methods: {
     login () {
       this.$emit('open')

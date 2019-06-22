@@ -2,8 +2,18 @@ module.exports = app => {
   const { articleModel, logModel } = app.model
   const { rsp, redisTool } = app.helper
   const ONE_DAY = 1000 * 60 * 60 * 24
+  const TEN_MINUTES = 1000 * 60 * 10
+  const TOTAL_VIEW_COUNT = 'total_view_count'
 
   return {
+    // 新访问者
+    async newVisitor(req, res) {
+      const visitRecent = req.cookies['visit']
+      const viewCount = visitRecent ? await redisTool.getValue(TOTAL_VIEW_COUNT) : await redisTool.increment(TOTAL_VIEW_COUNT)
+
+      res.cookie('visit', 1, { maxAge: TEN_MINUTES })
+      return res.json(rsp(0, viewCount, ''))
+    },
     // 分析文章发布时间
     async analyzeBlogDate(req, res) {
       const doc = await articleModel.find({ 'author': 'Calabash' }, { blogDate: 1, _id: 0 })

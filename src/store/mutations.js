@@ -73,5 +73,8 @@ const mutations = {
     if (data.from === state.users.userName) return
     state.message.push(data)
   },
+  [types.SET_VIEW_COUNT](state, data) {
+    state.viewCount = data
+  }
 }
 export default  mutations

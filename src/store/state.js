@@ -10,6 +10,8 @@ const initState = {
   // 聊天
   connect: false,
   message: [],
+  // 访问次数
+  viewCount: 0
 }
 
 const state = {
