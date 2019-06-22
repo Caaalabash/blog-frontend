@@ -9,7 +9,7 @@ module.exports = app => {
     // 新访问者
     async newVisitor(req, res) {
       const visitRecent = req.cookies['visit']
-      const viewCount = visitRecent ? await redisTool.getValue(TOTAL_VIEW_COUNT) : await redisTool.increment(TOTAL_VIEW_COUNT)
+      const viewCount = visitRecent ? await redisTool.get(TOTAL_VIEW_COUNT) : await redisTool.incr(TOTAL_VIEW_COUNT)
 
       res.cookie('visit', 1, { maxAge: TEN_MINUTES })
       return res.json(rsp(0, viewCount, ''))

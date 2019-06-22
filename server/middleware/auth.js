@@ -51,7 +51,7 @@ module.exports = {
           userName = req.body.user
         }
 
-        const data = await redisTool.check(userName, tok)
+        const data = await redisTool.checkToken(userName, tok)
         if (!data) return res.json(response(1, '', '凭证失效,请重新登录'))
         else next()
       } else {

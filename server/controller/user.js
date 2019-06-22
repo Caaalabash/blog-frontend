@@ -19,13 +19,13 @@ module.exports = app => {
     async login(req, res) {
       const user = await userModel.findOne(req.body, { 'userPwd': 0, 'blogList': 0 })
       if (!user) return res.json(response(1, '', '用户名或密码错误'))
-      const tokenVal = await redisTool.sign(req.body.userName)
+      const tokenVal = await redisTool.signToken(req.body.userName)
 
       return res.json(response(0, user, '登录成功', tokenVal))
     },
     // 注销
     async logout(req, res) {
-      const result = await redisTool.deleteValue(req.body.userName)
+      const result = await redisTool.delete(req.body.userName)
       if (result === 1 || result === 0) return res.json(response(0, '', '注销成功'))
 
       return res.json(response(1, '', '凭证已过期'))

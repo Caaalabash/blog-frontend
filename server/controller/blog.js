@@ -24,7 +24,7 @@ module.exports = app => {
       const { blogDate } = req.params
       await Promise.all([
         articleModel.findOneAndRemove({ blogDate }),
-        redisTool.deleteValue(blogDate)
+        redisTool.delete(blogDate)
       ])
 
       return res.json(response(0, '', '删除成功'))
@@ -63,10 +63,10 @@ module.exports = app => {
       blog.lastBlogDate = last ? last.blogDate : NO_MORE
 
       if (!readSign || readSign !== blogDate) {
-        blog.count = await redisTool.increment(blogDate) || ''
+        blog.count = await redisTool.incr(blogDate) || ''
         res.cookie('Cal', blogDate, { maxAge: TEN_MINUTES })
       } else {
-        blog.count = await redisTool.getValue(blogDate)
+        blog.count = await redisTool.get(blogDate)
       }
 
       return res.json(response(0, blog, ''))

@@ -15,7 +15,7 @@
     "express-jwt": "^5.3.1",
     "express-unless": "^0.5.0",
     "full-icu": "^1.2.1",
-    "ioredis": "^3.2.2",
+    "ioredis": "^4.10.4",
     "jsonwebtoken": "^8.2.1",
     "marked": "^0.6.2",
     "mongoose": "^5.0.1",
