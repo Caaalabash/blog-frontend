@@ -92,12 +92,12 @@ export default {
       'likethis'
     ]),
     share () {
-      const baseUrl = 'https://blog.calabash.top'
+      const title = encodeURIComponent(this.blogTitle)
       const clipboard = new ClipboardJS('.share', {
-        text: () => `${this.user}的文章 ${this.blogTitle} ${baseUrl + this.$route.fullPath}`
+        text: () => `${this.user}'s blog: ${this.blogTitle} ${location.href}`
       })
       clipboard.on('success', e => {
-        this.$message.success('已复制到粘贴板')
+        window.open(`https://twitter.com/share?text=${title}&url=${location.href}`)
         e.clearSelection()
       })
     },
