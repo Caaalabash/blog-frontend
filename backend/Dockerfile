@@ -1,16 +1,16 @@
 FROM node:lts-alpine
 
-MAINTAINER Caaalabash
+LABEL maintainer=Caaalabash
 
 WORKDIR /app
 
 COPY package.json /app
 
-RUN yarn --prod
-
-ENV NODE_ENV=production NODE_ICU_DATA=/app/node_modules/full-icu
+RUN npm install --registry https://registry.npm.taobao.org
 
 COPY . /app
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
 

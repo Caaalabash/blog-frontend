@@ -18,6 +18,6 @@
 </script>
 
 <style lang="less">
-  @import './assets/style/iconfont.css';
-  @import './assets/style/index.less';
+  @import 'assets/style/iconfont.css';
+  @import 'assets/style/index.less';
 </style>

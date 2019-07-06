@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
-import vuex from '../store/index'
+import vuex from '../store'
 
 class BaseModule{
   constructor(){

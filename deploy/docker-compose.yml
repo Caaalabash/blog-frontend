@@ -1,26 +1,27 @@
 version: "3"
 services:
+  # Nginx 前端服务
+  frontend:
+    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-FE
+    container_name: blog-frontend
+    ports:
+      - 8888:800
+    restart: unless-stopped
   # Node 后端服务
   backend:
-    # 选择的镜像为 caaalabash/vue-blog + 环境变量 VUE_BLOG_TAG + BE后缀
     image: caaalabash/vue-blog:${VUE_BLOG_TAG}-BE
     container_name: blog-backend
-    # 暴露后端服务3000接口, 前端服务需要6000端口
     ports:
       - 3000:3000
-    # 挂载环境变量
     env_file:
       - /mynode/vue-blog-ci/vue-blog.env
-    # 挂载时间 / 图片 / 媒体文件目录
     volumes:
       - /etc/localtime:/etc/localtime
       - /alidata/www/blog/img:/data/img
       - /alidata/www/blog/blob:/data/blob
       - /mynode/vue-blog-ci/sitemap:/data/sitemap
-    # 设定网络模式
     network_mode: bridge
     restart: unless-stopped
-    # 链接数据库容器 以及 Redis容器
     external_links:
       - myMongoDB
       - myRedis

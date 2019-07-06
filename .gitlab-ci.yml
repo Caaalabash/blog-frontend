@@ -2,34 +2,36 @@ image: docker:stable
 
 services:
   - docker:dind
-  
+
 stages:
- - build
- - make_image
- - deploy
+  - build
+  - make_image
+  - deploy
+
+cache:
+  untracked: true
+  paths:
+    - backend/node_modules/
+    - frontend/node_modules/
+    - frontend/dist/
   
-  
-build:
+upload_to_oss:
   image: node:latest
   stage: build
-  cache:
-    untracked: true
-    paths:
-      - node_modules/
   script:
+    - cd frontend
     - npm install --registry https://registry.npm.taobao.org
     - npm run build
     
 make:
-  image: docker:stable
   stage: make_image
-  before_script:
-    - dockerd --registry-mirror https://g1qu6uyv.mirror.aliyuncs.com
-    - docker info
   script:
+    - docker info
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker build -t caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA ./server
-    - docker push caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA
+    - docker build -t caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-FE ./frontend
+    - docker build -t caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-BE ./backend
+    - docker push caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-BE
+    - docker push caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-FE
 
 deploy_test:
   image: caaalabash/alpine-ssh:latest
@@ -39,6 +41,7 @@ deploy_test:
     - chmod 0600 id_rsa_2048
     - eval $(ssh-agent)
     - ssh-add id_rsa_2048
-   
   script:
+    - scp -P 15678 deploy/* root@$DEPLOY_SERVER:/mynode/vue-blog-ci/deploy
+    - ssh -p 15678 root@$DEPLOY_SERVER "chmod 0777 /mynode/vue-blog-ci/deploy/startup.sh"
     - ssh -p 15678 root@$DEPLOY_SERVER "/mynode/vue-blog-ci/deploy/startup.sh $CI_COMMIT_SHORT_SHA"
