@@ -6,7 +6,7 @@
         <el-badge class="mark" :value="likeCount" />
       </div>
       <div @click="collect" class="iconfont icon-star"></div>
-      <div @click="share" class="iconfont icon-share share"></div>
+      <div class="iconfont icon-share share"></div>
     </div>
     <!--移动端样式-->
     <div class="operate-mob">
@@ -14,7 +14,7 @@
         <el-badge class="mark" :value="likeCount" />
       </div>
       <div class="iconfont icon-star" @click="collect"></div>
-      <div class="iconfont icon-share share" @click="share"></div>
+      <div class="iconfont icon-share share"></div>
     </div>
     <!--评论区域-->
     <div class="comment-input">
@@ -87,20 +87,20 @@ export default {
         : false
     }
   },
+  mounted() {
+    const clipboard = new ClipboardJS('.share', {
+      text: () => `${this.user}'s blog: ${this.blogTitle} ${location.href}`
+    })
+    clipboard.on('success', e => {
+      const title = encodeURIComponent(this.blogTitle)
+      window.open(`https://twitter.com/share?text=${title}&url=${location.href}`)
+      e.clearSelection()
+    })
+  },
   methods: {
     ...mapActions([
       'likethis'
     ]),
-    share () {
-      const title = encodeURIComponent(this.blogTitle)
-      const clipboard = new ClipboardJS('.share', {
-        text: () => `${this.user}'s blog: ${this.blogTitle} ${location.href}`
-      })
-      clipboard.on('success', e => {
-        window.open(`https://twitter.com/share?text=${title}&url=${location.href}`)
-        e.clearSelection()
-      })
-    },
     collect () {
       if (!this.currentUser) {
         this.$message.error('请登录:)')

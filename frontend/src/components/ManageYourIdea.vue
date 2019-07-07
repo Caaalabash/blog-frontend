@@ -40,7 +40,7 @@
         <div class="el-upload__tip" slot="tip">只能上传图片文件，且不超过4MB</div>
       </el-upload>
       <el-input placeholder="文件路径" v-model="imgPath" id="target">
-        <el-button slot="append" @click="copy" data-clipboard-target="#target" class="btn">复制</el-button>
+        <el-button slot="append" data-clipboard-target="#target" class="copy-btn">复制</el-button>
       </el-input>
     </el-dialog>
   </div>
@@ -83,14 +83,6 @@ export default{
       this.idea.blogTitle = ''
       this.idea.blogContent = ''
       this.idea.blogType = 'public'
-    },
-    // 复制
-    copy() {
-      const clipboard = new ClipboardJS('.btn')
-      clipboard.on('success', e => {
-        this.$message.success('已复制到粘贴板')
-        e.clearSelection()
-      })
     },
     // 文件上传
     upload() {
@@ -173,6 +165,13 @@ export default{
       this.idea = this.$route.params.idea
     }
   },
+  mounted() {
+    const clipboardInstance = new ClipboardJS('.copy-btn')
+    clipboardInstance.on('success', e => {
+      this.$message.success('已复制到粘贴板')
+      e.clearSelection()
+    })
+  }
 }
 </script>
 
