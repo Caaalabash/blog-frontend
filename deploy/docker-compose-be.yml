@@ -5,6 +5,7 @@ services:
     container_name: blog-backend
     ports:
       - 3000:3000
+      - 8888:800
     env_file:
       - /mynode/vue-blog-ci/vue-blog.env
     volumes:

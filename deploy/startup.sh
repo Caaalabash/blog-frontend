@@ -10,5 +10,5 @@ docker rm -f $(docker ps -a |  grep "blog"  | awk '{print $1}')
 docker rmi $(docker images |  grep "blog"  | awk '{print $3}')
 # 运行后端服务
 cd /mynode/vue-blog-ci/deploy
-docker-compose -f docker-compose-be.yml up
-docker-compose -f docker-compose-fe.yml up
+docker-compose -f docker-compose-be.yml up -d
+docker-compose -f docker-compose-fe.yml up -d
