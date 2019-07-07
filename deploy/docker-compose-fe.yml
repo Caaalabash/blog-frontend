@@ -4,4 +4,4 @@ services:
     image: caaalabash/vue-blog:${VUE_BLOG_TAG}-FE
     container_name: blog-frontend
     restart: unless-stopped
-    network_mode: container: blog-backend
+    network_mode: "container: blog-backend"
