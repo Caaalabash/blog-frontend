@@ -1,12 +1,18 @@
-# vue-blog [![Build Status](https://travis-ci.org/Caaalabash/vue-blog.svg?branch=publish)](https://travis-ci.org/Caaalabash/vue-blog)
+# vue-blog
 
 ## Start
 
 ````
 git clone https://github.com/Caaalabash/vue-blog.git
 
-npm install
+// 前端服务
+cd frontend
+npm install --registry https://registry.npm.taobao.org
+npm run local
 
+// 后端服务, 需保证mongodb以及redis的连接
+cd backend
+npm install --registry https://registry.npm.taobao.org
 npm run local
 ````
 
@@ -49,5 +55,4 @@ npm run local
 ## Lighthouse
 
 ![](https://blog.calabash.top/file-1540573358533.png)
-
 

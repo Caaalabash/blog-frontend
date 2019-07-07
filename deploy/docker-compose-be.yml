@@ -1,18 +1,11 @@
 version: "3"
 services:
-  # Nginx 前端服务
-  frontend:
-    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-FE
-    container_name: blog-frontend
-    ports:
-      - 8888:800
-    restart: unless-stopped
-  # Node 后端服务
   backend:
     image: caaalabash/vue-blog:${VUE_BLOG_TAG}-BE
     container_name: blog-backend
     ports:
       - 3000:3000
+      - 8888:800
     env_file:
       - /mynode/vue-blog-ci/vue-blog.env
     volumes:

@@ -14,7 +14,7 @@
     "build": "vue-cli-service build --mode production"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.18.1",
     "clipboard": "^2.0.1",
     "echarts": "^4.1.0",
     "element-ui": "^2.0.11",

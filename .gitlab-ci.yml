@@ -16,22 +16,26 @@ cache:
     - frontend/dist/
   
 upload_to_oss:
-  image: node:latest
+  image: node:lts-alpine
   stage: build
   script:
     - cd frontend
     - npm install --registry https://registry.npm.taobao.org
     - npm run build
-    
-make:
+
+make_fe:
   stage: make_image
   script:
-    - docker info
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker build -t caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-FE ./frontend
-    - docker build -t caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-BE ./backend
-    - docker push caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-BE
-    - docker push caaalabash/vue-blog:$CI_COMMIT_SHORT_SHA-FE
+    - docker build -t $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-FE ./frontend
+    - docker push $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-FE
+    
+make_be:
+  stage: make_image
+  script:
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - docker build -t $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-BE ./backend
+    - docker push $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-BE
 
 deploy_test:
   image: caaalabash/alpine-ssh:latest
