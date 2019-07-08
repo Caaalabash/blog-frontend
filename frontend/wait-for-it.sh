@@ -1,3 +1,8 @@
 #!/bin/sh
-while ! nc -v -z localhost 3000; echo "wait backend"; do sleep 3; done
+while ! nc -z -v localhost 3000
+do
+  echo "wait backend"
+  sleep 3
+done
+echo "done"
 nginx -g "daemon off;"
