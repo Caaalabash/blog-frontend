@@ -26,16 +26,16 @@ upload_to_oss:
 make_fe:
   stage: make_image
   script:
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker build -t $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-FE ./frontend
-    - docker push $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-FE
+    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
+    - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE ./frontend
+    - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
     
 make_be:
   stage: make_image
   script:
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker build -t $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-BE ./backend
-    - docker push $DOCKER_REPOSITORY:$CI_COMMIT_SHORT_SHA-BE
+    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
+    - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE ./backend
+    - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE
 
 deploy_test:
   image: caaalabash/alpine-ssh:latest

@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-BE
+    image: registry.cn-beijing.aliyuncs.com/calabash/blog:${VUE_BLOG_TAG}-BE
     container_name: blog-backend
     ports:
       - 3000:3000
@@ -19,7 +19,7 @@ services:
       - myMongoDB
       - myRedis
   frontend:
-    image: caaalabash/vue-blog:${VUE_BLOG_TAG}-FE
+    image: registry.cn-beijing.aliyuncs.com/calabash/blog:${VUE_BLOG_TAG}-FE
     container_name: blog-frontend
     restart: unless-stopped
     network_mode: "service:backend"
