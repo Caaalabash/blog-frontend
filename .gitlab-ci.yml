@@ -46,6 +46,6 @@ deploy_test:
     - eval $(ssh-agent)
     - ssh-add id_rsa_2048
   script:
-    - scp -P 15678 deploy/* root@$DEPLOY_SERVER:/mynode/vue-blog-ci/deploy
-    - ssh -p 15678 root@$DEPLOY_SERVER "chmod 0777 /mynode/vue-blog-ci/deploy/startup.sh"
-    - ssh -p 15678 root@$DEPLOY_SERVER "/mynode/vue-blog-ci/deploy/startup.sh $CI_COMMIT_SHORT_SHA"
+    - scp -P $SSH_PORT deploy/* root@$DEPLOY_SERVER:$SERVER_FOLDER/deploy
+    - ssh -p $SSH_PORT root@$DEPLOY_SERVER "chmod +x $SERVER_FOLDER/deploy/startup.sh"
+    - ssh -p $SSH_PORT root@$DEPLOY_SERVER "$SERVER_FOLDER/deploy/startup.sh $CI_COMMIT_SHORT_SHA"
