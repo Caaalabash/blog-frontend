@@ -1,11 +1,5 @@
 <template>
-  <div class="blog-content"
-       v-loading.fullscreen.lock="fullScreenLoading"
-       v-touch="{
-         left: () => openOtherBlogs(idea.lastBlogDate),
-         right: () => openOtherBlogs(idea.nextBlogDate)
-       }"
-  >
+  <div class="blog-content" v-loading.fullscreen.lock="fullScreenLoading">
     <!--文章内容区域-->
     <article class="article">
       <h1 class="title">{{ idea.blogTitle }}</h1>
@@ -39,7 +33,7 @@ export default{
   },
   data: () => ({
     commentList: [],
-    fullScreenLoading:false,
+    fullScreenLoading: false,
     idea: {},
   }),
   computed: {
@@ -85,7 +79,8 @@ export default{
 <style lang="less" scoped>
   .blog-content {
     position: relative;
-    padding-top: 20px;
+    padding: 20px 12px;
+    background-color: #fff;
     .article {
       position: relative;
       border-bottom: 1px solid #e6e6e6;
@@ -107,19 +102,21 @@ export default{
     }
     .nav {
       position: fixed;
+      bottom: 20px;
       display: inline-flex;
       align-items: center;
-      bottom: 20px;
-      height: 20px;
-      line-height: 20px;
-      color: #666;
+      height: 25px;
+      line-height: 25px;
+      color: #fff;
+      opacity: .7;
       text-decoration: none;
       cursor: pointer;
       letter-spacing: 1px;
-      border-bottom: 3px solid transparent;
+      border-bottom: 2px solid transparent;
+      transition: opacity .2s, border-bottom-color .5s;
       &:hover{
-        color: #333;
-        border-bottom-color: #333;
+        opacity: 1;
+        border-bottom-color: #fff;
       }
     }
     .prev {
@@ -136,6 +133,7 @@ export default{
         display: inline-block;
         margin-top: 10px;
         margin-bottom: 30px;
+        color: #333;
       }
       .next {
         float: right;

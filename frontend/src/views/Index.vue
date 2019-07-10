@@ -63,23 +63,23 @@ export default {
 
 <style lang="less">
   .index-layout {
-    padding: 50px 30px 0;
+    padding: 58px 0 20px;
+    background-color: rgb(82, 86, 89);
     &-content {
-      width: 700px;
+      box-sizing: border-box;
+      width: 748px;
+      min-height: 100vh;
       margin: 0 auto;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
     }
   }
   @media (max-width: 768px) {
     .index-layout {
-      padding: 50px 24px 0;
+      padding: 58px 10px 10px;
       &-content {
+        box-sizing: border-box;
         width: 100%;
       }
     }
   }
 </style>
-
-
-
-
-

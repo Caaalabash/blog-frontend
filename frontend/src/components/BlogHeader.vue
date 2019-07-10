@@ -1,7 +1,7 @@
 <template>
   <div class="blog-header">
     <!-- 用户名称 -->
-    <a class="blog-header-name" :href="`/${user}`" :title="'总访问人数:' + viewCount">{{ user }}</a>
+    <a class="blog-header-name" :href="`/${user}`" :title="'总访问人数:' + viewCount">{{ user }}'s Blog</a>
     <!-- 外部链接 -->
     <div class="blog-header-links">
       <a class="iconfont icon-twitter-fill" :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter"></a>
@@ -62,18 +62,36 @@ export default{
 
 <style lang="less" scoped>
   .blog-header {
-    letter-spacing: 5px;
-    text-align: center;
-    font-weight: 400;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 24px;
+    background-color: rgb(50, 54, 57);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    z-index: 9;
     &-name {
+      margin-right: auto;
+      font-size: 16px;
+      color: #fff;
       cursor: pointer;
     }
-    &-links {
-      margin-top: 20px;
+    .iconfont {
+      margin: 0 20px;
+      font-size: 24px;
+      color: #fff;
+    }
+  }
+  @media (max-width: 768px) {
+    .blog-header {
+      padding: 0 12px;
       .iconfont {
+        margin: 0 10px;
         font-size: 16px;
-        width: 16px;
-        margin: 0 5px;
       }
     }
   }

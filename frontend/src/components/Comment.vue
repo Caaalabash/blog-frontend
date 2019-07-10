@@ -158,10 +158,11 @@ export default {
     }
     .operate-pc {
       position: fixed;
+      right: 48px;
+      bottom: 50px;
       display: flex;
       flex-direction: column;
-      left: calc(50% - 400px);
-      top: 16rem;
+      z-index: 8;
       .iconfont {
         position: relative;
         height: 36px;
@@ -170,13 +171,15 @@ export default {
         line-height: 36px;
         font-size: 25px;
         text-align: center;
-        border: 1px solid #c9c9c9;
+        background-color: rgb(242, 242, 242);
+        color: rgba(97, 97, 97);
         cursor: pointer;
         border-radius: 50%;
-        color: rgba(0, 0, 0, .5);
+        box-shadow: rgba(0,0,0,.5) 0 1px 5px 0;
+        transition: background-color .5s, color .4s;
         &:hover {
-          color: #409EFF;
-          border-color: #409EFF;
+          color: rgb(66, 66, 66);
+          background-color: rgb(200, 200, 200);
         }
       }
       .icon-heart-fill {

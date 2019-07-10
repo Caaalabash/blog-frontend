@@ -1,17 +1,8 @@
 <template>
   <div class="blog-list">
     <!-- 文章列表 -->
-    <ul class="list">
-      <!-- 置顶文章 -->
-      <li class="list-item" v-for="n in stickyBlog" :key="n.blogDate">
-        <span class="date">{{ n.blogDate | formatDateEng }}</span>
-        <span class="title">
-          <router-link :to="`articles/${n.blogDate}`" append>{{ n.blogTitle }}</router-link>
-        </span>
-        <span class="sticky">[置顶]</span>
-      </li>
-      <!-- 普通文章 -->
-      <li class="list-item" v-for="n in normalBlog" :key="n.blogDate">
+    <ul class="list" v-for="page in pgN" :key="page">
+      <li class="list-item" v-for="n in getCurrentArticleList(page)" :key="n.blogDate">
         <span class="date">{{ n.blogDate | formatDateEng }}</span>
         <span class="title">
           <router-link :to="`articles/${n.blogDate}`" append>{{ n.blogTitle }}</router-link>
@@ -34,8 +25,7 @@ export default{
     pgN: 1,
     pgS: 8,
     stickyPgS: 3,
-    stickyBlog: [],
-    normalBlog: [],
+    blogList: [],
   }),
   watch: {
     user: 'initBlogList'
@@ -44,18 +34,18 @@ export default{
     formatDateEng
   },
   methods: {
-    initBlogList() {
-      this.$api.getIdeaList({ userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS }).then(res => {
-        this.stickyBlog = res.res
-      })
-      this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: 1, pgS: this.pgS }).then(res => {
-        if(res.res.length){
-          this.normalBlog = res.res
-        }
-        else{
-          this.$router.push('/Calabash')
-        }
-      })
+    getCurrentArticleList(page) {
+      return this.blogList.slice((page - 1) * this.pgS, page * this.pgS)
+    },
+    async initBlogList() {
+      const [stickyBlogResp, publicBlogResp] = await Promise.all([
+        this.$api.getIdeaList({ userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS }),
+        this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: 1, pgS: this.pgS })
+      ])
+      if (stickyBlogResp.res && publicBlogResp.res) {
+        this.blogList = this.blogList.concat(stickyBlogResp.res, publicBlogResp.res)
+      }
+      if (!this.blogList.length) this.$router.push('/Calabash')
     },
     async loadMore () {
       if (this.busy) {
@@ -63,7 +53,7 @@ export default{
         return false
       }
       const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: ++this.pgN, pgS: this.pgS })
-      this.normalBlog = [...this.normalBlog, ...res.res]
+      this.blogList = this.blogList.concat(res.res)
       this.busy = (res.res.length < this.pgS)
     },
     handleObserver(el, status) {
@@ -82,7 +72,12 @@ export default{
       display: flex;
       flex-direction: column;
       list-style-type: none;
-      padding-left: 0;
+      margin: 0;
+      padding: 20px 24px 0;
+      background-color: #fff;
+      &:not(:last-of-type) {
+        margin-bottom: 15px;
+      }
     }
     .list-item {
       position: relative;
