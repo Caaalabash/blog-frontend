@@ -1,7 +1,7 @@
 <template>
   <div class="blog-list">
     <!-- 文章列表 -->
-    <ul class="list" v-for="page in pgN" :key="page">
+    <ul class="list" v-for="page in pgN" :key="page" v-show="getCurrentArticleList(page).length">
       <li class="list-item" v-for="n in getCurrentArticleList(page)" :key="n.blogDate">
         <span class="date">{{ n.blogDate | formatDateEng }}</span>
         <span class="title">
@@ -74,8 +74,9 @@ export default{
       flex-direction: column;
       list-style-type: none;
       margin: 0;
-      padding: 20px 24px 0;
+      padding: 10px 24px 0;
       background-color: #fff;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       &:not(:last-of-type) {
         margin-bottom: 15px;
       }

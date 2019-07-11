@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-content" v-loading.fullscreen.lock="fullScreenLoading">
+  <div class="blog-content" v-loading="fullScreenLoading">
     <!--文章内容区域-->
     <article class="article">
       <h1 class="title">{{ idea.blogTitle }}</h1>
@@ -78,8 +78,10 @@ export default{
 
 <style lang="less" scoped>
   .blog-content {
+    box-sizing: border-box;
     position: relative;
     padding: 20px 12px;
+    min-height: calc(100vh - 82px);
     background-color: #fff;
     .article {
       position: relative;
@@ -142,6 +144,7 @@ export default{
   }
   @media (max-width: 768px) {
     .blog-content {
+      min-height: calc(100vh - 68px);
       padding-top: 20px;
       .article {
         .title {
