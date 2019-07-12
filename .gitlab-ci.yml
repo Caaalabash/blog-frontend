@@ -9,6 +9,7 @@ stages:
   - deploy
 
 cache:
+  key: "vue-blog"
   untracked: true
   paths:
     - backend/node_modules/
