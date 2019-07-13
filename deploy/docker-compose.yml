@@ -1,6 +1,6 @@
 version: "3"
 services:
-  backend:
+  blog_backend:
     image: registry.cn-beijing.aliyuncs.com/calabash/blog:${VUE_BLOG_TAG}-BE
     container_name: blog-backend
     ports:
@@ -17,8 +17,8 @@ services:
     external_links:
       - myMongoDB
       - myRedis
-  frontend:
+  blog_frontend:
     image: registry.cn-beijing.aliyuncs.com/calabash/blog:${VUE_BLOG_TAG}-FE
     container_name: blog-frontend
     restart: unless-stopped
-    network_mode: "service:backend"
+    network_mode: "service:blog_backend"
