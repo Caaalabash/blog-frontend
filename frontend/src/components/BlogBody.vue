@@ -58,7 +58,7 @@ export default{
       this.busy = (res.res.length < this.pgS)
     },
     handleObserver(el, status) {
-      status && this.loadMore()
+      this.blogList.length && status && this.loadMore()
     }
   },
   created () {
