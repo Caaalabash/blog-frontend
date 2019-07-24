@@ -48,7 +48,6 @@
 
 <script type="text/ecmascript-6">
 import ClipboardJS from 'clipboard'
-import { mapState } from 'vuex'
 import { formatDate } from '../lib/lib'
 import debounce from 'lodash/debounce'
 
@@ -72,7 +71,6 @@ export default{
     fileList: []
   }),
   computed: {
-    ...mapState(['token']),
     compiledMarkdown() {
       if (!marked || !this.idea.blogContent) return ''
       return marked(this.idea.blogContent, { sanitize: true })
@@ -91,7 +89,6 @@ export default{
       this.$api.upload(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': this.token,
           'userName': this.users.userName
         }
       }).then(res => {

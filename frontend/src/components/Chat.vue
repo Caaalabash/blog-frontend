@@ -117,7 +117,6 @@ export default {
       'userName',
       'message',
       'avatar',
-      'token'
     ]),
     chatid() {
       return this.currentChatUser && ([this.currentChatUser.to, this.userName].sort().join('_'))
@@ -189,7 +188,6 @@ export default {
       this.$api.uploadChatPic(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': this.token,
           'userName': this.userName
         }
       }).then(res => {
@@ -205,7 +203,6 @@ export default {
       this.$api.uploadVoiceMsg(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': this.token,
           'userName': this.userName
         }
       }).then(res => {

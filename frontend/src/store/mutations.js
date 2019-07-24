@@ -7,13 +7,6 @@ const mutations = {
     state.redirectTo = path
     router.push(path)
   },
-  // 登录相关
-  [types.SET_TOKEN](state, payload) {
-    state.token = payload
-  },
-  [types.SET_LOGIN_STATUS](state, payload) {
-    state.loginStatus = payload
-  },
   [types.SET_USER](state, data) {
     state.users = data
   },

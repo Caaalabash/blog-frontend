@@ -15,29 +15,16 @@ export const login = function({ commit, state }, data) {
   apiManage.checkUser(data).then(res => {
     if(res.errno === 0) {
       commit(types.SET_USER, res.res)
-      commit(types.SET_LOGIN_STATUS, true)
-      commit(types.SET_TOKEN, res.token)
       commit(types.REDIRECT_TO, `/${res.res.userName}/manage`)
     }
   })
 }
+
 // 设置用户信息
 export const setUserInfo = function({ commit }, data) {
   commit(types.SET_USER_INFO, data)
 }
-// 检查token状态
-export const checkStatus = function({ commit, state }, data) {
-  apiManage.checkStatus(data).then(res => {
-    //未登录
-    if(res.errno === 1) {
-      commit(types.SET_LOGIN_STATUS, false)
-      commit(types.SET_TOKEN, null)
-    } else {
-      commit(types.SET_LOGIN_STATUS, true)
-      commit(types.REDIRECT_TO, `/${data.userName}/manage`)
-    }
-  })
-}
+
 // 登出
 export const logout = function({ commit, state }, data) {
   apiManage.logout(data).then(res => {
@@ -61,7 +48,6 @@ export const setAvatar = function({ commit, state }, data){
   apiManage.setAvatar(data, {
     headers: {
       'Content-Type': 'multipart/form-data',
-      'Authorization': state.token,
       'userName': state.users.userName
     }
   }).then(res => {

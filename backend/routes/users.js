@@ -17,6 +17,8 @@ module.exports = app => {
   router.post('/login', userController.login)
   // 注销登陆
   router.post('/logout', userController.logout)
+  // 检查状态
+  router.post('/checkStatus', validateMiddleware, userController.checkStatus)
   // 修改个人信息
   router.put('/userinfo', validateMiddleware, userController.updateUserInfo)
   // 获取个人信息

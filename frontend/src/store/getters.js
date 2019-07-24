@@ -6,8 +6,6 @@ export const isMaxeano = state => state.users.userName === 'maxeano'
 
 export const isAdmin = state => state.users.userName === 'Calabash'
 
-export const loginStatus = state => state.loginStatus
-
 export const userInfo = state => {
   if(state.users.userInfo){
     return state.users.userInfo

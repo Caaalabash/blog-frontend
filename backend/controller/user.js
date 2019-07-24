@@ -24,6 +24,10 @@ module.exports = app => {
       req.session.isLogin = true
       return res.json(response(0, user, '登录成功'))
     },
+    // 检查token
+    checkStatus(req, res) {
+      return res.json(response(0, '', ''))
+    },
     // 注销
     async logout(req, res) {
       req.session.destroy(e => {

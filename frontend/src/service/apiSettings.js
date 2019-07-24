@@ -1,7 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
-import vuex from '../store'
 
 class BaseModule{
   constructor(){
@@ -16,9 +15,6 @@ class BaseModule{
     this.expireTime = 1500
     //请求拦截器
     this.$http.interceptors.request.use(config => {
-      if(vuex.state.token) {
-        config.headers['Authorization'] = vuex.state.token
-      }
       if(config.url === 'https://dm-81.data.aliyun.com/rest/160601/ip/getIpInfo.json') {
         config.headers['Authorization'] = 'APPCODE b62dc60dc06342848faf46fec2ce4293'
       }
