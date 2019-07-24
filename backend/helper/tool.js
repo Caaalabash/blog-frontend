@@ -8,12 +8,6 @@ module.exports = app => {
       return doc && doc[key] ? doc[key] : ''
     },
     // api v1
-    response: (errno = 0, res = '', msg = '', token = '') => {
-      return token
-        ? { errno, res, msg, token }
-        : { errno, res, msg }
-    },
-    // api v2
-    rsp: (errno, data, msg) => ({ errno, data, msg })
+    response: (errno = 0, res = '', msg = '') => ({ errno, res, msg }),
   }
 }

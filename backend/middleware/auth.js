@@ -25,37 +25,14 @@ module.exports = {
     }
   },
   // 验证token
-  validateToken: app => {
-    const { redisTool, response } = app.helper
-    const validToken = [
-      'PUT/userinfo', //修改用户信息
-      'POST/ideas',   //新增博文
-      'DELETE/ideas', //删除博文
-      'PUT/ideas',    //修改博文
-      'POST/checkStatus' ,//检查token
-      'POST/files', //上传图片
-      'GET/pv',
-      'POST/comment',
-      'POST/like',
-      'POST/avatar',
-    ]
-    return async (req, res, next) => {
-      if(validToken.includes(req.method + req.path)) {
-        let tok = req.headers['authorization'] || req.body.token || ''
-        let userName = req.body.userName || req.headers['username'] || req.query.userName || ''
-        // 垃圾代码
-        if(userName !== 'Calabash' && req.path === '/pv') {
-          return res.json(response(1, '', '没有权限'))
-        }
-        if(req.path=== '/comment' || req.path === '/like') {
-          userName = req.body.user
-        }
+  validate: app => {
+    const { response } = app.helper
 
-        const data = await redisTool.checkToken(userName, tok)
-        if (!data) return res.json(response(1, '', '凭证失效,请重新登录'))
-        else next()
-      } else {
+    return (req, res, next) => {
+      if (req.session.isLogin) {
         next()
+      } else {
+        return res.json(response(1, '', '凭证失效,请重新登录'))
       }
     }
   }

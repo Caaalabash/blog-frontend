@@ -1,6 +1,6 @@
 module.exports = app => {
   const { articleModel, logModel } = app.model
-  const { rsp, redisTool } = app.helper
+  const { response, redisTool } = app.helper
   const ONE_DAY = 1000 * 60 * 60 * 24
   const TEN_MINUTES = 1000 * 60 * 10
   const TOTAL_VIEW_COUNT = 'total_view_count'
@@ -12,12 +12,12 @@ module.exports = app => {
       const viewCount = visitRecent ? await redisTool.get(TOTAL_VIEW_COUNT) : await redisTool.incr(TOTAL_VIEW_COUNT)
 
       res.cookie('visit', 1, { maxAge: TEN_MINUTES })
-      return res.json(rsp(0, viewCount, ''))
+      return res.json(response(0, viewCount, ''))
     },
     // 分析文章发布时间
     async analyzeBlogDate(req, res) {
       const doc = await articleModel.find({ 'author': 'Calabash' }, { blogDate: 1, _id: 0 })
-      if (!doc) return res.json(rsp(1, '', '暂无文章'))
+      if (!doc) return res.json(response(1, '', '暂无文章'))
 
       const blogDateArr = doc.map(({ blogDate }) => blogDate.slice(8, 10))
       const timeMap = {}
@@ -29,7 +29,7 @@ module.exports = app => {
         return acc
       }, [])
 
-      return res.json(rsp(0, data, ''))
+      return res.json(response(0, data, ''))
     },
     // 最近十天访问量
     async getPvLog(req, res) {
@@ -49,7 +49,7 @@ module.exports = app => {
         data.push([...new Set(ipList)].length)
       }
 
-      return res.json(rsp(0, data.reverse(), ''))
+      return res.json(response(0, data.reverse(), ''))
     },
     // 记录接口数据到数据库
     async insertLog(obj) {
@@ -65,7 +65,7 @@ module.exports = app => {
       if (url === '/api/v1/idea') url = /\/api\/v1\/ideas\/\d{14}/
       const list = await logModel.find({ url }, { _id: 0, __v: 0 })
 
-      return res.json(rsp(0, list.slice(-50), ''))
+      return res.json(response(0, list.slice(-50), ''))
     },
     // 处理女朋友的正则需求
     async sendMyLove(req,res) {
@@ -125,7 +125,7 @@ module.exports = app => {
           return row.replace(/(.*[\u4e00-\u9fa5])/g, '$1\n')
         }).map(row => row.trim()).join('\n')
       }
-      return res.json(rsp(0, { content: data, deleteList: deleteList.join('\n') }, ''))
+      return res.json(response(0, { content: data, deleteList: deleteList.join('\n') }, ''))
     }
   }
 }

@@ -3,7 +3,7 @@
  * 1. redis配置
  * 2. 上传文件路径配置
  * 3. mongodb配置
- * 4. jwt配置
+ * 4. session secret
  * 5. alioss配置
  * 6. OSS上传路径配置
  * 7. 当前环境
@@ -24,9 +24,7 @@ module.exports = {
   mongodb: {
     url: isProd ? 'mongodb://myMongoDB:27017/blog' : 'mongodb://127.0.0.1:27017/blog'
   },
-  jwt: {
-    secret: isProd ? process.env.JWT_SECRET : 'Calabash_Blog'
-  },
+  sessionSecret: isProd ? process.env.JWT_SECRET : 'Calabash_Blog',
   alioss: {
     region: 'oss-cn-beijing',
     bucket: 'calabash-static',

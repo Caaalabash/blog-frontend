@@ -19,16 +19,16 @@ module.exports = app => {
     async login(req, res) {
       const user = await userModel.findOne(req.body, { 'userPwd': 0, 'blogList': 0 })
       if (!user) return res.json(response(1, '', '用户名或密码错误'))
-      const tokenVal = await redisTool.signToken(req.body.userName)
 
-      return res.json(response(0, user, '登录成功', tokenVal))
+      req.session.user = { _id: user._id, name: user.userName }
+      req.session.isLogin = true
+      return res.json(response(0, user, '登录成功'))
     },
     // 注销
     async logout(req, res) {
-      const result = await redisTool.delete(req.body.userName)
-      if (result === 1 || result === 0) return res.json(response(0, '', '注销成功'))
-
-      return res.json(response(1, '', '凭证已过期'))
+      req.session.destroy(e => {
+        return res.json(response(0, e, '注销成功'))
+      })
     },
     // 修改个人信息
     async updateUserInfo(req, res) {
@@ -133,10 +133,6 @@ module.exports = app => {
       })
 
       return res.json(response(0, '', '删除成功'))
-    },
-    // 检查token
-    checkStatus(req, res) {
-      return res.json(response(0, '', ''))
     },
   }
 }

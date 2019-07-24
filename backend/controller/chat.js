@@ -1,6 +1,6 @@
 module.exports = app => {
   const { chatModel } = app.model
-  const { getUserProp, rsp } = app.helper
+  const { getUserProp, response } = app.helper
   const { alioss } = app.plugin
   const { ossPath, upload } = app.app_config
 
@@ -10,7 +10,7 @@ module.exports = app => {
       const { user } = req.body
       const userAvatar = await getUserProp(user, 'avatar')
 
-      return res.json(rsp(0, { to: user, avatar: userAvatar }, ''))
+      return res.json(response(0, { to: user, avatar: userAvatar }, ''))
     },
     // 获取聊天列表
     async getChatList(req, res) {
@@ -37,30 +37,30 @@ module.exports = app => {
         return acc
       }, [])
 
-      return res.json(rsp(0, data, ''))
+      return res.json(response(0, data, ''))
     },
     // 最近50条聊天记录
     async getChatData(req, res) {
       const { chatid } = req.query
       const doc = await chatModel.find({ chatid }, { _id: 0, __v: 0 })
 
-      return res.json(rsp(0, doc.slice(-50), ''))
+      return res.json(response(0, doc.slice(-50), ''))
     },
     // 图片上传
     async uploadPic(req, res) {
       const path = `${ossPath.host}/${ossPath.filePath}/${req.file.filename}`
       const uploadOss = await alioss.put(`${ossPath.filePath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
-      if (uploadOss.res.status !== 200) return res.json(rsp(1, '', '上传失败'))
+      if (uploadOss.res.status !== 200) return res.json(response(1, '', '上传失败'))
 
-      return res.json(rsp(0, path, ''))
+      return res.json(response(0, path, ''))
     },
     // 语音上传
     async uploadVoice(req, res) {
       const path = `${ossPath.host}/${ossPath.audioPath}/${req.file.filename}`
       const uploadOss = await alioss.put(`${ossPath.audioPath}/${req.file.filename}`, `${upload.audio}/${req.file.filename}`)
-      if (uploadOss.res.status !== 200) return res.json(rsp(1, '', '上传失败'))
+      if (uploadOss.res.status !== 200) return res.json(response(1, '', '上传失败'))
 
-      return res.json(rsp(0, path, ''))
+      return res.json(response(0, path, ''))
     }
   }
 }

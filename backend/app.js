@@ -1,6 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const session = require('express-session')
 const schedule = require('node-schedule')
 
 const extend = require('./extend')
@@ -23,6 +24,16 @@ app.use(log(app))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(session({
+  name: 'calabash-token',
+  secret: app.app_config.sessionSecret,
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    secure: app.app_config.isProd,
+    maxAge: 3600 * 1000
+  },
+}))
 
 app.use('/robot', robotRouter(app))
 app.use('/api/v1', userRouter(app))

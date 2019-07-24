@@ -44,7 +44,7 @@ const getPluginObject = app => {
 /**
  * @description 获得所有工具函数
  * @param {object} app 应用实例
- * @return { rsp, response, redisTool, filterSensitiveWord }
+ * @return { response, redisTool, filterSensitiveWord }
  */
 const getHelperObject = app => {
   return helperContext.keys().reduce((obj, filename) => {
