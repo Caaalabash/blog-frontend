@@ -19,7 +19,7 @@ const app = extend(express())
 
 app.set('views', './views')
 app.set('view engine', 'pug')
-app.set('trust proxy', 1)
+app.set('trust proxy', 2)
 app.use(log(app))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
