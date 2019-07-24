@@ -10,7 +10,7 @@
       </li>
     </ul>
     <!-- 滚动加载器 -->
-    <div class="observer" v-observer="handleObserver"></div>
+    <div class="observer" v-observer="handleObserver" v-if="blogList.length"></div>
   </div>
 </template>
 
@@ -58,7 +58,7 @@ export default{
       this.busy = (res.res.length < this.pgS)
     },
     handleObserver(el, status) {
-      this.blogList.length && status && this.loadMore()
+      status && this.loadMore()
     }
   },
   created () {
