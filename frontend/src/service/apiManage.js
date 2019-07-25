@@ -64,7 +64,7 @@ class apiManage extends BaseModule {
   }
   //获取pv
   getPv(obj) {
-    return this.get('v1/pv', obj)
+    return this.get('v3/ip', obj)
   }
   //ip地址查询
   getIpAddress(obj) {

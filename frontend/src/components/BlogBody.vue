@@ -42,8 +42,8 @@ export default{
         this.$api.getIdeaList({ userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS }),
         this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: 1, pgS: this.pgS })
       ])
-      if (stickyBlogResp.res && publicBlogResp.res) {
-        this.blogList = this.blogList.concat(stickyBlogResp.res, publicBlogResp.res)
+      if (stickyBlogResp.data && publicBlogResp.data) {
+        this.blogList = this.blogList.concat(stickyBlogResp.data, publicBlogResp.data)
       }
       if (!this.blogList.length) this.$router.push('/Calabash')
     },
@@ -53,9 +53,9 @@ export default{
         return false
       }
       const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: this.pgN + 1, pgS: this.pgS })
-      this.blogList = this.blogList.concat(res.res)
+      this.blogList = this.blogList.concat(res.data)
       this.pgN += 1
-      this.busy = (res.res.length < this.pgS)
+      this.busy = (res.data.length < this.pgS)
     },
     handleObserver(el, status) {
       status && this.loadMore()

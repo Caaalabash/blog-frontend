@@ -92,8 +92,8 @@ export default{
           'userName': this.users.userName
         }
       }).then(res => {
-        if (res.res) {
-          this.imgPath = res.res
+        if (res.data) {
+          this.imgPath = res.data
         }
       })
     },

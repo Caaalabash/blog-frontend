@@ -52,14 +52,14 @@ export default{
     getIdea() {
       this.fullScreenLoading = true
       this.$api.getIdea({ userName: this.user, blogDate: this.id }).then(res=>{
-        this.idea = res.res
+        this.idea = res.data
         this.fullScreenLoading = false
         this.getComment()
       })
     },
     getComment(){
       this.$api.getComment({ blogDate: this.id, userName: this.user }).then(res => {
-        this.commentList = res.res
+        this.commentList = res.data
       })
     },
     openOtherBlogs(value) {

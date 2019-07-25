@@ -1,7 +1,7 @@
 import api from '../service/apiManage'
 
 export function formatDate(){
-  const myDate = new Date();
+  const myDate = new Date()
   function gtTen(num){
     return num>9?num:'0'+num
   }
@@ -39,6 +39,7 @@ export function formatDateEng(value){
 //   list: [{ time, request }]
 // }
 export async function processPvData(arr) {
+  console.log(arr)
   // 分离出所有IP并去重
   const ipList = [...new Set(arr.reduce((acc,i) => {
     acc.push(i.split('-')[0])
@@ -67,7 +68,7 @@ export async function processPvData(arr) {
 }
 
 export function timestampToTime(nS) {
-  return new Date(parseInt(nS)).toLocaleString('zh',{hour12:false})
+  return new Date(parseInt(nS)).toLocaleString('zh',{ hour12:false })
 }
 
 export function generateVM(
@@ -83,20 +84,20 @@ export function generateVM(
    rotate = '30',
    zIndex = 1000
   } = {}){
-  let canvas = document.createElement('canvas');
-  canvas.setAttribute('width', width);
-  canvas.setAttribute('height', height);
-  let ctx = canvas.getContext("2d");
+  const canvas = document.createElement('canvas')
+  canvas.setAttribute('width', width)
+  canvas.setAttribute('height', height)
+  const ctx = canvas.getContext("2d")
 
-  ctx.textAlign = textAlign;
-  ctx.textBaseline = textBaseline;
-  ctx.font = font;
-  ctx.fillStyle = fillStyle;
-  ctx.rotate(Math.PI / 180 * rotate);
-  ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2);
+  ctx.textAlign = textAlign
+  ctx.textBaseline = textBaseline
+  ctx.font = font
+  ctx.fillStyle = fillStyle
+  ctx.rotate(Math.PI / 180 * rotate)
+  ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2)
 
-  let base64Url = canvas.toDataURL();
-  const watermarkDiv = document.createElement("div");
+  let base64Url = canvas.toDataURL()
+  const watermarkDiv = document.createElement("div")
   watermarkDiv.setAttribute('style', `
           position:absolute;
           top:0;
@@ -106,10 +107,10 @@ export function generateVM(
           z-index:${zIndex};
           pointer-events:none;
           background-repeat:repeat;
-          background-image:url('${base64Url}')`);
+          background-image:url('${base64Url}')`)
 
-  container.style.position = 'relative';
-  container.insertBefore(watermarkDiv, container.firstChild);
+  container.style.position = 'relative'
+  container.insertBefore(watermarkDiv, container.firstChild)
 }
 
 export const EMOJI = '😄 😃 😀 😊 ☺ 😉 😍 😘 😚 😗 😙 😜 😝 😛 😳 😁 😔 😌 😒 😞 😣 😢 😂 😭 😪 😥 😰 😅 😓 😩 😫 😨 😱 😠 😡 😤 😖 😆 😋 😷 😎 😴 😵 😲 😟 😦 😧 😈 👿 😮 😬 😐 😕 😯 😶 😇 😏 😑 👲 👳 👮 👷 💂 👶 👦 👧 👨 👩 👴 👵 👱 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💀 👽 💩 🔥 ✨ 🌟 💫 💥 💢 💦 💧 💤 💨 👂 👀 👃 👅 👄 👍 👎 👌 👊 ✊ ✌ 👋 ✋ 👐 👆 👇 👉 👈 🙌 🙏 ☝ 👏 💪 🚶 🏃 💃 👫 👪 👬 👭 💏 💑 👯 🙆 🙅 💁 🙋 💆 💇 💅 👰 🙎 🙍 🙇 🎩 👑 👒 👟 👞 👡 👠 👢 👕 👔 👚 👗 🎽 👖 👘 👙 💼 👜 👝 👛 👓 🎀 🌂 💄 💛 💙 💜 💚 ❤ 💔 💗 💓 💕 💖 💞 💘'.split(' ')

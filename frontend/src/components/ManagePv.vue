@@ -91,7 +91,7 @@ export default {
     async getPv() {
       const res = await this.$api.getPv({ date: this.date, userName: this.userName })
       if (res.errno === 0) {
-        this.originData = await processPvData(res.res)
+        this.originData = await processPvData(res.data)
       } else {
         this.$message.error('出现错误')
       }

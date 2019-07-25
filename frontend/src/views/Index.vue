@@ -51,7 +51,7 @@ export default {
     },
     getInfo() {
       this.$api.getUserInfo({ userName: this.user }).then(res => {
-        this.infoList = { ...this.infoList, ...res.res }
+        this.infoList = { ...this.infoList, ...res.data }
         this.setUserInfo(this.infoList)
       })
     }

@@ -14,8 +14,8 @@ export const visit = function({ commit }) {
 export const login = function({ commit, state }, data) {
   apiManage.checkUser(data).then(res => {
     if(res.errno === 0) {
-      commit(types.SET_USER, res.res)
-      commit(types.REDIRECT_TO, `/${res.res.userName}/manage`)
+      commit(types.SET_USER, res.data)
+      commit(types.REDIRECT_TO, `/${res.data.userName}/manage`)
     }
   })
 }
@@ -38,7 +38,7 @@ export const logout = function({ commit, state }, data) {
 export const likethis = function({ commit, state }, data) {
   return apiManage.like(data).then(res => {
     if(res.errno === 0) {
-      commit(types.SET_LIKELIST,res.res.likeList)
+      commit(types.SET_LIKELIST,res.data.likeList)
       return res
     }
   })
@@ -52,7 +52,7 @@ export const setAvatar = function({ commit, state }, data){
     }
   }).then(res => {
     if(res.errno === 0) {
-      commit(types.SET_AVATAR, res.res)
+      commit(types.SET_AVATAR, res.data)
     }
   })
 }

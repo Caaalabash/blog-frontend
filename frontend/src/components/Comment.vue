@@ -120,7 +120,7 @@ export default {
         flag: this.likeIt
       }).then(res => {
         if (res && res.errno === 0) {
-          this.$emit('update:likeCount', res.res.count)
+          this.$emit('update:likeCount', res.data.count)
         }
       })
     },

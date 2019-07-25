@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json /app
 
-RUN npm install --registry https://registry.npm.taobao.org
+ADD node_modules.tar.gz /app
 
 COPY . /app
 

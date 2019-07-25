@@ -60,7 +60,7 @@ export default{
   methods: {
     _changePage(pgN) {
       this.$api.getIdeaList({ userName: this.users.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
-        this.blogList = res.res
+        this.blogList = res.data
       })
     },
     _deleteIdea(id) {
