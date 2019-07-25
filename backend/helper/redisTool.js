@@ -50,8 +50,8 @@ module.exports = app => {
         const len = await redis.llen(dateString)
 
         len
-            ? redis.rpush(dateString, `${ip}-${timeString}-${path}`)
-            : redis.lpush(dateString, `${ip}-${timeString}-${path}`)
+          ? redis.rpush(dateString, `${ip}-${timeString}-${path}`)
+          : redis.lpush(dateString, `${ip}-${timeString}-${path}`)
       },
 
     }

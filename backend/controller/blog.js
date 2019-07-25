@@ -5,7 +5,6 @@ module.exports = app => {
   const NO_MORE = '0'
 
   return {
-    // 发布博客
     async createBlog(req, res) {
       const { blogTitle, blogContent, blogDate, blogType, userName: author } = req.body
       const doc = await articleModel.create({
@@ -19,7 +18,6 @@ module.exports = app => {
 
       return res.json(response(0, '', '发布成功'))
     },
-    // 删除博客
     async deleteBlog(req, res) {
       const { blogDate } = req.params
       await Promise.all([
@@ -29,7 +27,6 @@ module.exports = app => {
 
       return res.json(response(0, '', '删除成功'))
     },
-    // 修改博客
     async updateBlog(req, res) {
       const { blogDate } = req.params
       const { blogTitle, blogContent, blogType } = req.body
@@ -43,7 +40,6 @@ module.exports = app => {
 
       return res.json(response(0, '', '修改成功'))
     },
-    // 获取博客
     async getBlog(req, res) {
       const { blogDate } = req.params
       const { userName: author } = req.query
@@ -71,7 +67,6 @@ module.exports = app => {
 
       return res.json(response(0, blog, ''))
     },
-    // 获取博客列表
     async getBlogList(req, res) {
       const { pgN, pgS, userName: author, type: blogType } = req.query
       const isAll = blogType === 'all'
@@ -85,7 +80,6 @@ module.exports = app => {
 
       return res.json(response(0, list, ''))
     },
-    // 发布评论
     async postComment(req, res) {
       const { blogDate, userName: author, ...commentBody } = req.body
 
@@ -95,7 +89,6 @@ module.exports = app => {
 
       return res.json(response(0, '', '评论成功'))
     },
-    // 获取评论
     async getComment(req, res) {
       const { blogDate } = req.query
       const doc = await articleModel.findOne({ blogDate }, { _id: 0, comment: 1 })
@@ -113,7 +106,6 @@ module.exports = app => {
 
       return res.json(response(0, commentList, ''))
     },
-    // 喜欢/取消喜欢文章
     async likeBlog(req, res) {
       const { userName, user, blogDate, blogTitle } = req.body
       const liked = await userModel.findOne({ 'userName': user, 'likeList.blogDate': blogDate })

@@ -4,11 +4,11 @@ const router = express.Router()
 module.exports = app => {
   const { robotController } = app.controller
 
-  // 文章页爬虫
+  /**
+   * 为爬虫渲染首页/文章详情页
+   */
   router.get('/:userName/articles/:blogDate', robotController.renderArticle)
-  // 首页爬虫
   router.get('/:userName', robotController.renderIndex)
-  // 默认处理
   router.use(robotController.renderIndex)
 
   return router

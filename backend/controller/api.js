@@ -1,12 +1,11 @@
 module.exports = app => {
   const { articleModel, logModel } = app.model
-  const { response, redisTool } = app.helper
+  const { response, redisTool, getDate } = app.helper
   const ONE_DAY = 1000 * 60 * 60 * 24
   const TEN_MINUTES = 1000 * 60 * 10
   const TOTAL_VIEW_COUNT = 'total_view_count'
 
   return {
-    // 新访问者
     async newVisitor(req, res) {
       const visitRecent = req.cookies['visit']
       const viewCount = visitRecent ? await redisTool.get(TOTAL_VIEW_COUNT) : await redisTool.incr(TOTAL_VIEW_COUNT)
@@ -14,7 +13,6 @@ module.exports = app => {
       res.cookie('visit', 1, { maxAge: TEN_MINUTES })
       return res.json(response(0, viewCount, ''))
     },
-    // 分析文章发布时间
     async analyzeBlogDate(req, res) {
       const doc = await articleModel.find({ 'author': 'Calabash' }, { blogDate: 1, _id: 0 })
       if (!doc) return res.json(response(1, '', '暂无文章'))
@@ -31,18 +29,14 @@ module.exports = app => {
 
       return res.json(response(0, data, ''))
     },
-    // 最近十天访问量
     async getPvLog(req, res) {
-      // 组装一个连续10天的日期数组 ['2019-1-1', '2019-1-2', ...]
       const date = new Date().getTime()
       const list = []
       const data = []
-      // 索引靠前, 日期越大
       for (let i = 0; i < 10; i++) {
         const time = new Date(date - i * ONE_DAY)
-        list.push(`${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`)
+        list.push(getDate(time))
       }
-      // PVLog中每一条数据格式为: 访问Ip-访问时间-请求路径
       const allPvLogs = await Promise.all(list.map(date => redisTool.getIpLog(date)))
       for (let eachDayLogs of allPvLogs) {
         const ipList = eachDayLogs.map(item => item.split('-')[0])
@@ -51,7 +45,6 @@ module.exports = app => {
 
       return res.json(response(0, data.reverse(), ''))
     },
-    // 记录接口数据到数据库
     async insertLog(obj) {
       const shouldRecord = shouldRecordApi(obj.url, obj.method)
       if (shouldRecord) {
@@ -59,7 +52,12 @@ module.exports = app => {
         await logModel.create(obj)
       }
     },
-    // 获取指定接口的访问时长记录
+    async getIP(req, res) {
+      const date = req.query.date
+      const result = await redisTool.getIpLog(date)
+
+      return res.json(response(0, result, ''))
+    },
     async getLogByUrl(req, res) {
       let { url } = req.body
       if (url === '/api/v1/idea') url = /\/api\/v1\/ideas\/\d{14}/
@@ -67,7 +65,6 @@ module.exports = app => {
 
       return res.json(response(0, list.slice(-50), ''))
     },
-    // 处理女朋友的正则需求
     async sendMyLove(req,res) {
       const { type, content } = req.body
       const list = content.split(/\n/)

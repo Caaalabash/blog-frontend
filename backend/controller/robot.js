@@ -4,7 +4,6 @@ module.exports = app => {
   const { articleModel } = app.model
 
   return {
-    // 文章SSR
     async renderArticle(req, res) {
       const { userName: author, blogDate } = req.params
       const blogInfo = await articleModel.findOne({ author, blogDate })
@@ -13,8 +12,6 @@ module.exports = app => {
 
       return res.render('article', { title: blogInfo.blogTitle, content, author })
     },
-
-    // 首页SSR
     async renderIndex(req, res) {
       const author = req.params.userName || 'Calabash'
       const filter = { '_id': 0, 'blogDate': 1, 'blogTitle': 1 }

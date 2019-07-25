@@ -1,39 +1,27 @@
 module.exports = {
-  // 允许跨域
-  cors: (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
-    res.header('Access-Control-Allow-Credentials','true')
-
-    next()
-  },
-  // 记录ip, 从x-real-ip头信息中获取
+  /**
+   * 访问记录监控中间件
+   */
   collectIP: app => {
     const { redisTool } = app.helper
-    const whiteList = [
-      '/pv',
-      '/checkStatus',
-      '/userinfo'
-    ]
+
     return async (req, res, next) => {
       const ip = req.headers['x-real-ip'] || ''
 
-      if(!whiteList.includes(req.path) && ip.length) {
-        redisTool.setIpLog(ip, req.url)
-      }
+      if(ip) redisTool.setIpLog(ip, req.url)
       next()
     }
   },
-  // 验证token
+  /**
+   * 鉴权中间件
+   */
   validate: app => {
     const { response } = app.helper
 
     return (req, res, next) => {
-      if (req.session.isLogin) {
-        next()
-      } else {
-        return res.json(response(1, '', '凭证失效,请重新登录'))
-      }
+      if (!req.cookies['calabash-token']) res.json(response(1, '', ''))
+      else if (!req.session.isLogin) res.json(response(1, '', '凭证失效,请重新登录'))
+      else next()
     }
   }
 }

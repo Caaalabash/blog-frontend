@@ -5,14 +5,12 @@ module.exports = app => {
   const { ossPath, upload } = app.app_config
 
   return {
-    // 增加聊天对象
     async addChatObj(req, res) {
       const { user } = req.body
       const userAvatar = await getUserProp(user, 'avatar')
 
       return res.json(response(0, { to: user, avatar: userAvatar }, ''))
     },
-    // 获取聊天列表
     async getChatList(req, res) {
       const { user } = req.query
       const reg = new RegExp(user)
@@ -39,14 +37,12 @@ module.exports = app => {
 
       return res.json(response(0, data, ''))
     },
-    // 最近50条聊天记录
     async getChatData(req, res) {
       const { chatid } = req.query
       const doc = await chatModel.find({ chatid }, { _id: 0, __v: 0 })
 
       return res.json(response(0, doc.slice(-50), ''))
     },
-    // 图片上传
     async uploadPic(req, res) {
       const path = `${ossPath.host}/${ossPath.filePath}/${req.file.filename}`
       const uploadOss = await alioss.put(`${ossPath.filePath}/${req.file.filename}`, `${upload.img}/${req.file.filename}`)
@@ -54,7 +50,6 @@ module.exports = app => {
 
       return res.json(response(0, path, ''))
     },
-    // 语音上传
     async uploadVoice(req, res) {
       const path = `${ossPath.host}/${ossPath.audioPath}/${req.file.filename}`
       const uploadOss = await alioss.put(`${ossPath.audioPath}/${req.file.filename}`, `${upload.audio}/${req.file.filename}`)
