@@ -1,6 +1,6 @@
 module.exports = app => {
   const { userModel, articleModel } = app.model
-  const { response, redisTool, filterSensitiveWord, getUserProp } = app.helper
+  const { response, redisTool, getUserProp } = app.helper
   const TEN_MINUTES = 10 * 60 * 1000
   const NO_MORE = '0'
 
@@ -88,7 +88,6 @@ module.exports = app => {
     // 发布评论
     async postComment(req, res) {
       const { blogDate, userName: author, ...commentBody } = req.body
-      if (filterSensitiveWord(commentBody.text).flag) return res.json(response(1, '', '含有敏感词'))
 
       await articleModel.updateOne({ author, blogDate }, {
         $push: { comment: commentBody }

@@ -4,7 +4,9 @@ const writeFile = (dirPath, filename, fileData) => {
   if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath)
   fs.writeFileSync(dirPath + filename, fileData)
 }
-
+/**
+ * 后端生成sitemap站点地图, 提高SEO效果
+ */
 module.exports = app => {
   const { isProd } = app.app_config
   const { articleModel } = app.model

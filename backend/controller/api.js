@@ -39,8 +39,8 @@ module.exports = app => {
       const data = []
       // 索引靠前, 日期越大
       for (let i = 0; i < 10; i++) {
-        const time = new Date(date - i * ONE_DAY).toLocaleString('zh').split(' ')[0].replace(/\//g, '-')
-        list.push(time)
+        const time = new Date(date - i * ONE_DAY)
+        list.push(`${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`)
       }
       // PVLog中每一条数据格式为: 访问Ip-访问时间-请求路径
       const allPvLogs = await Promise.all(list.map(date => redisTool.getIpLog(date)))
