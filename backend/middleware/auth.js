@@ -7,7 +7,7 @@ module.exports = {
 
     next()
   },
-  // 记录ip, 从x-forwarded-for头信息中获取
+  // 记录ip, 从x-real-ip头信息中获取
   collectIP: app => {
     const { redisTool } = app.helper
     const whiteList = [
@@ -16,7 +16,7 @@ module.exports = {
       '/userinfo'
     ]
     return async (req, res, next) => {
-      const ip = req.headers['x-forwarded-for'] || ''
+      const ip = req.headers['x-real-ip'] || ''
 
       if(!whiteList.includes(req.path) && ip.length) {
         redisTool.setIpLog(ip, req.url)

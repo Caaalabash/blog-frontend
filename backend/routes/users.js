@@ -53,6 +53,12 @@ module.exports = app => {
   router.delete('/collectList', validateMiddleware, userController.deleteCollect)
   // 删除收藏夹中某个博客
   router.delete('/collect', validateMiddleware, userController.deleteCollectBlog)
+  // Test
+  router.get('/header', (req, res) => {
+    return res.json({
+      data: JSON.stringify(req.headers)
+    })
+  })
 
   return router
 }
