@@ -54,5 +54,5 @@ npm run local
 
 ## Lighthouse
 
-![](https://blog.calabash.top/file-1540573358533.png)
+![](https://static.calabash.top/blog-media/file/file-1564220030806.png)
 
