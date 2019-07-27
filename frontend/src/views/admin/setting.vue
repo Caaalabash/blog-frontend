@@ -101,8 +101,8 @@
               <template slot="prepend">Github</template>
             </el-input>
           </el-form-item>
-          <el-form-item label="微博">
-            <el-input v-model="userInfo.weibo" class="input">
+          <el-form-item label="掘金">
+            <el-input v-model="userInfo.juejin" class="input">
               <template slot="prepend">微博</template>
             </el-input>
           </el-form-item>

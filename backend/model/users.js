@@ -4,7 +4,7 @@
  * userPwd: 密码(未加密)
  * avatar: 头像地址
  * isAdmin: 是否为管理员
- * userInfo: 微博, github, twiiter地址
+ * userInfo: juejin, github, twiiter地址
  * likeList: 点赞列表: 作者, 日期, 标题
  * collectList: 收藏夹列表
  *   collectTitle: 收藏夹标题
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   userInfo: {
     twitter: String,
     github: String,
-    weibo: String
+    juejin: String
   },
   likeList: [{
     author: String,

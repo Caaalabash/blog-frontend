@@ -21,9 +21,9 @@
     },
     data: () => ({
       infoList: {
-        twitter: 'http://www.lanternpro.site/',
-        github: 'https://github.com/',
-        weibo: 'https://weibo.com/'
+        twitter: 'https://twitter.com/caaalabash',
+        github: 'https://github.com/Caaalabash',
+        juejin: 'https://juejin.im/user/5a9009795188257a7f1dbf70'
       },
       showLoginDialog: false,
     }),

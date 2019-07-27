@@ -3,13 +3,13 @@ export const users = state => state.users
 export const userName = state => state.users.userName
 
 export const userInfo = state => {
-  if(state.users.userInfo){
+  if (state.users.userInfo) {
     return state.users.userInfo
-  }else{
+  } else {
     return {
-      twitter:'http://www.lanternpro.site/',
-      github:'https://github.com/',
-      weibo:'https://weibo.com/'
+      twitter:'https://twitter.com/caaalabash',
+      github:'https://github.com/Caaalabash',
+      juejin:'https://juejin.im/user/5a9009795188257a7f1dbf70'
     }
   }
 }

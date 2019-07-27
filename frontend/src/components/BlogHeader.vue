@@ -6,7 +6,7 @@
     <div class="blog-header-links">
       <a class="iconfont icon-twitter-fill" :href="infoList.twitter" target="_blank" rel="noopener" aria-label="twitter"></a>
       <a class="iconfont icon-github-fill" :href="infoList.github " target="_blank" rel="noopener" aria-label="github"></a>
-      <a class="iconfont icon-weibo-fill" :href="infoList.weibo" target="_blank"  rel="noopener" aria-label="weibo"></a>
+      <a class="iconfont icon-juejin" :href="infoList.juejin" target="_blank" rel="noopener" aria-label="juejin"></a>
       <a class="iconfont icon-login" href="" @click.prevent="login" aria-label="login"></a>
       <a class="iconfont icon-gift" href="" @click.prevent="prompt" aria-label="prompt" v-if="prompt_fn"></a>
     </div>

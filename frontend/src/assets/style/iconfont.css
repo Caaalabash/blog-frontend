@@ -23,6 +23,10 @@
   content: "\e607";
 }
 
+.icon-juejin:before {
+  content: "\e600";
+}
+
 .icon-adduser:before {
   content: "\e7ae";
 }
@@ -81,5 +85,9 @@
 
 .icon-login:before {
   content: "\e8ef";
+}
+
+.icon-juejin1:before {
+  content: "\e610";
 }
 

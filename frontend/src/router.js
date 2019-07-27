@@ -12,19 +12,21 @@ Vue.use(Router)
  */
 function generateRoute() {
   const requireContext = require.context('./views', true, /\.vue$/, 'lazy')
-  const vueFileList = requireContext.keys().map(filename => filename.slice(1))
+  const vueFileList = requireContext.keys().map(filename => filename.slice(1))            // ['/a/b/c.vue']
 
-  const getFilePath = filename => filename.replace(/\.\w+$/, '').replace(/^\.\//, '')
-  const getFileName = filename => filename.replace(/(.*\/)*([^.]+).*/ig, '$2')
-  const flat = arr => arr.reduce((acc, val) => val.children.length ? acc.concat(val.children, val) : acc.concat(val), [])
-  const getAncestry = filename => {
+  const getFilePath = filename => filename.replace(/\.\w+$/, '').replace(/^\.\//, '')     // '/a/b/c'
+  const getFileName = filename => filename.replace(/(.*\/)*([^.]+).*/ig, '$2')            // 'c'
+  const flat = arr => arr.reduce((acc, val) =>                                            // 拍平routes
+      val.children.length ? acc.concat(val.children, val) : acc.concat(val)
+    , [])
+  const getAncestry = filename => {                                                       // 寻找可能的嵌套路由
     if (filename === '.vue') return false
     const parentFilename = filename.replace(/\/\w+(.vue)$/, '$1')
     return vueFileList.includes(parentFilename)
       ? parentFilename
       : getAncestry(parentFilename)
   }
-  const sortByNameFunc = (a, b) => a.name < b.name ? 1 : -1
+  const sortByNameFunc = (a, b) => a.name < b.name ? 1 : -1                               // 降低动态路由的优先级
 
   return vueFileList.reduce((routes, filename) => {
     const parenFileName = getAncestry(filename)
@@ -32,12 +34,12 @@ function generateRoute() {
     const filePath = getFilePath(filename)
     const parentFileExist = vueFileList.includes(parenFileName)
 
-    const finalPath = fileName === 'index'
+    const finalPath = fileName === 'index'                                                // 动态路由 / index的处理
       ? filePath.replace(/_/g, ':').slice(0, -fileName.length)
       : filePath.replace(/_/g, ':')
 
     const route = {
-      name: filename,
+      name: filename,                                                                     // filename作为唯一ID
       path: finalPath,
       component: () => import(`@/views${filename}`),
       children: [],
@@ -45,11 +47,10 @@ function generateRoute() {
     }
 
     if (!parentFileExist) {
-      routes.splice(routes.length + 1, 0, route)
-    }
-    else {
-      const node = flat(routes).find(item => item.name === parenFileName).children
-      node.splice(node.length + 1, 0, route)
+      routes.push(route)                                                                  // 非嵌套路由直接push
+    } else {
+      const node = flat(routes).find(item => item.name === parenFileName).children        // 嵌套路由找到引用后push
+      node.push(route)
     }
 
     return routes
