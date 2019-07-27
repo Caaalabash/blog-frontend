@@ -11,7 +11,7 @@ Vue.use(Router)
  * 4. _下换线仅限动态路由使用, 其余情况命名中不能出现下换线
  */
 function generateRoute() {
-  const requireContext = require.context('./views', true, /\.vue$/)
+  const requireContext = require.context('./views', true, /\.vue$/, 'lazy')
   const vueFileList = requireContext.keys().map(filename => filename.slice(1))
 
   const getFilePath = filename => filename.replace(/\.\w+$/, '').replace(/^\.\//, '')
@@ -39,7 +39,7 @@ function generateRoute() {
     const route = {
       name: filename,
       path: finalPath,
-      component: () => import(`./views${filename}`),
+      component: () => import(`@/views${filename}`),
       children: [],
       props: true
     }
