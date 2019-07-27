@@ -41,35 +41,37 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default{
-  name: 'ManageIdea',
-  props: ['users', 'innerWidth'],
-  data: () => ({
-    pgN: 1,
-    pgS: 10,
-    blogList: [],
-  }),
-  computed: {
-    isShow() {
-      return this.innerWidth < 420
+  export default{
+    name: 'articles',
+    props: ['users', 'innerWidth'],
+    data: () => ({
+      pgN: 1,
+      pgS: 10,
+      blogList: [],
+    }),
+    computed: {
+      isShow() {
+        return this.innerWidth < 420
+      }
+    },
+    created() {
+      this._changePage(1)
+    },
+    methods: {
+      _changePage(pgN) {
+        this.$api.getIdeaList({ userName: this.users.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
+          this.blogList = res.data
+        })
+      },
+      _deleteIdea(id) {
+        this.$api.deleteIdea({ userName: this.users.userName, blogDate: id }).then(() => {
+          this.blogList = this.blogList.filter(item => item.blogDate !== id)
+        })
+      },
+      changeIdea(idea) {
+        this.$router.push({ path: '/admin/new', query: { blogDate: idea.blogDate } })
+      },
     }
-  },
-  created() {
-    this._changePage(1)
-  },
-  methods: {
-    _changePage(pgN) {
-      this.$api.getIdeaList({ userName: this.users.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
-        this.blogList = res.data
-      })
-    },
-    _deleteIdea(id) {
-      this.$api.deleteIdea({ userName: this.users.userName, blogDate: id })
-    },
-    changeIdea(idea) {
-      this.$router.push({ name: 'new-idea', query: { blogDate: idea.blogDate }, params: { idea } })
-    },
   }
-}
 </script>
 

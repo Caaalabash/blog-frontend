@@ -14,50 +14,50 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-export default{
-  name: 'BlogHeader',
-  props: {
-    user: {
-      type: String,
-      required: true
+  import { mapState } from 'vuex'
+  export default{
+    name: 'BlogHeader',
+    props: {
+      user: {
+        type: String,
+        required: true
+      },
+      infoList: {
+        type: Object,
+        required: true
+      }
     },
-    infoList: {
-      type: Object,
-      required: true
-    }
-  },
-  data: () => ({
-    prompt_fn: null,
-  }),
-  computed: {
-    ...mapState(['viewCount'])
-  },
-  methods: {
-    login () {
-      this.$emit('open')
+    data: () => ({
+      prompt_fn: null,
+    }),
+    computed: {
+      ...mapState(['viewCount'])
     },
-    prompt() {
-      if (!this.prompt_fn) return
-      this.prompt_fn.prompt()
-      this.prompt_fn.userChoice.then(function(choice) {
-        this.$message.success(choice)
-      })
-      this.prompt_fn = null
+    methods: {
+      login () {
+        this.$emit('open')
+      },
+      prompt() {
+        if (!this.prompt_fn) return
+        this.prompt_fn.prompt()
+        this.prompt_fn.userChoice.then(function(choice) {
+          this.$message.success(choice)
+        })
+        this.prompt_fn = null
+      },
+      promptListener(e) {
+        this.prompt_fn = e
+        e.preventDefault()
+        return false
+      }
     },
-    promptListener(e) {
-      this.prompt_fn = e
-      e.preventDefault()
-      return false
-    }
-  },
-  mounted() {
-    window.addEventListener('beforeinstallprompt', this.promptListener)
-  },
-  beforeDestroy() {
-    window.removeEventListener('beforeinstallprompt', this.promptListener)
-  },
-}
+    mounted() {
+      window.addEventListener('beforeinstallprompt', this.promptListener)
+    },
+    beforeDestroy() {
+      window.removeEventListener('beforeinstallprompt', this.promptListener)
+    },
+  }
 </script>
 
 <style lang="less" scoped>

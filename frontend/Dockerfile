@@ -13,4 +13,3 @@ COPY blog.conf /etc/nginx/conf.d
 COPY dist /etc/nginx/dist/
 
 CMD ["./wait-for-it.sh"]
-

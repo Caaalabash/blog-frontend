@@ -49,56 +49,56 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Chart from './Chart.vue'
-import { processPvData } from '../lib/lib'
+  import { mapGetters } from 'vuex'
+  import Chart from '@/components/Chart.vue'
+  import { processPvData } from '@/lib/lib'
 
-export default {
-  name: 'manage-pv',
-  components:{
-    Chart
-  },
-  data: () => ({
-    isProcessing: true,
-    currentTab:'pv',
-    originData: [],
-    date: new Date().toLocaleString('zh').split(' ')[0].replace(/\//g, '-')
-  }),
-  computed: {
-    ...mapGetters([
-      'userName'
-    ]),
-    addressData(){
-      let list = this.originData.reduce((acc, item) => {
-        acc.push(item.address)
-        return acc
-      },[])
-      let map = {}
-      for(let location of list){
-        map[location] ? map[location]++ : map[location] = 1
+  export default {
+    name: 'pv',
+    components:{
+      Chart
+    },
+    data: () => ({
+      isProcessing: true,
+      currentTab:'pv',
+      originData: [],
+      date: new Date().toLocaleString('zh').split(' ')[0].replace(/\//g, '-')
+    }),
+    computed: {
+      ...mapGetters([
+        'userName'
+      ]),
+      addressData(){
+        let list = this.originData.reduce((acc, item) => {
+          acc.push(item.address)
+          return acc
+        },[])
+        let map = {}
+        for(let location of list){
+          map[location] ? map[location]++ : map[location] = 1
+        }
+        let data = []
+        for(let n of Object.keys(map)){
+          data.push({ value: map[n], name: n })
+        }
+        return data
       }
-      let data = []
-      for(let n of Object.keys(map)){
-        data.push({ value: map[n], name: n })
+    },
+    created() {
+      this.getPv()
+    },
+    methods: {
+      async getPv() {
+        const res = await this.$api.getPv({ date: this.date, userName: this.userName })
+        if (res.errno === 0) {
+          this.originData = await processPvData(res.data)
+        } else {
+          this.$message.error('出现错误')
+        }
+        this.isProcessing = false
       }
-      return data
-    }
-  },
-  created () {
-    this.getPv()
-  },
-  methods: {
-    async getPv() {
-      const res = await this.$api.getPv({ date: this.date, userName: this.userName })
-      if (res.errno === 0) {
-        this.originData = await processPvData(res.data)
-      } else {
-        this.$message.error('出现错误')
-      }
-      this.isProcessing = false
     }
   }
-}
 </script>
 
 <style scoped lang="less">

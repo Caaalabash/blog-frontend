@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import { generateVM } from '../lib/lib'
+import { generateVM } from '@/lib/lib'
 
 export default {
-  name: 'MaxeanoOnly',
+  name: 'maxeano',
   data: () => ({
     form: {
       type: '1',

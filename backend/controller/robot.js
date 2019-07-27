@@ -18,7 +18,7 @@ module.exports = app => {
       const blogList = await articleModel.find({ author, blogType: 'public' }, filter).sort({ 'blogDate': -1 })
       if (!blogList) return res.status(404).send('Sorry, we cannot find that!')
 
-      return res.render('index', { articleList: blogList, author })
+      return res.render('new.vue', { articleList: blogList, author })
     }
   }
 }

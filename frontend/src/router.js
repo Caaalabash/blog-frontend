@@ -1,102 +1,74 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/views/Index.vue'
-import BlogBody from '@/components/BlogBody.vue'
-import Manage from '@/views/Manage.vue'
-import store from '@/store/index'
 
 Vue.use(Router)
+
+/**
+ * 为views文件夹下的vue文件自动生成路由, 规则同Nuxt
+ * 1. 基础路由: 文件名等于路径名, 文件名为 index 时, 使用 / 作为路径名
+ * 2. 动态路由: 需要创建以下划线为前缀的vue文件或目录
+ * 3. 嵌套路由: 添加一个vue文件的同时添加一个与该文件同名的目录用于存放子视图组件
+ * 4. _下换线仅限动态路由使用, 其余情况命名中不能出现下换线
+ */
+function generateRoute() {
+  const requireContext = require.context('./views', true, /\.vue$/)
+  const vueFileList = requireContext.keys().map(filename => filename.slice(1))
+
+  const getFilePath = filename => filename.replace(/\.\w+$/, '').replace(/^\.\//, '')
+  const getFileName = filename => filename.replace(/(.*\/)*([^.]+).*/ig, '$2')
+  const flat = arr => arr.reduce((acc, val) => val.children.length ? acc.concat(val.children, val) : acc.concat(val), [])
+  const getAncestry = filename => {
+    if (filename === '.vue') return false
+    const parentFilename = filename.replace(/\/\w+(.vue)$/, '$1')
+    return vueFileList.includes(parentFilename)
+      ? parentFilename
+      : getAncestry(parentFilename)
+  }
+  const sortByNameFunc = (a, b) => a.name < b.name ? 1 : -1
+
+  return vueFileList.reduce((routes, filename) => {
+    const parenFileName = getAncestry(filename)
+    const fileName = getFileName(filename)
+    const filePath = getFilePath(filename)
+    const parentFileExist = vueFileList.includes(parenFileName)
+
+    const finalPath = fileName === 'index'
+      ? filePath.replace(/_/g, ':').slice(0, -fileName.length)
+      : filePath.replace(/_/g, ':')
+
+    const route = {
+      name: filename,
+      path: finalPath,
+      component: () => import(`./views${filename}`),
+      children: [],
+      props: true
+    }
+
+    if (!parentFileExist) {
+      routes.splice(routes.length + 1, 0, route)
+    }
+    else {
+      const node = flat(routes).find(item => item.name === parenFileName).children
+      node.splice(node.length + 1, 0, route)
+    }
+
+    return routes
+  }, []).sort(sortByNameFunc)
+}
+
+const basicRoute = [
+  {
+    path: '/',
+    redirect: '/Calabash'
+  }
+]
 
 const router = new Router({
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 }
   },
-  routes: [
-    //错误处理 放在后面error会被/:user动态路由匹配到
-    {
-      name: 'error',
-      path: '/error',
-      component: () => import('@/views/error.vue'),
-      props: true
-    },
-    //重定向
-    {
-      path: '/',
-      redirect: '/Calabash'
-    },
-    {
-      path: '/:user',
-      component: index,
-      props: true,
-      children: [
-        {
-          path: '',
-          component: BlogBody,
-          props: true
-        },{
-          path: 'articles/:id',
-          component: () => import('@/components/BlogArticle.vue'),
-          props: true
-        }
-      ]
-    },{
-      path: '/:user/manage',
-      component: Manage,
-      props: true,
-      meta: {
-        requiresAuth: true
-      },
-      children: [
-        {
-          path: '',
-          redirect: 'new-idea'
-        },
-        {
-          name: 'new-idea',
-          path: 'new-idea',
-          component: () => import('@/components/ManageYourIdea.vue'),
-          props: ({query, params}) => ({ blogDate: query.blogDate, userName: params.userName })
-        },
-        {
-          name: 'ideas',
-          path: 'ideas',
-          component: () => import('@/components/ManageIdea.vue')
-        }, {
-          name: 'setting',
-          path: 'setting',
-          component: () => import('@/components/ManageSetting.vue')
-        }, {
-          name: 'pv',
-          path: 'pv',
-          component: () => import('@/components/ManagePv.vue')
-        }, {
-          name: 'chat',
-          path: 'chat',
-          component: () => import('@/components/Chat.vue')
-        },{
-          name: 'MaxeanoOnly',
-          path: 'MaxeanoOnly',
-          component: () => import('@/components/MaxeanoOnly.vue')
-        }
-      ]
-    }
-  ],
+  routes: basicRoute.concat(generateRoute()),
   mode:'history'
-})
-
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.userName !== to.params.user) {
-      next({
-        name: 'error',
-        params: { type:'权限不足' }
-      })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
 })
 
 export default router

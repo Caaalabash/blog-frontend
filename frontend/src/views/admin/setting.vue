@@ -129,7 +129,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default{
-  name: 'ManageSetting',
+  name: 'setting',
   props: ['innerWidth'],
   data: () => ({
     file: '',

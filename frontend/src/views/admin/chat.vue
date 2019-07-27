@@ -82,11 +82,11 @@
 <script>
 import Vue from 'vue'
 import VueSocketIO from 'vue-socket.io'
-import store from '../store'
+import store from '@/store'
 import SocketIO  from 'socket.io-client'
 import { mapGetters, mapActions } from 'vuex'
-import { timestampToTime, EMOJI } from '../lib/lib'
-import { getRecordFile, startRecord, stopRecord } from '../lib/record'
+import { timestampToTime, EMOJI } from '@/lib/lib'
+import { getRecordFile, startRecord, stopRecord } from '@/lib/record'
 
 Vue.use(new VueSocketIO({
   connection: SocketIO(process.env.VUE_APP_HOST, {
@@ -96,7 +96,7 @@ Vue.use(new VueSocketIO({
 }))
 
 export default {
-  name: 'Chat',
+  name: 'chat',
   data: () => ({
     chatList: [],
     currentChatUser: {},

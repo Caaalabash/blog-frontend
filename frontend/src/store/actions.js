@@ -15,7 +15,7 @@ export const login = function({ commit, state }, data) {
   apiManage.checkUser(data).then(res => {
     if(res.errno === 0) {
       commit(types.SET_USER, res.data)
-      commit(types.REDIRECT_TO, `/${res.data.userName}/manage`)
+      commit(types.REDIRECT_TO, `/admin/new`)
     }
   })
 }

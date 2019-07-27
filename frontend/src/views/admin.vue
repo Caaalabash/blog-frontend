@@ -1,35 +1,35 @@
 <template>
   <div class="manage-container" v-resize="handleResize">
     <!--侧边栏区域-->
-    <manage-side-bar :users="users" :innerWidth="innerWidth"></manage-side-bar>
+    <ManageSideBar :users="users" :innerWidth="innerWidth" />
     <!--右侧内容区域-->
-    <router-view :users="users" :innerWidth="innerWidth"></router-view>
+    <router-view :users="users" :innerWidth="innerWidth" />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters} from 'vuex'
-import ManageSideBar from '../components/ManageSideBar.vue'
+  import { mapGetters } from 'vuex'
+  import ManageSideBar from '@/components/ManageSideBar.vue'
 
-export default{
-  name: 'Manage',
-  components: {
-    'manage-side-bar': ManageSideBar
-  },
-  data: () => ({
-    innerWidth: window.innerWidth
-  }),
-  computed: {
-    ...mapGetters([
-      'users',
-    ])
-  },
-  methods: {
-    handleResize() {
-      this.innerWidth = window.innerWidth
+  export default{
+    name: 'admin',
+    components: {
+      ManageSideBar
     },
-  },
-}
+    data: () => ({
+      innerWidth: window.innerWidth
+    }),
+    computed: {
+      ...mapGetters([
+        'users',
+      ])
+    },
+    methods: {
+      handleResize() {
+        this.innerWidth = window.innerWidth
+      },
+    },
+  }
 </script>
 
 <style scoped lang="less">
