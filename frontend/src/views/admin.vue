@@ -1,7 +1,7 @@
 <template>
-  <div class="manage-container" v-resize="handleResize">
+  <div class="manage-container" v-resize="handleResize" v-loading="!menu.length">
     <!--侧边栏区域-->
-    <ManageSideBar :users="users" :innerWidth="innerWidth" />
+    <ManageSideBar :users="users" :innerWidth="innerWidth" :menu="menu" />
     <!--右侧内容区域-->
     <router-view :users="users" :innerWidth="innerWidth" />
   </div>
@@ -17,12 +17,19 @@
       ManageSideBar
     },
     data: () => ({
-      innerWidth: window.innerWidth
+      innerWidth: window.innerWidth,
+      menu: []
     }),
     computed: {
       ...mapGetters([
         'users',
       ])
+    },
+    created() {
+      this.$api.getMenu().then(res => {
+        this.menu = res.data
+        if (!this.menu.length) this.$router.replace({ path: `/error?code=403` })
+      })
     },
     methods: {
       handleResize() {

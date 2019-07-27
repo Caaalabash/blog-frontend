@@ -17,6 +17,10 @@ class apiManage extends BaseModule {
   checkUser(obj) {
     return this.post('v1/login', obj)
   }
+  // 获取管理菜单
+  getMenu() {
+    return this.get('v1/menu')
+  }
   //注销登陆
   logout(obj) {
     return this.post('v1/logout', obj)

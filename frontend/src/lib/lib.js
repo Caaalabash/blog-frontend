@@ -39,7 +39,6 @@ export function formatDateEng(value){
 //   list: [{ time, request }]
 // }
 export async function processPvData(arr) {
-  console.log(arr)
   // 分离出所有IP并去重
   const ipList = [...new Set(arr.reduce((acc,i) => {
     acc.push(i.split('-')[0])

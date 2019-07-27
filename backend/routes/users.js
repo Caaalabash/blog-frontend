@@ -15,6 +15,7 @@ module.exports = app => {
   router.post('/login', requestMiddleware, userController.login)
   router.post('/logout', requestMiddleware, userController.logout)
   router.post('/checkStatus', validateMiddleware, userController.checkStatus)
+  router.get('/menu', userController.getMenu)
   /**
    * 文章相关
    */

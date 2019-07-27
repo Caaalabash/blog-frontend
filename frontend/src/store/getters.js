@@ -2,10 +2,6 @@ export const users = state => state.users
 
 export const userName = state => state.users.userName
 
-export const isMaxeano = state => state.users.userName === 'maxeano'
-
-export const isAdmin = state => state.users.userName === 'Calabash'
-
 export const userInfo = state => {
   if(state.users.userInfo){
     return state.users.userInfo

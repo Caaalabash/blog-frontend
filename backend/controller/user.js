@@ -18,7 +18,7 @@ module.exports = app => {
       const user = await userModel.findOne(req.body, { 'userPwd': 0, 'blogList': 0 })
       if (!user) return res.json(response(1, '', '用户名或密码错误'))
 
-      req.session.user = { _id: user._id, name: user.userName }
+      req.session.user = { _id: user._id, name: user.userName, isAdmin: user.isAdmin || false }
       req.session.isLogin = true
       return res.json(response(0, user, '登录成功'))
     },
@@ -27,6 +27,23 @@ module.exports = app => {
     },
     logout(req, res) {
       req.session.destroy(e => res.json(response(0, e, '注销成功')))
+    },
+    getMenu(req, res) {
+      if (!req.session.isLogin) {
+        res.json(response(0, [], ''))
+        return
+      }
+      const menu = [
+        { path: '/admin/new', icon: 'el-icon-edit-outline', label: '发布文章' },
+        { path: '/admin/articles', icon: 'el-icon-search', label: '管理文章' },
+        { path: '/admin/setting', icon: 'el-icon-setting', label: '个人设置' },
+        req.session.user.isAdmin && { path: '/admin/maxeano', icon: 'el-icon-star-off', label: '猪猪专属'},
+        { path: '/admin/chat', icon: 'el-icon-message', label: '站内信'},
+        req.session.user.isAdmin && { path: '/admin/pv', icon: 'el-icon-bell', label: '日志' },
+        { path: '/', icon: 'el-icon-back', label: '返回首页' },
+        { icon: 'el-icon-close', label: '注销' }
+      ]
+      res.json(response(0, menu.filter(Boolean), ''))
     },
     async updateUserInfo(req, res) {
       const { userName, ...userInfo } = req.body

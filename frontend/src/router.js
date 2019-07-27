@@ -67,7 +67,7 @@ const router = new Router({
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 }
   },
-  routes: basicRoute.concat(generateRoute()),
+  routes: basicRoute.concat(generateRoute(), { path: '*', redirect: '/error?code=404' }),
   mode:'history'
 })
 
