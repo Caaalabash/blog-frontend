@@ -14,7 +14,7 @@ function generateRoute() {
   const requireContext = require.context('./views', true, /\.vue$/, 'lazy')
   const vueFileList = requireContext.keys().map(filename => filename.slice(1))            // ['/a/b/c.vue']
 
-  const getFilePath = filename => filename.replace(/\.\w+$/, '').replace(/^\.\//, '')     // '/a/b/c'
+  const getFilePath = filename => filename.replace(/\.\w+$/, '')                          // '/a/b/c'
   const getFileName = filename => filename.replace(/(.*\/)*([^.]+).*/ig, '$2')            // 'c'
   const flat = arr => arr.reduce((acc, val) =>                                            // 拍平routes
       val.children.length ? acc.concat(val.children, val) : acc.concat(val)
