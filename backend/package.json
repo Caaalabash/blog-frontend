@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "online": "set NODE_ENV=production && node ./bin/www",
-    "local": "set NODE_ENV=development && node ./bin/www"
+    "local": "set NODE_ENV=development && node ./bin/www",
+    "perf": "set NODE_ENV=production && node ./bin/www --inspect"
   },
   "dependencies": {
     "ali-oss": "^6.1.0",
