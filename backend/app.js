@@ -30,6 +30,7 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   cookie: {
+    domain: 'calabash.top',
     secure: app.app_config.isProd,
     maxAge: 1000 * 3600
   },
