@@ -172,7 +172,7 @@
         font-size: 25px;
         text-align: center;
         background-color: rgb(242, 242, 242);
-        color: rgba(97, 97, 97);
+        color: rgb(97, 97, 97);
         cursor: pointer;
         border-radius: 50%;
         box-shadow: rgba(0,0,0,.5) 0 1px 5px 0;

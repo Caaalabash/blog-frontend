@@ -34,8 +34,8 @@
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "babel-plugin-component": "^1.1.1",
-    "less": "^3.0.4",
-    "less-loader": "^4.1.0",
+    "less": "3.0.4",
+    "less-loader": "4.1.0",
     "vue-template-compiler": "^2.5.17",
     "webpack-aliyun-oss-plugin": "^2.1.0",
     "workbox-webpack-plugin": "^4.0.0"
