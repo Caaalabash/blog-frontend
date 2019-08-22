@@ -13,7 +13,7 @@ class apiManage extends BaseModule {
   createUser(obj) {
     return this.post('v1/register', obj)
   }
-  //登陆
+  //登录
   checkUser(obj) {
     return this.post('v1/login', obj)
   }
@@ -21,11 +21,11 @@ class apiManage extends BaseModule {
   getMenu() {
     return this.get('v1/menu')
   }
-  //注销登陆
+  //注销登录
   logout(obj) {
     return this.post('v1/logout', obj)
   }
-  //检查登陆状态
+  //检查登录状态
   checkStatus(obj) {
     return this.post('v1/checkStatus', obj)
   }

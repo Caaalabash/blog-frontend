@@ -22,8 +22,12 @@ module.exports = app => {
       req.session.isLogin = true
       return res.json(response(0, user, '登录成功'))
     },
-    checkStatus(req, res) {
-      return res.json(response(0, '', ''))
+    async checkStatus(req, res) {
+      const { name } = req.session.user
+      const userData = await userModel.findOne({ userName: name }, { 'userPwd': 0, 'blogList': 0 })
+      if (!userData) return res.json(response(1, '', ''))
+
+      return res.json(response(0, userData, ''))
     },
     logout(req, res) {
       req.session.destroy(e => res.json(response(0, e, '注销成功')))

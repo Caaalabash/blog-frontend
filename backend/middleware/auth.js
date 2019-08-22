@@ -20,7 +20,7 @@ module.exports = {
 
     return (req, res, next) => {
       if (!req.cookies['calabash-token']) res.json(response(1, '', ''))
-      else if (!req.session.isLogin) res.json(response(1, '', '凭证失效,请重新登录'))
+      else if (!req.session.isLogin) res.json(response(1, '', '登录凭证失效了哦，请重新登录'))
       else next()
     }
   }

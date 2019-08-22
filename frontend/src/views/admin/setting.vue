@@ -92,17 +92,17 @@
       <el-tab-pane label="个人信息" name="userInfo">
         <el-form label-position="left" label-width="80px">
           <el-form-item label="Twitter">
-            <el-input v-model="userInfo.twitter" class="input">
+            <el-input v-model="editUserInfo.twitter" class="input">
               <template slot="prepend">Twitter</template>
             </el-input>
           </el-form-item>
           <el-form-item label="github">
-            <el-input v-model="userInfo.github" class="input">
+            <el-input v-model="editUserInfo.github" class="input">
               <template slot="prepend">Github</template>
             </el-input>
           </el-form-item>
           <el-form-item label="掘金">
-            <el-input v-model="userInfo.juejin" class="input">
+            <el-input v-model="editUserInfo.juejin" class="input">
               <template slot="prepend">微博</template>
             </el-input>
           </el-form-item>
@@ -134,6 +134,11 @@ export default{
   data: () => ({
     file: '',
     tab: 'favorite',
+    editUserInfo: {
+      twitter: '',
+      github: '',
+      juejin: ''
+    },
   }),
   computed: {
     ...mapGetters([
@@ -147,6 +152,16 @@ export default{
       return this.innerWidth <= 420
     },
   },
+  watch: {
+    userInfo: {
+      handler(val) {
+        if (val && val.github) {
+          this.editUserInfo = { ...val }
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
     ...mapActions([
       'setUserInfo',
@@ -156,8 +171,8 @@ export default{
       'deleteCollectBlog'
     ]),
     _changeUserInfo() {
-      this.$api.changeUserInfo({ userName: this.userName, ...this.userInfo }).then(() => {
-        this.setUserInfo(this.userInfo)
+      this.$api.changeUserInfo({ userName: this.userName, ...this.editUserInfo }).then(() => {
+        this.setUserInfo(this.editUserInfo)
       })
     },
     beforeAvatarUpload(file) {

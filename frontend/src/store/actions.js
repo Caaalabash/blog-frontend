@@ -1,6 +1,15 @@
 import * as types from './mutation-type'
 import apiManage from '../service/apiManage'
 
+// 初始化状态
+export const initStatus = function({ commit }) {
+  apiManage.checkStatus().then(res => {
+    if (res.errno === 0) {
+      commit(types.SET_USER, res.data)
+    }
+  })
+}
+
 // 访问
 export const visit = function({ commit }) {
   apiManage.visit().then(res => {

@@ -48,9 +48,9 @@
         if (item.path) {
           this.$router.push(item.path)
         } else if (item.label === '注销') {
-          this.logout({ userName: this.userName })
+          this.logout({ userName: this.users.userName })
         } else if (item.label === '返回首页'){
-          this.$router.push(`/${this.userName}`)
+          this.$router.push(`/${this.users.userName}`)
         }
       },
     },

@@ -11,10 +11,11 @@
   export default {
     name: 'App',
     methods: {
-      ...mapActions(['visit'])
+      ...mapActions(['visit', 'initStatus'])
     },
     created() {
       this.visit()
+      this.initStatus()
     },
     mounted() {
       window.addEventListener('error', switchWhenImgErr)

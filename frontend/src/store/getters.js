@@ -2,17 +2,7 @@ export const users = state => state.users
 
 export const userName = state => state.users.userName
 
-export const userInfo = state => {
-  if (state.users.userInfo) {
-    return state.users.userInfo
-  } else {
-    return {
-      twitter:'https://twitter.com/caaalabash',
-      github:'https://github.com/Caaalabash',
-      juejin:'https://juejin.im/user/5a9009795188257a7f1dbf70'
-    }
-  }
-}
+export const userInfo = state => state.users.userInfo
 
 export const likeList = state => state.users.likeList || []
 

@@ -7,10 +7,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   import BlogHeader from '@/components/BlogHeader'
   import LoginDialog from '@/components/LoginDialog'
-  import apiManage from '@/service/apiManage'
 
   export default {
     name: 'index',
@@ -27,19 +26,19 @@
       },
       showLoginDialog: false,
     }),
+    computed: {
+      ...mapState(['users']),
+    },
     watch: {
       user: 'getInfo'
     },
     methods: {
-      ...mapActions([
-        'checkStatus',
-        'setUserInfo'
-      ]),
       openDialog() {
-        apiManage.checkStatus().then(res => {
-          if (res.errno === 1) this.showLoginDialog = true
-          else this.$router.push(`/admin/new`)
-        })
+        if (this.users && this.users.userName) {
+          this.$router.push(`/admin/new`)
+        } else {
+          this.showLoginDialog = true
+        }
       },
       closeDialog() {
         this.showLoginDialog = false
@@ -47,7 +46,6 @@
       getInfo() {
         this.$api.getUserInfo({ userName: this.user }).then(res => {
           this.infoList = { ...this.infoList, ...res.data }
-          this.setUserInfo(this.infoList)
         })
       }
     },
