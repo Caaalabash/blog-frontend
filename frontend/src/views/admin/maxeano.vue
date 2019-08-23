@@ -45,7 +45,7 @@ export default {
       content: 'Maxeano'
     })
   },
-  methods:{
+  methods: {
     submit() {
       this.$api.sendMyLove(this.form).then(res => {
         if(res.data) {

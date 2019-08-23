@@ -22,57 +22,57 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { formatDateEng } from '@/lib/lib'
-  import Comment from '@/components/Comment.vue'
+import { formatDateEng } from '@/lib/lib'
+import Comment from '@/components/Comment.vue'
 
-  export default{
-    props: ['id', 'user'],
-    components: {
-      Comment
+export default{
+  props: ['id', 'user'],
+  components: {
+    Comment
+  },
+  data: () => ({
+    commentList: [],
+    fullScreenLoading: false,
+    idea: {},
+  }),
+  computed: {
+    compiledMarkdown() {
+      if (!marked || !this.idea.blogContent) return ''
+      return marked(this.idea.blogContent, { sanitize: true })
     },
-    data: () => ({
-      commentList: [],
-      fullScreenLoading: false,
-      idea: {},
-    }),
-    computed: {
-      compiledMarkdown() {
-        if (!marked || !this.idea.blogContent) return ''
-        return marked(this.idea.blogContent, { sanitize: true })
-      },
+  },
+  filters: {
+    formatDateEng,
+  },
+  watch: {
+    '$route': 'getIdea'
+  },
+  created() {
+    this.getIdea()
+  },
+  methods: {
+    getIdea() {
+      this.fullScreenLoading = true
+      this.$api.getIdea({ userName: this.user, blogDate: this.id }).then(res => {
+        this.idea = res.data
+        this.fullScreenLoading = false
+        this.getComment()
+      })
     },
-    filters: {
-      formatDateEng,
+    getComment() {
+      this.$api.getComment({ blogDate: this.id, userName: this.user }).then(res => {
+        this.commentList = res.data
+      })
     },
-    watch: {
-      '$route': 'getIdea'
+    openOtherBlogs(value) {
+      if (value && value !== '0') {
+        this.$router.push(`${value}`)
+      } else {
+        this.$message.info('没有啦！')
+      }
     },
-    methods: {
-      getIdea() {
-        this.fullScreenLoading = true
-        this.$api.getIdea({ userName: this.user, blogDate: this.id }).then(res => {
-          this.idea = res.data
-          this.fullScreenLoading = false
-          this.getComment()
-        })
-      },
-      getComment(){
-        this.$api.getComment({ blogDate: this.id, userName: this.user }).then(res => {
-          this.commentList = res.data
-        })
-      },
-      openOtherBlogs(value) {
-        if (value && value !== '0') {
-          this.$router.push(`${value}`)
-        } else {
-          this.$message.info('没有啦！')
-        }
-      },
-    },
-    created() {
-      this.getIdea()
-    },
-  }
+  },
+}
 </script>
 
 <style lang="less" scoped>

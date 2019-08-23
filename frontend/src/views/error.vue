@@ -10,30 +10,30 @@
 </template>
 
 <script>
-  export default {
-    name: 'error',
-    computed: {
-      code() {
-        return +this.$route.query.code || 404
-      },
-      warningLabel() {
-        switch (this.code) {
-          case 404:
-            return 'Sorry, we can\'t find what you are looking for, cause it\'s so dark in here'
-          case 403:
-            return 'Sorry you can\'t go any further, cause it\'s too dangerous for you'
-        }
-      },
+export default {
+  name: 'error',
+  computed: {
+    code() {
+      return +this.$route.query.code || 404
     },
-    methods: {
-      handleMouseMove(e) {
-        this.$refs['torch'].style = `top:${e.pageY}px;left:${e.pageX}px`
-      },
-      handleTouchMove(e) {
-        this.$refs['torch'].style = `top:${e.touches[0].clientY}px;left:${e.touches[0].clientX}px`
+    warningLabel() {
+      switch (this.code) {
+        case 404:
+          return 'Sorry, we can\'t find what you are looking for, cause it\'s so dark in here'
+        case 403:
+          return 'Sorry you can\'t go any further, cause it\'s too dangerous for you'
       }
+    },
+  },
+  methods: {
+    handleMouseMove(e) {
+      this.$refs['torch'].style = `top:${e.pageY}px;left:${e.pageX}px`
+    },
+    handleTouchMove(e) {
+      this.$refs['torch'].style = `top:${e.touches[0].clientY}px;left:${e.touches[0].clientX}px`
     }
   }
+}
 </script>
 
 <style scoped>
@@ -47,7 +47,7 @@
     justify-content: center;
     align-items: center;
   }
-  .text h1{
+  .text h1 {
     color: #011718;
     margin-top: -200px;
     font-size: 15em;
@@ -56,7 +56,7 @@
     font-family: monospace;
     font-weight: bold;
   }
-  .text h2{
+  .text h2 {
     color: black;
     font-size: 5em;
     text-shadow: -5px 5px 0px rgba(0,0,0,0.7);
@@ -65,7 +65,7 @@
     font-family: monospace;
     font-weight: bold;
   }
-  .text h3{
+  .text h3 {
     color: white;
     margin-left: 30px;
     font-size: 2em;

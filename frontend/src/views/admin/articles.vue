@@ -41,45 +41,45 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
-  export default{
-    name: 'articles',
-    props: ['users', 'innerWidth'],
-    data: () => ({
-      pgN: 1,
-      pgS: 10,
-      blogList: [],
-    }),
-    computed: {
-      ...mapGetters(['userName']),
-      isShow() {
-        return this.innerWidth < 420
-      }
-    },
-    watch: {
-      userName: {
-        handler(val) {
-          val && this._changePage(1)
-        },
-        immediate: true
-      }
-    },
-    methods: {
-      _changePage(pgN) {
-        this.$api.getIdeaList({ userName: this.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
-          this.blogList = res.data
-        })
-      },
-      _deleteIdea(id) {
-        this.$api.deleteIdea({ userName: this.userName, blogDate: id }).then(() => {
-          this.blogList = this.blogList.filter(item => item.blogDate !== id)
-        })
-      },
-      changeIdea(idea) {
-        this.$router.push({ path: '/admin/new', query: { blogDate: idea.blogDate } })
-      },
+export default {
+  name: 'articles',
+  props: ['users', 'innerWidth'],
+  data: () => ({
+    pgN: 1,
+    pgS: 10,
+    blogList: [],
+  }),
+  computed: {
+    ...mapGetters(['userName']),
+    isShow() {
+      return this.innerWidth < 420
     }
+  },
+  watch: {
+    userName: {
+      handler(val) {
+        val && this._changePage(1)
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    _changePage(pgN) {
+      this.$api.getIdeaList({ userName: this.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
+        this.blogList = res.data
+      })
+    },
+    _deleteIdea(id) {
+      this.$api.deleteIdea({ userName: this.userName, blogDate: id }).then(() => {
+        this.blogList = this.blogList.filter(item => item.blogDate !== id)
+      })
+    },
+    changeIdea(idea) {
+      this.$router.push({ path: '/admin/new', query: { blogDate: idea.blogDate } })
+    },
   }
+}
 </script>
 

@@ -23,64 +23,64 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
-  export default{
-    name: 'LoginDialog',
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      }
+export default{
+  name: 'LoginDialog',
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data: () => ({
+    tab: 'login',
+    form: {
+      userName: '',
+      userPwd: ''
     },
-    data: () => ({
-      tab: 'login',
-      form: {
-        userName: '',
-        userPwd: ''
-      },
-      rules: {
-        userName: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
-        ],
-        userPwd: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
-        ]
-      }
-    }),
-    computed: {
-      isLogin() {
-        return this.tab === 'login'
-      },
-      buttonLabel () {
-        return this.isLogin ? 'LOG IN' : 'SIGN UP'
-      }
+    rules: {
+      userName: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
+      ],
+      userPwd: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
+      ]
+    }
+  }),
+  computed: {
+    isLogin() {
+      return this.tab === 'login'
     },
-    methods: {
-      ...mapActions([
-        'login',
-      ]),
-      handleClose () {
-        this.$refs['form'].resetFields()
-        this.$emit('close')
-      },
-      async sendType () {
-        if (this.isLogin) {
-          await this.login(this.form)
-        } else {
-          await this.$api.createUser(this.form)
-        }
-        this.handleClose()
-      },
-      sendRequest () {
-        this.$refs['form'].validate(valid => {
-          if (valid) this.sendType()
-        })
+    buttonLabel () {
+      return this.isLogin ? 'LOG IN' : 'SIGN UP'
+    }
+  },
+  methods: {
+    ...mapActions([
+      'login',
+    ]),
+    handleClose () {
+      this.$refs['form'].resetFields()
+      this.$emit('close')
+    },
+    async sendType () {
+      if (this.isLogin) {
+        await this.login(this.form)
+      } else {
+        await this.$api.createUser(this.form)
       }
+      this.handleClose()
+    },
+    sendRequest () {
+      this.$refs['form'].validate(valid => {
+        if (valid) this.sendType()
+      })
     }
   }
+}
 </script>
 
 <style scoped>

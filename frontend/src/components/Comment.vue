@@ -44,111 +44,109 @@
 </template>
 
 <script>
-  import ClipboardJS from 'clipboard'
-  import { mapGetters, mapActions } from 'vuex'
-  import Collect from './Collect'
+import ClipboardJS from 'clipboard'
+import { mapGetters, mapActions } from 'vuex'
+import Collect from './Collect'
 
-  export default {
-    name: 'Comment',
-    components:{
-      Collect,
+export default {
+  name: 'Comment',
+  components: {
+    Collect,
+  },
+  props: {
+    commentList: {
+      type: Array,
+      default: () => []
     },
-    props: {
-      commentList: {
-        type: Array,
-        default: () => []
-      },
-      blogDate: {
-        type: String
-      },
-      user: {
-        type: String
-      },
-      blogTitle: {
-        type: String
-      },
-      likeCount: {
-        type: Number
-      }
+    blogDate: {
+      type: String
     },
-    data: () => ({
-      textarea: '',
-      showLoading: false,
-      collectDialogVisible:false,
+    user: {
+      type: String
+    },
+    blogTitle: {
+      type: String
+    },
+    likeCount: {
+      type: Number
+    }
+  },
+  data: () => ({
+    textarea: '',
+    showLoading: false,
+    collectDialogVisible: false,
+  }),
+  computed: {
+    ...mapGetters({
+      likeList: 'likeList',
+      currentUser: 'userName'
     }),
-    computed: {
-      ...mapGetters({
-        likeList: 'likeList',
-        currentUser: 'userName'
-      }),
-      likeIt () {
-        return this.likeList
-          ? this.likeList.some(item => item.author === this.user && item.blogDate === this.blogDate)
-          : false
+    likeIt() {
+      return this.likeList
+        ? this.likeList.some(item => item.author === this.user && item.blogDate === this.blogDate)
+        : false
+    }
+  },
+  mounted() {
+    const clipboard = new ClipboardJS('.share', {
+      text: () => `${this.user}'s blog: ${this.blogTitle} ${location.href}`
+    })
+    clipboard.on('success', e => {
+      const title = encodeURIComponent(this.blogTitle)
+      window.open(`https://twitter.com/share?text=${title}&url=${location.href}`)
+      e.clearSelection()
+    })
+  },
+  methods: {
+    ...mapActions([
+      'likethis'
+    ]),
+    collect() {
+      if (!this.currentUser) {
+        this.$message.error('请登录:)')
+        return false
+      }
+      this.collectDialogVisible = true
+    },
+    closeCollect() {
+      this.collectDialogVisible = false
+    },
+    async like() {
+      const res = await this.likethis({
+        blogDate: this.blogDate,
+        blogTitle:this.blogTitle,
+        userName: this.user,
+        user: this.currentUser,
+        flag: this.likeIt
+      })
+      if (res && res.errno === 0) {
+        this.$emit('update:likeCount', res.data.count)
       }
     },
-    mounted() {
-      const clipboard = new ClipboardJS('.share', {
-        text: () => `${this.user}'s blog: ${this.blogTitle} ${location.href}`
+    async send() {
+      if (!this.currentUser) {
+        this.$message.error('请登录:)')
+        return false
+      }
+      if (this.textarea.trim().length < 3) {
+        this.$message.error('评论长度不足:(')
+        return false
+      }
+      this.showLoading = true
+      const res = await this.$api.postComment({
+        blogDate: this.blogDate,
+        userName: this.user,
+        user: this.currentUser,
+        text: this.textarea,
+        date: new Date().toLocaleString('zh', { hour12: false })
       })
-      clipboard.on('success', e => {
-        const title = encodeURIComponent(this.blogTitle)
-        window.open(`https://twitter.com/share?text=${title}&url=${location.href}`)
-        e.clearSelection()
-      })
-    },
-    methods: {
-      ...mapActions([
-        'likethis'
-      ]),
-      collect () {
-        if (!this.currentUser) {
-          this.$message.error('请登录:)')
-          return false
-        }
-        this.collectDialogVisible = true
-      },
-      closeCollect(){
-        this.collectDialogVisible = false
-      },
-      like () {
-        this.likethis({
-          blogDate: this.blogDate,
-          blogTitle:this.blogTitle,
-          userName: this.user,
-          user: this.currentUser,
-          flag: this.likeIt
-        }).then(res => {
-          if (res && res.errno === 0) {
-            this.$emit('update:likeCount', res.data.count)
-          }
-        })
-      },
-      send () {
-        if (!this.currentUser) {
-          this.$message.error('请登录:)')
-          return false
-        }
-        if (this.textarea.trim().length < 3) {
-          this.$message.error('评论长度不足:(')
-          return false
-        }
-        this.showLoading = true
-        this.$api.postComment({
-          blogDate: this.blogDate,
-          userName: this.user,
-          user: this.currentUser,
-          text: this.textarea,
-          date: new Date().toLocaleString('zh', { hour12: false })
-        }).then(res => {
-          this.showLoading = false
-          if (res.errno === 0) {
-            this.$emit('commitSuccess')
-          }
-        })
+      this.showLoading = false
+      if (res.errno === 0) {
+        this.$emit('commitSuccess')
       }
     }
   }
+}
 </script>
 
 <style scoped lang="less">

@@ -59,55 +59,55 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
-  export default {
-    name: 'Collect',
-    props: ['visible'],
-    computed: {
-      ...mapGetters(['userName', 'collectList'])
+export default {
+  name: 'Collect',
+  props: ['visible'],
+  computed: {
+    ...mapGetters(['userName', 'collectList'])
+  },
+  data: () => ({
+    isCreate: false,
+    form: {
+      type: 'public',
+      title: '',
+      desc: ''
     },
-    data: () => ({
-      isCreate: false,
-      form: {
-        type: 'public',
-        title: '',
-        desc: ''
-      },
-      rule: {
-        title: [
-          { required: true, message: '请输收藏夹名称', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-        ]
-      }
-    }),
-    methods:{
-      ...mapActions(['createCollectList', 'addToCollectList']),
-      collect(title) {
-        const { user,id } = this.$route.params
-        this.addToCollectList({
-          userName: this.userName,
-          author: user,
-          blogDate: id,
-          collect: title
+    rule: {
+      title: [
+        { required: true, message: '请输收藏夹名称', trigger: 'blur' },
+        { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+      ]
+    }
+  }),
+  methods: {
+    ...mapActions(['createCollectList', 'addToCollectList']),
+    collect(title) {
+      const { user,id } = this.$route.params
+      this.addToCollectList({
+        userName: this.userName,
+        author: user,
+        blogDate: id,
+        collect: title
+      })
+    },
+    submit() {
+      this.$refs['form'].validate(valid => {
+        if (!valid) return
+        this.createCollectList({ ...this.form, userName: this.userName }).then(() => {
+          this.isCreate = false
         })
-      },
-      submit(){
-        this.$refs['form'].validate(valid => {
-          if (!valid) return
-          this.createCollectList({ ...this.form, userName: this.userName }).then(() => {
-            this.isCreate = false
-          })
-        })
-      },
-      createCollect() {
-        this.isCreate = true
-      },
-      back() {
-        this.isCreate = false
-      }
+      })
+    },
+    createCollect() {
+      this.isCreate = true
+    },
+    back() {
+      this.isCreate = false
     }
   }
+}
 </script>
 
 <style scoped lang="less">

@@ -47,134 +47,134 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import ClipboardJS from 'clipboard'
-  import { formatDate } from '@/lib/lib'
-  import debounce from 'lodash/debounce'
+import ClipboardJS from 'clipboard'
+import { formatDate } from '@/lib/lib'
+import debounce from 'lodash/debounce'
 
-  export default{
-    props: ['users'],
-    data: () => ({
-      rules: {
-        blogTitle: [
-          { required: true, message: '请输入文章标题', trigger: 'blur' },
-          { min: 4, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
-        ]
-      },
-      idea: {
-        blogTitle: '',
-        blogDate: '',
-        blogContent: '',
-        blogType: 'public'
-      },
-      dialogVisible: false,
-      imgPath: '',
-      fileList: []
-    }),
-    computed: {
-      compiledMarkdown() {
-        if (!marked || !this.idea.blogContent) return ''
-        return marked(this.idea.blogContent, { sanitize: true })
-      },
-      blogDate() {
-        return this.$route.query.blogDate
-      }
+export default{
+  props: ['users'],
+  data: () => ({
+    rules: {
+      blogTitle: [
+        { required: true, message: '请输入文章标题', trigger: 'blur' },
+        { min: 4, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
+      ]
     },
-    methods: {
-      clearForm() {
-        this.idea.blogTitle = ''
-        this.idea.blogContent = ''
-        this.idea.blogType = 'public'
-      },
-      // 文件上传
-      upload() {
-        let formData = new FormData()
-        formData.append('file', this.file)
-        this.$api.upload(formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'userName': this.users.userName
-          }
-        }).then(res => {
-          if (res.data) {
-            this.imgPath = res.data
-          }
-        })
-      },
-      beforeAvatarUpload(file) {
-        const isImage = file.type.includes('image')
-        const isLt4M = file.size / 1024 / 1024 < 4
-        if (!isImage) {
-          this.$message.error('只能上传图片')
-          return false
-        }
-        if (!isLt4M) {
-          this.$message.error('上传图片大小不能超过 4MB!')
-          return false
-        }
-        this.file = file
-        return true
-      },
-      closeDialog() {
-        this.dialogVisible = false
-        this.fileList = []
-        this.imgPath = ''
-      },
-      openDialog() {
-        this.dialogVisible = true
-      },
-      update: debounce(function(e) {
-        let key = this.blogDate ? `article${this.blogDate}` : 'manuscript'
-        localStorage.setItem(key, JSON.stringify(this.idea))
-        this.idea.blogContent = e.target.value
-      }, 300),
-      sendIdea () {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            if (this.idea.blogContent === '') {
-              this.$message.error('文章内容不能为空')
-            } else {
-              this._send()
-            }
-          }
-        })
-      },
-      async _send () {
-        const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
-        if (this.blogDate) {
-          await this.$api.changeIdea({ userName: this.users.userName, ...this.idea })
-        } else {
-          this.idea.blogDate = formatDate()
-          await this.$api.createNewIdea({ userName: this.users.userName, ...this.idea })
-        }
-        this.clearForm()
-        localStorage.removeItem(cacheKey)
-      },
+    idea: {
+      blogTitle: '',
+      blogDate: '',
+      blogContent: '',
+      blogType: 'public'
     },
-    created() {
-      const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
-      const cache = localStorage.getItem(cacheKey)
+    dialogVisible: false,
+    imgPath: '',
+    fileList: []
+  }),
+  computed: {
+    compiledMarkdown() {
+      if (!marked || !this.idea.blogContent) return ''
+      return marked(this.idea.blogContent, { sanitize: true })
+    },
+    blogDate() {
+      return this.$route.query.blogDate
+    }
+  },
+  created() {
+    const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+    const cache = localStorage.getItem(cacheKey)
 
-      if (cache) {
-        this.idea = JSON.parse(cache)
-        this.$notify({
-          title: '提示',
-          message: '已采用缓存中的内容',
-          duration: 2000,
-        })
-      } else if (this.blogDate) {
-        this.$api.getIdea({ userName: this.users.userName, blogDate: this.blogDate }).then(res => {
-          this.idea = res.data
-        })
-      }
-    },
-    mounted() {
-      const clipboardInstance = new ClipboardJS('.copy-btn')
-      clipboardInstance.on('success', e => {
-        this.$message.success('已复制到粘贴板')
-        e.clearSelection()
+    if (cache) {
+      this.idea = JSON.parse(cache)
+      this.$notify({
+        title: '提示',
+        message: '已采用缓存中的内容',
+        duration: 2000,
+      })
+    } else if (this.blogDate) {
+      this.$api.getIdea({ userName: this.users.userName, blogDate: this.blogDate }).then(res => {
+        this.idea = res.data
       })
     }
-  }
+  },
+  mounted() {
+    const clipboardInstance = new ClipboardJS('.copy-btn')
+    clipboardInstance.on('success', e => {
+      this.$message.success('已复制到粘贴板')
+      e.clearSelection()
+    })
+  },
+  methods: {
+    clearForm() {
+      this.idea.blogTitle = ''
+      this.idea.blogContent = ''
+      this.idea.blogType = 'public'
+    },
+    // 文件上传
+    upload() {
+      let formData = new FormData()
+      formData.append('file', this.file)
+      this.$api.upload(formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'userName': this.users.userName
+        }
+      }).then(res => {
+        if (res.data) {
+          this.imgPath = res.data
+        }
+      })
+    },
+    beforeAvatarUpload(file) {
+      const isImage = file.type.includes('image')
+      const isLt4M = file.size / 1024 / 1024 < 4
+      if (!isImage) {
+        this.$message.error('只能上传图片')
+        return false
+      }
+      if (!isLt4M) {
+        this.$message.error('上传图片大小不能超过 4MB!')
+        return false
+      }
+      this.file = file
+      return true
+    },
+    closeDialog() {
+      this.dialogVisible = false
+      this.fileList = []
+      this.imgPath = ''
+    },
+    openDialog() {
+      this.dialogVisible = true
+    },
+    update: debounce(function(e) {
+      const key = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+      localStorage.setItem(key, JSON.stringify(this.idea))
+      this.idea.blogContent = e.target.value
+    }, 300),
+    sendIdea () {
+      this.$refs['form'].validate(valid => {
+        if (valid) {
+          if (this.idea.blogContent === '') {
+            this.$message.error('文章内容不能为空')
+          } else {
+            this._send()
+          }
+        }
+      })
+    },
+    async _send () {
+      const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+      if (this.blogDate) {
+        await this.$api.changeIdea({ userName: this.users.userName, ...this.idea })
+      } else {
+        this.idea.blogDate = formatDate()
+        await this.$api.createNewIdea({ userName: this.users.userName, ...this.idea })
+      }
+      this.clearForm()
+      localStorage.removeItem(cacheKey)
+    },
+  },
+}
 </script>
 
 <style scoped lang="less">

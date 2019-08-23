@@ -133,7 +133,7 @@ export default {
       this.socketRecvMsg(data)
     }
   },
-  watch:{
+  watch: {
     userName: {
       handler(val) {
         if (!val) return
@@ -154,7 +154,7 @@ export default {
       })
     }
   },
-  methods:{
+  methods: {
     ...mapActions([
       'socketSendMsg',
       'socketRecvMsg',
@@ -184,35 +184,35 @@ export default {
       }
       this.emitMsg(this.msg)
     },
-    sendPicture() {
+    async sendPicture() {
       const formData = new FormData()
       formData.append('chat', this.file)
-      this.$api.uploadChatPic(formData, {
+
+      const res = await this.$api.uploadChatPic(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'userName': this.userName
         }
-      }).then(res => {
-        if (res.data) {
-          const content = `<img src="${res.data}" style="width:100%;height:100%" />`
-          this.emitMsg(content)
-        }
       })
+      if (res.data) {
+        const content = `<img src="${res.data}" style="width:100%;height:100%" alt=""/>`
+        this.emitMsg(content)
+      }
     },
-    sendVoice(){
+    async sendVoice() {
       const formData = new FormData()
       formData.append('audio', this.audio)
-      this.$api.uploadVoiceMsg(formData, {
+
+      const res = await this.$api.uploadVoiceMsg(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'userName': this.userName
         }
-      }).then(res => {
-        if (res.data) {
-          const content = `[media]${res.data}`
-          this.emitMsg(content)
-        }
       })
+      if (res.data) {
+        const content = `[media]${res.data}`
+        this.emitMsg(content)
+      }
     },
     setCurrentChatUser(user) {
       !user.avatar && (user.avatar = '/calabash32.png')

@@ -60,7 +60,7 @@ workbox.routing.registerRoute(
 );
 // Cache API
 workbox.routing.registerRoute(
-  /api/,
+  /^https:\/\/blog\.calabash\.top\/api/,
   new workbox.strategies.NetworkFirst({
     cacheName: 'calabash-blog-api',
     networkTimeoutSeconds: 7,

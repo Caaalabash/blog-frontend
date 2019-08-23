@@ -37,6 +37,10 @@ module.exports = {
     avatarPath: '/blog-media/avatar',
     audioPath: '/blog-media/audio'
   },
+  ipService: {
+    path: 'http://iploc.market.alicloudapi.com/v3/ip',
+    token: `APPCODE ${process.env.IP_SERVICE_TOKEN}`
+  },
   isProd
 }
 

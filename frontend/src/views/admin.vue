@@ -17,44 +17,44 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
-  export default{
-    name: 'admin',
-    data: () => ({
-      innerWidth: window.innerWidth,
-      menu: []
-    }),
-    computed: {
-      ...mapGetters([
-        'users',
-      ]),
-      isCollapse() {
-        return this.innerWidth <= 480
-      },
+export default {
+  name: 'admin',
+  data: () => ({
+    innerWidth: window.innerWidth,
+    menu: []
+  }),
+  computed: {
+    ...mapState([
+      'users',
+    ]),
+    isCollapse() {
+      return this.innerWidth <= 480
     },
-    created() {
-      this.$api.getMenu().then(res => {
-        this.menu = res.data
-        if (!this.menu.length) this.$router.replace({ path: `/error?code=403` })
-      })
+  },
+  created() {
+    this.$api.getMenu().then(res => {
+      this.menu = res.data
+      if (!this.menu.length) this.$router.replace({ path: `/error?code=403` })
+    })
+  },
+  methods: {
+    ...mapActions(['logout']),
+    handleResize() {
+      this.innerWidth = window.innerWidth
     },
-    methods: {
-      ...mapActions(['logout']),
-      handleResize() {
-        this.innerWidth = window.innerWidth
-      },
-      handleClick(item) {
-        if (item.path) {
-          this.$router.push(item.path)
-        } else if (item.label === '注销') {
-          this.logout({ userName: this.users.userName })
-        } else if (item.label === '返回首页'){
-          this.$router.push(`/${this.users.userName}`)
-        }
-      },
+    handleClick(item) {
+      if (item.path) {
+        this.$router.push(item.path)
+      } else if (item.label === '注销') {
+        this.logout({ userName: this.users.userName })
+      } else if (item.label === '返回首页') {
+        this.$router.push(`/${this.users.userName}`)
+      }
     },
-  }
+  },
+}
 </script>
 
 <style scoped lang="less">
@@ -62,20 +62,20 @@
     width: 200px;
     min-height: 400px;
   }
-  .manage-container{
+  .manage-container {
     display: flex;
     width: 100%;
     height: 100%;
   }
-  .manage-left{
+  .manage-left {
     flex:0 0 64px;
     height: 100%;
     border-right: 1px solid #c9c9c9;
   }
-  .manage-right{
+  .manage-right {
     flex:1 1 900px;
     margin: 20px 30px 0 30px;
-    @media (max-width: 480px){
+    @media (max-width: 480px) {
       flex:0 0 100%;
       margin: 10px 10px 0 10px;
     }

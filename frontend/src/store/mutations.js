@@ -15,7 +15,7 @@ const mutations = {
   },
   [types.LOG_OUT](state) {
     const initState = state.initState()
-    for (const key in initState) {
+    for (const key of Object.keys(initState)) {
       state[key] = initState[key]
     }
   },

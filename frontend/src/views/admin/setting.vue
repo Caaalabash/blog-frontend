@@ -128,7 +128,7 @@
 <script type="text/ecmascript-6">
 import { mapActions, mapGetters } from 'vuex'
 
-export default{
+export default {
   name: 'setting',
   props: ['innerWidth'],
   data: () => ({
@@ -195,7 +195,7 @@ export default{
       formData.append('avatar', this.file)
       this.setAvatar(formData)
     },
-    deleteLike(obj){
+    deleteLike(obj) {
       this.likethis({
         blogDate: obj.blogDate,
         blogTitle: obj.blogTitle,
@@ -203,13 +203,13 @@ export default{
         user: this.userName,
       })
     },
-    _deleteCollect(obj){
+    _deleteCollect(obj) {
       this.deleteCollect({
         userName: this.userName,
         collectTitle: obj.collectTitle
       })
     },
-    _deleteCollectBlog(obj, obj1){
+    _deleteCollectBlog(obj, obj1) {
       this.deleteCollectBlog({
         blogDate: obj1.blogDate,
         collectTitle: obj.collectTitle,

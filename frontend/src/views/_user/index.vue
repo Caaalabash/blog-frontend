@@ -15,56 +15,56 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { formatDateEng } from '@/lib/lib'
+import { formatDateEng } from '@/lib/lib'
 
-  export default{
-    name: 'BlogBody',
-    props: ['user'],
-    data: () => ({
-      busy: false,
-      pgN: 1,
-      pgS: 8,
-      stickyPgS: 3,
-      blogList: [],
-    }),
-    watch: {
-      user: 'initBlogList'
+export default{
+  name: 'BlogBody',
+  props: ['user'],
+  data: () => ({
+    busy: false,
+    pgN: 1,
+    pgS: 8,
+    stickyPgS: 3,
+    blogList: [],
+  }),
+  watch: {
+    user: 'initBlogList'
+  },
+  filters: {
+    formatDateEng
+  },
+  created () {
+    this.initBlogList()
+  },
+  methods: {
+    getCurrentArticleList(page) {
+      return this.blogList.slice((page - 1) * this.pgS, page * this.pgS)
     },
-    filters: {
-      formatDateEng
-    },
-    methods: {
-      getCurrentArticleList(page) {
-        return this.blogList.slice((page - 1) * this.pgS, page * this.pgS)
-      },
-      async initBlogList() {
-        const [stickyBlogResp, publicBlogResp] = await Promise.all([
-          this.$api.getIdeaList({ userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS }),
-          this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: 1, pgS: this.pgS })
-        ])
-        if (stickyBlogResp.data && publicBlogResp.data) {
-          this.blogList = this.blogList.concat(stickyBlogResp.data, publicBlogResp.data)
-        }
-        if (!this.blogList.length) this.$router.push('/Calabash')
-      },
-      async loadMore () {
-        if (this.busy) {
-          this.$message.info('没有更多啦!')
-          return false
-        }
-        const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: this.pgN + 1, pgS: this.pgS })
-        this.blogList = this.blogList.concat(res.data)
-        this.pgN += 1
-        this.busy = (res.data.length < this.pgS)
-      },
-      handleObserver(el, status) {
-        status && this.loadMore()
+    async initBlogList() {
+      const [stickyBlogResp, publicBlogResp] = await Promise.all([
+        this.$api.getIdeaList({ userName: this.user, type: 'sticky', pgN: 1, pgS: this.stickyPgS }),
+        this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: 1, pgS: this.pgS })
+      ])
+      if (stickyBlogResp.data && publicBlogResp.data) {
+        this.blogList = this.blogList.concat(stickyBlogResp.data, publicBlogResp.data)
       }
+      if (!this.blogList.length) this.$router.push('/Calabash')
     },
-    created () {
-      this.initBlogList()
+    async loadMore () {
+      if (this.busy) {
+        this.$message.info('没有更多啦!')
+        return false
+      }
+      const res = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: this.pgN + 1, pgS: this.pgS })
+      this.blogList = this.blogList.concat(res.data)
+      this.pgN += 1
+      this.busy = (res.data.length < this.pgS)
     },
-  }
+    handleObserver(el, status) {
+      status && this.loadMore()
+    }
+  },
+}
 </script>
 
 <style scoped lang="less">

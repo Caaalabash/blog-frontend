@@ -1,6 +1,9 @@
+const axios = require('axios')
+
 module.exports = app => {
   const { articleModel, logModel } = app.model
   const { response, redisTool, getDate } = app.helper
+  const { ipService } = app.app_config
   const ONE_DAY = 1000 * 60 * 60 * 24
   const TEN_MINUTES = 1000 * 60 * 10
   const TOTAL_VIEW_COUNT = 'total_view_count'
@@ -54,7 +57,39 @@ module.exports = app => {
     },
     async getIP(req, res) {
       const date = req.query.date
-      const result = await redisTool.getIpLog(date)
+      const IPLogs = await redisTool.getIpLog(date)
+
+      const result = []
+      // result数据结构为"ip-time-path"
+      // 1. 取出所有ip并去重
+      const ipList = [...new Set(IPLogs.reduce((acc, record) => {
+        acc.push(record.split('-')[0])
+        return acc
+      }, []))]
+      // 2. 通过第三方接口获取这些ip的地址
+      const locationList = await Promise.all(
+        ipList.map(ip => {
+          return axios.get(`${ipService.path}?ip=${ip}`, {
+            headers: {
+              Authorization: ipService.token
+            }
+          })
+        })
+      )
+      locationList.map(({ data }, index) => {
+        const address = data.status === '1'
+            ? `${data.province}-${data.city}`
+            : `海外-海外`
+        result.push({ ip: ipList[index], address, list: [] })
+      })
+      // 3. 分离出所有请求
+      IPLogs.forEach(item => {
+        const [ip, date, path] = item.split('-')
+        const source = result.find(item => item.ip === ip)
+        if (source) {
+          source.list.push({ date, path })
+        }
+      })
 
       return res.json(response(0, result, ''))
     },
