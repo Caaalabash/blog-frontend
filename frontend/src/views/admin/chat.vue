@@ -134,23 +134,25 @@ export default {
     }
   },
   watch:{
+    userName: {
+      handler(val) {
+        if (!val) return
+        this.$api.getChatList({ user: this.userName }).then(res => {
+          if (res.errno === 0) {
+            this.chatList = res.data
+            this.setCurrentChatUser(this.chatList[0])
+          }
+        })
+        this.$socket.emit('online', this.userName)
+      },
+      immediate: true
+    },
     message() {
       this.$nextTick(() => {
         const el = document.getElementById('chat-content')
         el.scrollTop = el.scrollHeight
       })
     }
-  },
-  created() {
-    this.$api.getChatList({ user: this.userName }).then(res => {
-      if (res.errno === 0) {
-        this.chatList = res.data
-        this.setCurrentChatUser(this.chatList[0])
-      }
-    })
-  },
-  mounted() {
-    this.$socket.emit('online', this.userName)
   },
   methods:{
     ...mapActions([
