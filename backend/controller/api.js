@@ -151,11 +151,24 @@ module.exports = app => {
       }
       // 中英文换行
       if (type === splitEnglish) {
-        data = list.map(row => {
-          // 不转换不包含中文的数据
-          if (!/[\u4e00-\u9fa5]/.test(row)) return row
-          return row.replace(/(.*[\u4e00-\u9fa5])/g, '$1\n')
-        }).map(row => row.trim()).join('\n')
+        const containChs = str => /[\u4e00-\u9fa5]/.test(str)
+        const containEn = str => /[a-zA-Z]/.test(str)
+
+        let result = []
+        for (let i = 0, len = list.length; i < len; i++) {
+          if (!containChs(list[i]) && !containEn(list[i])) {
+            result.push(list[i])
+          } else {
+            const j = i + 1
+            // 如果下一行全是英文, 当前行就不需要换行
+            if (j < len && list[j] !== '' && !containChs[list[j]]) {
+              result.push(list[i])
+            } else {
+              result.push(...list[i].split(/(.*[\u4e00-\u9fa5])/g).filter(Boolean))
+            }
+          }
+        }
+        data = result.map(row => row.trim()).join('\n')
       }
       return res.json(response(0, { content: data, deleteList: deleteList.join('\n') }, ''))
     }
