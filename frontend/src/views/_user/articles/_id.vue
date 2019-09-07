@@ -4,7 +4,7 @@
     <article class="article">
       <h1 class="title">{{ idea.blogTitle }}</h1>
       <h3 class="date" >{{ idea.blogDate | formatDateEng }}&nbsp;&nbsp;&nbsp;&nbsp;浏览次数:{{ idea.count }}次</h3>
-      <div class="markdown-body" v-html="compiledMarkdown"></div>
+      <div class="markdown-body" v-marked="idea.blogContent"></div>
       <!--评论区域-->
       <Comment
         :commentList="commentList"
@@ -35,12 +35,6 @@ export default{
     fullScreenLoading: false,
     idea: {},
   }),
-  computed: {
-    compiledMarkdown() {
-      if (!marked || !this.idea.blogContent) return ''
-      return marked(this.idea.blogContent, { sanitize: true })
-    },
-  },
   filters: {
     formatDateEng,
   },

@@ -14,7 +14,7 @@
       <el-form-item class="text">
         <div id="editor" class="post">
           <textarea :value="idea.blogContent" @input="update" class="text-textarea"></textarea>
-          <div v-html="compiledMarkdown" class="text-content markdown-body"></div>
+          <div v-marked="idea.blogContent" class="text-content markdown-body"></div>
         </div>
       </el-form-item>
       <!--按钮区域-->
@@ -71,10 +71,6 @@ export default{
     fileList: []
   }),
   computed: {
-    compiledMarkdown() {
-      if (!marked || !this.idea.blogContent) return ''
-      return marked(this.idea.blogContent, { sanitize: true })
-    },
     blogDate() {
       return this.$route.query.blogDate
     }
