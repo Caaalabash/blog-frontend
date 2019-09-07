@@ -8,26 +8,21 @@
       </el-form-item>
     </el-form>
     <div class="fl-row charts-container">
-      <EChart :options="option0" :auto-resize="true"></EChart>
-      <EChart :options="option1" :auto-resize="true"></EChart>
-      <EChart :options="option2" :auto-resize="true"></EChart>
-      <EChart :options="option3" :auto-resize="true"></EChart>
+      <BaseChart :option="option0"></BaseChart>
+      <BaseChart :option="option1"></BaseChart>
+      <BaseChart :option="option2"></BaseChart>
+      <BaseChart :option="option3"></BaseChart>
     </div>
   </div>
 </template>
 
 <script>
-import EChart from 'vue-echarts/components/ECharts.vue'
-import 'echarts/lib/chart/line'
-import 'echarts/lib/chart/pie'
-import 'echarts/lib/component/toolbox'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/title'
+import BaseChart from '@/components/BaseChart.vue'
 
 export default {
   name: 'Chart',
   components: {
-    EChart
+    BaseChart
   },
   props: {
     addressData: {
@@ -94,7 +89,7 @@ export default {
           yAxis: [{
             type: 'value',
             axisLabel: {
-              formatter: '{value} ms'
+              formatter: '{value}'
             }
           }],
           series: [{
