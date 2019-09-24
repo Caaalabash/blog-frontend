@@ -33,7 +33,7 @@ export default {
   name: 'maxeano',
   data: () => ({
     form: {
-      type: '1',
+      type: '4',
       content: ''
     },
     result: '',
