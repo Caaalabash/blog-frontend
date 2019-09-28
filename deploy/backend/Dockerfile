@@ -2,6 +2,8 @@ FROM node:lts-alpine
 
 LABEL maintainer=Caaalabash
 
+EXPOSE 8887
+
 WORKDIR /app/backend
 
 ADD ./deploy/backend/node_modules.tar.gz /app

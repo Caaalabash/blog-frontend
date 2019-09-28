@@ -8,13 +8,12 @@
  * 6. OSS上传路径配置
  * 7. 当前环境
  */
-
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   redis: {
     port: 6379,
-    host: isProd ? process.env.BLOG_REDIS_HOST : '127.0.0.1',
+    host: isProd ? 'dockerhost' : '127.0.0.1',
     password: isProd ? process.env.BLOG_REDIS_PWD : ''
   },
   upload: {
@@ -22,7 +21,7 @@ module.exports = {
     img: isProd ? '/data/img/' : process.cwd(),
   },
   mongodb: {
-    url: isProd ? 'mongodb://myMongoDB:27017/blog' : 'mongodb://127.0.0.1:27017/blog'
+    url: isProd ? 'mongodb://dockerhost:27017/blog' : 'mongodb://127.0.0.1:27017/blog'
   },
   sessionSecret: isProd ? process.env.JWT_SECRET : 'Calabash_Blog',
   alioss: {
