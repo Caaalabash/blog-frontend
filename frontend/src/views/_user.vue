@@ -1,21 +1,19 @@
 <template>
   <main class="index-layout">
-    <BlogHeader :user="user" :infoList="infoList" @open="openDialog" />
     <router-view class="index-layout-content" />
+    <div class="invisible-login" @click="openDialog"></div>
     <LoginDialog :visible="showLoginDialog" @close="closeDialog" />
   </main>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { mapState } from 'vuex'
-import BlogHeader from '@/components/BlogHeader'
 import LoginDialog from '@/components/LoginDialog'
 
 export default {
   name: 'index',
   props: ['user'],
   components: {
-    BlogHeader,
     LoginDialog
   },
   data: () => ({
@@ -56,24 +54,14 @@ export default {
 </script>
 
 <style lang="less">
-  .index-layout {
-    padding: 58px 0 24px;
-    background-color: rgb(82, 86, 89);
-    &-content {
-      box-sizing: border-box;
-      width: 720px;
-      min-height: calc(100vh - 82px);
-      margin: 0 auto;
-    }
+  .index-layout-content {
+    box-sizing: border-box;
   }
-  @media (max-width: 768px) {
-    .index-layout {
-      padding: 58px 10px 10px;
-      &-content {
-        box-sizing: border-box;
-        width: 100%;
-        min-height: calc(100vh - 68px);
-      }
-    }
+  .invisible-login {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
   }
 </style>

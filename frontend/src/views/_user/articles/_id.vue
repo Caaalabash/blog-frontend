@@ -1,69 +1,60 @@
 <template>
-  <div class="blog-content" v-loading="fullScreenLoading">
-    <!--文章内容区域-->
+  <div class="blog-content" v-loading="!visible">
+    <!-- 文章内容区域 -->
     <article class="article">
-      <h1 class="title">{{ idea.blogTitle }}</h1>
-      <h3 class="date" >{{ idea.blogDate | formatDateEng }}&nbsp;&nbsp;&nbsp;&nbsp;浏览次数:{{ idea.count }}次</h3>
+      <h1 class="title" @click="$router.push('/')">{{ idea.blogTitle }}</h1>
       <div class="markdown-body" v-marked="idea.blogContent"></div>
-      <!--评论区域-->
-      <Comment
-        :commentList="commentList"
-        :blogDate="idea.blogDate"
-        :user="user"
-        :blogTitle="idea.blogTitle"
-        :likeCount.sync="idea.likeCount"
-        @commitSuccess="getComment"
-      />
     </article>
-    <!--翻页按钮-->
-    <a class="nav prev" @click.prevent="openOtherBlogs(idea.lastBlogDate)"><i class="iconfont icon-left"></i>上一篇</a>
-    <a class="nav next" @click.prevent="openOtherBlogs(idea.nextBlogDate)">下一篇<i class="iconfont icon-right"></i></a>
+    <!-- 翻页 -->
+    <div class="turn-page prev" @click="turnTo(idea.lastBlogDate)" v-show="idea.lastBlogDate">
+      <i class="iconfont icon-left"></i>
+    </div>
+    <div class="turn-page next" @click="turnTo(idea.nextBlogDate)" v-show="idea.nextBlogDate">
+      <i class="iconfont icon-right"></i>
+    </div>
+    <!-- 评论区域 -->
+    <div id="comments"></div>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-import { formatDateEng } from '@/lib/lib'
-import Comment from '@/components/Comment.vue'
+<script>
+import 'gitalk/dist/gitalk.css'
+import Gitalk from 'gitalk'
 
-export default{
+export default {
   props: ['id', 'user'],
-  components: {
-    Comment
-  },
   data: () => ({
-    commentList: [],
-    fullScreenLoading: false,
+    visible: false,
     idea: {},
   }),
-  filters: {
-    formatDateEng,
-  },
   watch: {
-    '$route': 'getIdea'
+    id: 'getIdea'
   },
   created() {
     this.getIdea()
   },
   methods: {
-    getIdea() {
-      this.fullScreenLoading = true
-      this.$api.getIdea({ userName: this.user, blogDate: this.id }).then(res => {
-        this.idea = res.data
-        this.fullScreenLoading = false
-        this.getComment()
-      })
+    async getIdea() {
+      this.visible = false
+      const articleResp = await this.$api.getIdea({ userName: this.user, blogDate: this.id })
+      this.idea = articleResp.data
+      this.visible = true
+      this.initGitalk()
     },
-    getComment() {
-      this.$api.getComment({ blogDate: this.id, userName: this.user }).then(res => {
-        this.commentList = res.data
+    initGitalk() {
+      const gitalk = new Gitalk({
+        id: this.idea.blogDate,
+        owner: 'Caaalabash',
+        admin: ['Caaalabash'],
+        repo: 'blog-comment-database',
+        clientID: '6da65a95a5a6ffe0a6f5',
+        clientSecret: 'd4dc4e5882e7abbe86d40e953e4fdf3f8a3c5935',
+        distractionFreeMode: false
       })
+      gitalk.render('comments')
     },
-    openOtherBlogs(value) {
-      if (value && value !== '0') {
-        this.$router.push(`${value}`)
-      } else {
-        this.$message.info('没有啦！')
-      }
+    turnTo(value) {
+      this.$router.push(`${value}`)
     },
   },
 }
@@ -71,86 +62,67 @@ export default{
 
 <style lang="less" scoped>
   .blog-content {
-    box-sizing: border-box;
-    position: relative;
-    padding: 20px 12px;
-    min-height: calc(100vh - 82px);
-    background-color: #fff;
-    .article {
-      position: relative;
-      border-bottom: 1px solid #e6e6e6;
-      .title {
-        margin-bottom: 45px;
-        font-size: 32px;
-        letter-spacing: 1px;
-      }
-      .date {
-        margin: 0 0 30px;
-        font-size: 14px;
-        color: #999;
-        letter-spacing: 1px;
-      }
-      .markdown-body {
-        box-sizing: border-box;
-        padding: 45px 15px;
-      }
+    width: 760px;
+    margin: 40px auto 80px;
+    .title {
+      font-size: 32px;
+      font-weight: 500;
+      margin: 0 0 30px;
+      color: #13022c;
+      text-align: center;
+      line-height: 1.25;
     }
-    .nav {
+    .turn-page {
       position: fixed;
-      bottom: 20px;
-      display: inline-flex;
-      align-items: center;
-      height: 25px;
-      line-height: 25px;
-      color: #fff;
-      opacity: .7;
-      text-decoration: none;
+      top: 50%;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      transform: translateY(-50%);
       cursor: pointer;
-      letter-spacing: 1px;
-      border-bottom: 2px solid transparent;
-      transition: opacity .2s, border-bottom-color .5s;
-      &:hover{
-        opacity: 1;
-        border-bottom-color: #fff;
+      transition: .3s width, height ease;
+      .iconfont {
+        line-height: 50px;
+        font-size: 25px;
+        color: #555;
+      }
+      &:hover {
+        width: 56px;
+        height: 56px;
+        .iconfont {
+          line-height: 56px;
+        }
       }
     }
     .prev {
-      left: 40px;
+      left: -25px;
+      .iconfont {
+        padding-left: 50%;
+        margin-left: -3px;
+      }
+      &:hover {
+        left: -28px
+      }
     }
     .next {
-      right: 40px;
-    }
-  }
-  @media (max-width: 950px) {
-    .blog-content {
-      .nav {
-        position: static;
-        display: inline-block;
-        margin-top: 10px;
-        margin-bottom: 30px;
-        color: #333;
+      right: -25px;
+      .iconfont {
+       padding-left: 5px;
       }
-      .next {
-        float: right;
+      &:hover {
+        right: -28px;
       }
     }
   }
   @media (max-width: 768px) {
     .blog-content {
-      min-height: calc(100vh - 68px);
-      padding-top: 20px;
-      .article {
-        .title {
-          margin-bottom: 25px;
-          font-size: 25px;
-        }
-        .date {
-          margin-bottom: 15px;
-          font-size: 12px;
-        }
-        .markdown-body {
-          padding: 15px;
-        }
+      width: 100%;
+      margin: 20px auto 40px;
+      padding: 0 24px;
+      .title {
+        font-size: 24px;
+        margin: 0 0 20px;
       }
     }
   }

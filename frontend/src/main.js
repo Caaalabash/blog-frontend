@@ -9,6 +9,7 @@ import observerDirective from './directives/observer'
 import markedDirective from './directives/marked'
 import api from './service/apiManage'
 import './registerServiceWorker'
+import '@/assets/js/iconfont.js'
 import {
   Select,
   Option,
