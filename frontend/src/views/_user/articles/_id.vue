@@ -3,6 +3,13 @@
     <!-- 文章内容区域 -->
     <article class="article">
       <h1 class="title" @click="$router.push('/')">{{ idea.blogTitle }}</h1>
+      <div class="article-meta">
+        <span :title="formatTime">
+          <svg class="icon" aria-hidden="true">
+            <use :xlink:href="`#${ChineseTime}`"></use>
+          </svg>
+        </span>
+      </div>
       <div class="markdown-body" v-marked="idea.blogContent"></div>
     </article>
     <!-- 翻页 -->
@@ -13,7 +20,7 @@
       <i class="iconfont icon-right"></i>
     </div>
     <!-- 评论区域 -->
-    <div id="comments"></div>
+    <div id="comments" v-if="visible"></div>
   </div>
 </template>
 
@@ -27,6 +34,34 @@ export default {
     visible: false,
     idea: {},
   }),
+  computed: {
+    ChineseTime() {
+      const map = {
+        '23': 'icon-rat_zi', '00': 'icon-rat_zi',
+        '01': 'icon-ox_chou', '02': 'icon-ox_chou',
+        '03': 'icon-tiger_yin', '04': 'icon-tiger_yin',
+        '05': 'icon-rabbit_mao', '06': 'icon-rabbit_mao',
+        '07': 'icon-dragon_chen', '08': 'icon-dragon_chen',
+        '09': 'icon-snake_si', '10': 'icon-snake_si',
+        '11': 'icon-horse_wu', '12': 'icon-horse_wu',
+        '13': 'icon-goat_wei', '14': 'icon-goat_wei',
+        '15': 'icon-monkey_shen', '16': 'icon-monkey_shen',
+        '17': 'icon-rooster_you', '18': 'icon-rooster_you',
+        '19': 'icon-dog_xu', '20': 'icon-dog_xu',
+        '21': 'icon-boar_hai', '22': 'icon-boar_hai'
+      }
+      return map[this.id.slice(8, 10)]
+    },
+    formatTime() {
+      const Y = this.id.slice(0, 4)
+      const M = this.id.slice(4, 6)
+      const D = this.id.slice(6, 8)
+      const h = this.id.slice(8, 10)
+      const m = this.id.slice(10, 12)
+      const s = this.id.slice(12, 14)
+      return `${Y}-${M}-${D} ${h}:${m}:${s}`
+    },
+  },
   watch: {
     id: 'getIdea'
   },
@@ -39,7 +74,9 @@ export default {
       const articleResp = await this.$api.getIdea({ userName: this.user, blogDate: this.id })
       this.idea = articleResp.data
       this.visible = true
-      this.initGitalk()
+      this.$nextTick(() => {
+        this.initGitalk()
+      })
     },
     initGitalk() {
       const gitalk = new Gitalk({
@@ -71,6 +108,14 @@ export default {
       color: #13022c;
       text-align: center;
       line-height: 1.25;
+    }
+    .article-meta {
+      display: flex;
+      flex-direction: row-reverse;
+      font-size: 25px;
+      .icon {
+        cursor: pointer;
+      }
     }
     .turn-page {
       position: fixed;

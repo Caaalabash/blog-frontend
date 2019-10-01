@@ -11,30 +11,6 @@ export function formatDate() {
   return `${year}${month}${day}${hour}${min}${sec}`
 }
 
-export function formatDateEng(value) {
-  if (!value) return
-  let year = value.substr(0,4),
-    month = value.substr(4,2),
-    day = value.substr(6,2)
-  function formatMonth(month) {
-    switch (month) {
-      case'01': return 'Jan'
-      case'02': return 'Feb'
-      case'03': return 'Mar'
-      case'04': return 'Apr'
-      case'05': return 'May'
-      case'06': return 'June'
-      case'07': return 'July'
-      case'08': return 'Aug'
-      case'09': return 'Sept'
-      case'10': return 'Oct'
-      case'11': return 'Nov'
-      case'12': return 'Dec'
-    }
-  }
-  return `${formatMonth(month)} ${day}, ${year}`
-}
-
 export function timestampToTime(nS) {
   return new Date(parseInt(nS)).toLocaleString('zh',{ hour12: false })
 }

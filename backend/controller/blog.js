@@ -2,7 +2,7 @@ module.exports = app => {
   const { userModel, articleModel } = app.model
   const { response, redisTool, getUserProp } = app.helper
   const TEN_MINUTES = 10 * 60 * 1000
-  const NO_MORE = '0'
+  const NO_MORE = ''
 
   return {
     async createBlog(req, res) {
