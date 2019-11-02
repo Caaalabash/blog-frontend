@@ -12,7 +12,6 @@ module.exports = app => {
   router.get('/pv', apiController.getPvLog)
   router.get('/ip', apiController.getIP)
   router.get('/analyzeBlogDate', apiController.analyzeBlogDate)
-  router.post('/sendMyLove', apiController.sendMyLove)
 
   return router
 }
