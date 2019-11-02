@@ -6,7 +6,7 @@
         <a href="/"><img class="avatar" src="@/assets/img/avatar.jpg" alt="avatar"></a>
         <div class="info">
           <h3 class="title">blog.calabash.top</h3>
-          <div class="text">How are you?</div>
+          <div class="text">I'm fine. Thank you!</div>
         </div>
       </div>
     </div>

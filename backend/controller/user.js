@@ -41,7 +41,6 @@ module.exports = app => {
         { path: '/admin/new', icon: 'el-icon-edit-outline', label: '发布文章' },
         { path: '/admin/articles', icon: 'el-icon-search', label: '管理文章' },
         { path: '/admin/setting', icon: 'el-icon-setting', label: '个人设置' },
-        req.session.user.isAdmin && { path: '/admin/maxeano', icon: 'el-icon-star-off', label: '猪猪专属'},
         { path: '/admin/chat', icon: 'el-icon-message', label: '站内信'},
         req.session.user.isAdmin && { path: '/admin/pv', icon: 'el-icon-bell', label: '日志' },
         { path: '/', icon: 'el-icon-back', label: '返回首页' },
