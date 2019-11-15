@@ -18,7 +18,7 @@ stages:
   - deploy
 
 upload_to_oss:
-  image: node:lts-alpine
+  image: node:alpine
   stage: build
   script:
     # - tar -zxf ./deploy/frontend/node_modules.tar.gz -C ./frontend
