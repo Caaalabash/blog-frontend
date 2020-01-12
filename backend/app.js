@@ -3,13 +3,8 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const schedule = require('node-schedule')
-
 const extend = require('./extend')
 const { log } = require('./middleware')
-const userRouter = require('./routes/users')
-const chatRouter = require('./routes/chats')
-const robotRouter = require('./routes/robots')
-const monitorRouter = require('./routes/api-monitor')
 
 /**
  * 属性扩展
@@ -36,10 +31,10 @@ app.use(session({
   },
 }))
 
-app.use('/robot', robotRouter(app))
-app.use('/api/v1', userRouter(app))
-app.use('/api/v2', chatRouter(app))
-app.use('/api/v3', monitorRouter(app))
+app.use('/robot', app.router.robotRouter)
+app.use('/api/v1', app.router.userRouter)
+app.use('/api/v2', app.router.chatRouter)
+app.use('/api/v3', app.router.monitorRouter)
 /**
  * 定时更新站点地图
  */
