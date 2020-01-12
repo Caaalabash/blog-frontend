@@ -1,3 +1,4 @@
+const path = require('path')
 const requireContext = require('require-context')
 const configObject = require('../config')
 
@@ -7,11 +8,11 @@ const plugin = Symbol('plugin')
 const helper = Symbol('helper')
 const controller = Symbol('controller')
 const router = Symbol('router')
-const modelContext = requireContext('../../model', false, /\.js$/)
-const pluginContext = requireContext('../../plugin', false, /\.js$/)
-const controllerContext = requireContext('../../controller', false, /\.js$/)
-const helperContext = requireContext('../../helper', false, /\.js$/)
-const routerContext = requireContext('../../routes', false, /\.js$/)
+const modelContext = requireContext(path.join(__dirname, '../model'), false, /\.js$/)
+const pluginContext = requireContext(path.join(__dirname, '../plugin'), false, /\.js$/)
+const controllerContext = requireContext(path.join(__dirname, '../controller'), false, /\.js$/)
+const helperContext = requireContext(path.join(__dirname, '../helper'), false, /\.js$/)
+const routerContext = requireContext(path.join(__dirname, '../routes'), false, /\.js$/)
 
 const modelObject = modelContext.keys().reduce((obj, filename) => {
   const model =  modelContext(filename)
