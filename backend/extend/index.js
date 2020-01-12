@@ -103,7 +103,7 @@ module.exports = app => {
       }
     },
     // 应用router
-    'router': {
+    'app_router': {
       get() {
         if (!this[router]) this[router] = getRouterObject(this)
         return this[router]

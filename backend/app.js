@@ -31,10 +31,10 @@ app.use(session({
   },
 }))
 
-app.use('/robot', app.router.robotRouter)
-app.use('/api/v1', app.router.userRouter)
-app.use('/api/v2', app.router.chatRouter)
-app.use('/api/v3', app.router.monitorRouter)
+app.use('/robot', app.app_router.robotRouter)
+app.use('/api/v1', app.app_router.userRouter)
+app.use('/api/v2', app.app_router.chatRouter)
+app.use('/api/v3', app.app_router.monitorRouter)
 /**
  * 定时更新站点地图
  */
