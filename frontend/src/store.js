@@ -93,7 +93,7 @@ export default new Vuex.Store({
       apiManage.checkUser(data).then(res => {
         if(res.errno === 0) {
           commit('SET_USER', res.data)
-          commit('REDIRECT_TO', `/admin/new`)
+          commit('REDIRECT_TO', '/admin/new')
         }
       })
     },

@@ -1,17 +1,13 @@
 {
   "name": "vue-blog",
   "version": "1.0.0",
+  "private": true,
   "description": "Calabash's blog",
   "author": "Caaalabash <1121062986@qq.com>",
-  "keywords": [
-    "vue",
-    "blog"
-  ],
-  "private": true,
   "scripts": {
-    "local": "vue-cli-service serve --mode local",
-    "online": "vue-cli-service serve --mode beta",
-    "build": "vue-cli-service build --mode production"
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "local": "vue-cli-service serve"
   },
   "dependencies": {
     "axios": "^0.18.1",
@@ -32,23 +28,31 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.0.0",
     "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^4.1.2",
     "@vue/cli-service": "^3.0.1",
+    "babel-eslint": "^10.0.3",
     "babel-plugin-component": "^1.1.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
     "less": "3.0.4",
     "less-loader": "4.1.0",
     "vue-template-compiler": "^2.5.17",
     "webpack-aliyun-oss-plugin": "^2.1.0",
     "workbox-webpack-plugin": "^4.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Caaalabash/vue-blog.git"
-  },
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Caaalabash/vue-blog/issues"
   },
   "homepage": "https://github.com/Caaalabash/vue-blog#readme",
+  "keywords": [
+    "vue",
+    "blog"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caaalabash/vue-blog.git"
+  },
   "resolutions": {
     "ajv": "6.8.1"
   }

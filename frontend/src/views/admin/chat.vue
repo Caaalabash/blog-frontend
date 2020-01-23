@@ -3,8 +3,7 @@
     <div class="fl-row tim">
       <!-- 聊天列表区域 -->
       <div class="msg-list my-scrollbar">
-        <img v-for="(chatUser, index) in chatList"
-             v-if="chatUser.to"
+        <img v-for="(chatUser, index) in chatList.filter(i => i.to)"
              :key="index"
              :src="chatUser.avatar || '/calabash32.png'"
              class="avatar"
@@ -43,7 +42,7 @@
             placement="top"
             v-model="emojiPopoverVisible">
            <div class="fl-row emojiBox">
-             <i v-for="emoji in emojiList" @click="addEmoji(emoji)">{{ emoji }}</i>
+             <i v-for="(emoji, i) in emojiList" :key="i" @click="addEmoji(emoji)">{{ emoji }}</i>
            </div>
           </el-popover>
           <!-- 表情 -->
@@ -89,7 +88,7 @@ import { timestampToTime, EMOJI } from '@/lib/lib'
 import { getRecordFile, startRecord, stopRecord } from '@/lib/record'
 
 Vue.use(new VueSocketIO({
-  connection: SocketIO(process.env.VUE_APP_HOST, {
+  connection: SocketIO('https://blog.calabash.top', {
     path: '/socket'
   }),
   vuex: { store }
@@ -273,7 +272,7 @@ export default {
           title: '提示',
           message: '录音完毕',
           duration: 1000
-        });
+        })
         stopRecord(() => {
           this.audio = getRecordFile()
           this.sendVoice()
@@ -283,8 +282,8 @@ export default {
     getHtml(content, side) {
       return /\[media]/.test(content)
         ? side
-          ? `<img src="https://blog.calabash.top/voice_right.svg">`
-          : `<img src="https://blog.calabash.top/voice_left.svg">`
+          ? '<img src="https://blog.calabash.top/voice_right.svg">'
+          : '<img src="https://blog.calabash.top/voice_left.svg">'
         : content
     },
     play(src) {

@@ -18,10 +18,12 @@ export default {
     },
     warningLabel() {
       switch (this.code) {
-        case 404:
-          return 'Sorry, we can\'t find what you are looking for, cause it\'s so dark in here'
-        case 403:
-          return 'Sorry you can\'t go any further, cause it\'s too dangerous for you'
+      case 404:
+        return 'Sorry, we can\'t find what you are looking for, cause it\'s so dark in here'
+      case 403:
+        return 'Sorry you can\'t go any further, cause it\'s too dangerous for you'
+      default:
+        return ''
       }
     },
   },

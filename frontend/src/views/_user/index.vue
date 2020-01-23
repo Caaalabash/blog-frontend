@@ -13,7 +13,7 @@
     <!-- 文章列表 -->
     <ul class="list">
       <template v-for="year in Object.keys(articleListGroupByYear).sort((a, b) => b - a)">
-        <li class="list-item list-item-year">
+        <li class="list-item list-item-year" :key="year">
           <span class="text">{{ year }}</span>
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="`#icon-${getYearOf(year)}`"></use>
@@ -41,7 +41,7 @@ export default {
   }),
   computed: {
     articleListGroupByYear() {
-      return this.blogList.sort((a, b) => b.blogDate - a.blogDate).reduce((acc, item) => {
+      return [...this.blogList].sort((a, b) => b.blogDate - a.blogDate).reduce((acc, item) => {
         const year = item.blogDate.slice(0, 4)
         if (!acc[year]) acc[year] = []
         acc[year].push(item)

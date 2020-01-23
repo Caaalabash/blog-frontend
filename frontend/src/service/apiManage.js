@@ -75,7 +75,7 @@ class apiManage extends BaseModule {
   }
   // 获取评论
   getComment(obj) {
-     return this.get('v1/comment', obj)
+    return this.get('v1/comment', obj)
   }
   // 喜欢/取消喜欢
   like(obj) {

@@ -36,7 +36,7 @@ export default {
   methods: {
     openDialog() {
       if (this.users && this.users.userName) {
-        this.$router.push(`/admin/new`)
+        this.$router.push('/admin/new')
       } else {
         this.showLoginDialog = true
       }

@@ -36,7 +36,7 @@ export default {
   created() {
     this.$api.getMenu().then(res => {
       this.menu = res.data
-      if (!this.menu.length) this.$router.replace({ path: `/error?code=403` })
+      if (!this.menu.length) this.$router.replace({ path: '/error?code=403' })
     })
   },
   methods: {
