@@ -59,7 +59,7 @@ export default {
     async loadArticle() {
       if (!this.canLoadMore) return
 
-      const blogListResp = await this.$api.getIdeaList({ userName: this.user, type: 'public', pgN: this.pgN++, pgS: this.pgS })
+      const blogListResp = await this.$api.getIdeaList({ author: this.user, type: 'public', pgN: this.pgN++, pgS: this.pgS })
       this.blogList = this.blogList.concat(blogListResp.data)
       if (blogListResp.data.length < this.pgS) this.canLoadMore = false
     },

@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     _changePage(pgN) {
-      this.$api.getIdeaList({ userName: this.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
+      this.$api.getIdeaList({ author: this.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
         this.blogList = res.data
       })
     },

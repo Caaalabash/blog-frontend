@@ -4,7 +4,7 @@
     <article class="article">
       <h1 class="title" @click="$router.push('/')">{{ idea.blogTitle }}</h1>
       <div class="article-meta">
-        <span :title="formatTime">
+        <span v-if="idea.blogDate">
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="`#${ChineseTime}`"></use>
           </svg>
@@ -13,10 +13,10 @@
       <div class="markdown-body" v-marked="idea.blogContent"></div>
     </article>
     <!-- 翻页 -->
-    <div class="turn-page prev" @click="turnTo(idea.lastBlogDate)" v-show="idea.lastBlogDate">
+    <div class="turn-page prev" @click="turnTo(lastBlogId)" v-show="lastBlogId">
       <i class="iconfont icon-left"></i>
     </div>
-    <div class="turn-page next" @click="turnTo(idea.nextBlogDate)" v-show="idea.nextBlogDate">
+    <div class="turn-page next" @click="turnTo(nextBlogId)" v-show="nextBlogId">
       <i class="iconfont icon-right"></i>
     </div>
     <!-- 评论区域 -->
@@ -33,6 +33,8 @@ export default {
   data: () => ({
     visible: false,
     idea: {},
+    nextBlogId: '',
+    lastBlogId: '',
   }),
   computed: {
     ChineseTime() {
@@ -50,16 +52,7 @@ export default {
         '19': 'icon-dog_xu', '20': 'icon-dog_xu',
         '21': 'icon-boar_hai', '22': 'icon-boar_hai'
       }
-      return map[this.id.slice(8, 10)]
-    },
-    formatTime() {
-      const Y = this.id.slice(0, 4)
-      const M = this.id.slice(4, 6)
-      const D = this.id.slice(6, 8)
-      const h = this.id.slice(8, 10)
-      const m = this.id.slice(10, 12)
-      const s = this.id.slice(12, 14)
-      return `${Y}-${M}-${D} ${h}:${m}:${s}`
+      return map[this.idea.blogDate.slice(8, 10)]
     },
   },
   watch: {
@@ -71,8 +64,10 @@ export default {
   methods: {
     async getIdea() {
       this.visible = false
-      const articleResp = await this.$api.getIdea({ userName: this.user, blogDate: this.id })
-      this.idea = articleResp.data
+      const { data } = await this.$api.getIdea(this.id)
+      this.idea = data.article
+      this.nextBlogId = data.nextBlogId
+      this.lastBlogId = data.lastBlogId
       this.visible = true
       this.$nextTick(() => {
         this.initGitalk()
@@ -80,10 +75,10 @@ export default {
     },
     initGitalk() {
       const gitalk = new Gitalk({
-        id: this.idea.blogDate,
+        id: this.idea.article.blogTitle,
         owner: 'Caaalabash',
         admin: ['Caaalabash'],
-        repo: 'blog-comment-database',
+        repo: 'vue-blog',
         clientID: '6da65a95a5a6ffe0a6f5',
         clientSecret: 'd4dc4e5882e7abbe86d40e953e4fdf3f8a3c5935',
         distractionFreeMode: false

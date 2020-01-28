@@ -53,14 +53,12 @@ class apiManage extends BaseModule {
     return this.put(url, data)
   }
   // 获取某一个文章
-  getIdea(obj) {
-    const { blogDate, ...data } = obj
-    const url = `v1/ideas/${blogDate}`
-    return this.get(url, data)
+  getIdea(id) {
+    return this.get(`https://remake.calabash.top/idea/${id}`)
   }
   // 获取博文列表
   getIdeaList(obj) {
-    return this.get('v1/ideas', obj)
+    return this.get('https://remake.calabash.top/ideas', obj)
   }
   upload(obj, config) {
     return this.post('v1/files', obj, config)
