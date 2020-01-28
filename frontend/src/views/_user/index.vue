@@ -20,7 +20,7 @@
           </svg>
         </li>
         <li class="list-item" v-for="blog in articleListGroupByYear[year]" :key="blog.blogDate">
-          <router-link class="title" :to="`articles/${blog.blogDate}`" append>{{ blog.blogTitle }}</router-link>
+          <router-link class="title" :to="`articles/${blog.id}`" append>{{ blog.blogTitle }}</router-link>
         </li>
       </template>
     </ul>
