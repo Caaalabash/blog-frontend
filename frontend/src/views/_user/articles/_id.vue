@@ -75,7 +75,7 @@ export default {
     },
     initGitalk() {
       const gitalk = new Gitalk({
-        id: this.idea.article.blogTitle,
+        id: this.idea.blogTitle,
         owner: 'Caaalabash',
         admin: ['Caaalabash'],
         repo: 'vue-blog',
