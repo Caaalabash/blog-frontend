@@ -4,9 +4,9 @@
     <el-table :data="blogList">
       <el-table-column type="expand" v-if="isShow">
         <template slot-scope="scope">
-          <el-button type="primary" @click="changeIdea(scope.row)">修改</el-button>
+          <el-button type="primary" @click="changeIdea(scope.row.id)">修改</el-button>
           <i class="font0"></i>
-          <el-button type="danger" @click="_deleteIdea(scope.row.blogDate)">删除</el-button>
+          <el-button type="danger" @click="_deleteIdea(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -25,9 +25,9 @@
         label="操作"
         v-if="!isShow">
         <template slot-scope="scope">
-          <el-button type="primary" @click="changeIdea(scope.row)">修改</el-button>
+          <el-button type="primary" @click="changeIdea(scope.row.id)">修改</el-button>
           <i class="font0"></i>
-          <el-button type="danger" @click="_deleteIdea(scope.row.blogDate)">删除</el-button>
+          <el-button type="danger" @click="_deleteIdea(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,12 +72,12 @@ export default {
       })
     },
     _deleteIdea(id) {
-      this.$api.deleteIdea({ userName: this.userName, blogDate: id }).then(() => {
-        this.blogList = this.blogList.filter(item => item.blogDate !== id)
+      this.$api.deleteIdea(id).then(() => {
+        this.blogList = this.blogList.filter(item => item.id !== id)
       })
     },
-    changeIdea(idea) {
-      this.$router.push({ path: '/admin/new', query: { blogDate: idea.blogDate } })
+    changeIdea(id) {
+      this.$router.push({ path: '/admin/new', query: { id } })
     },
   }
 }

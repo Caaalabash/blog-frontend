@@ -38,19 +38,16 @@ class apiManage extends BaseModule {
   }
   // 发送新博文
   createNewIdea(obj) {
-    return this.post('v1/ideas', obj)
+    return this.post('https://remake.calabash.top/idea', obj)
   }
   // 删除博客
-  deleteIdea(obj) {
-    const { blogDate, ...data } = obj
-    const url = `v1/ideas/${blogDate}`
-    return this.delete(url, { data })
+  deleteIdea(id) {
+    return this.delete(`https://remake.calabash.top/idea/${id}`)
   }
   // 修改博文
   changeIdea(obj) {
-    const { blogDate, ...data } = obj
-    const url = `v1/ideas/${blogDate}`
-    return this.put(url, data)
+    const { id, ...data } = obj
+    return this.put(`https://remake.calabash.top/idea/${id}`, data)
   }
   // 获取某一个文章
   getIdea(id) {

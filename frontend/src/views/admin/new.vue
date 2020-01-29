@@ -71,12 +71,12 @@ export default{
     fileList: []
   }),
   computed: {
-    blogDate() {
-      return this.$route.query.blogDate
+    id() {
+      return this.$route.query.id
     }
   },
   created() {
-    const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+    const cacheKey = this.id ? `article${this.id}` : 'manuscript'
     const cache = localStorage.getItem(cacheKey)
 
     if (cache) {
@@ -86,8 +86,8 @@ export default{
         message: '已采用缓存中的内容',
         duration: 2000,
       })
-    } else if (this.blogDate) {
-      this.$api.getIdea({ userName: this.users.userName, blogDate: this.blogDate }).then(res => {
+    } else if (this.id) {
+      this.$api.getIdea(id).then(res => {
         this.idea = res.data
       })
     }
@@ -160,11 +160,11 @@ export default{
     },
     async _send () {
       const cacheKey = this.blogDate ? `article${this.blogDate}` : 'manuscript'
-      if (this.blogDate) {
-        await this.$api.changeIdea({ userName: this.users.userName, ...this.idea })
+      if (this.id) {
+        await this.$api.changeIdea(this.idea)
       } else {
         this.idea.blogDate = formatDate()
-        await this.$api.createNewIdea({ userName: this.users.userName, ...this.idea })
+        await this.$api.createNewIdea({ author: this.users.userName, ...this.idea })
       }
       this.clearForm()
       localStorage.removeItem(cacheKey)
