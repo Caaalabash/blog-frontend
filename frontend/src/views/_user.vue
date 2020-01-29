@@ -32,6 +32,9 @@ export default {
     },
     closeDialog() {
       this.showLoginDialog = false
+      if (this.user && this.user.userName) {
+        this.$router.push('/admin/new')
+      }
     },
   },
 }
