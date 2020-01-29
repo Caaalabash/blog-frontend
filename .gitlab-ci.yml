@@ -33,12 +33,12 @@ make_fe:
     - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE -f ./deploy/frontend/Dockerfile .
     - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
     
-#make_be:
-#  stage: make_image
-#  script:
-#    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
-#    - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE -f ./deploy/backend/Dockerfile .
-#    - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE
+make_be:
+  stage: make_image
+  script:
+    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
+    - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE -f ./deploy/backend/Dockerfile .
+    - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE
 
 deploy_test:
   image: caaalabash/alpine-ssh:latest
