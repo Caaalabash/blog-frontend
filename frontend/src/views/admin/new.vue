@@ -87,7 +87,7 @@ export default{
         duration: 2000,
       })
     } else if (this.id) {
-      this.$api.getIdea(id).then(res => {
+      this.$api.getIdea(this.id).then(res => {
         this.idea = res.data
       })
     }
