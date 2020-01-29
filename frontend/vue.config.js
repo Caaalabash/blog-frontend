@@ -3,6 +3,7 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 const WebpackAliyunOssPlugin = require('webpack-aliyun-oss-plugin')
 
 module.exports = {
+  lintOnSave: process.env.NODE_ENV !== 'production',
   /**
    * @description 开发环境下代理
    * 1. 将所有 /api 开头的请求转发到 API服务器
