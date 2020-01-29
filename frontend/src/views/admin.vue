@@ -1,5 +1,5 @@
 <template>
-  <div class="manage-container" v-resize="handleResize" v-loading="!menu.length">
+  <div class="manage-container" v-resize="handleResize">
     <!--侧边栏区域-->
     <el-menu default-active="发布文章" class="manage-left el-menu-vertical-demo" :collapse="isCollapse">
       <el-menu-item
@@ -12,7 +12,7 @@
       </el-menu-item>
     </el-menu>
     <!--右侧内容区域-->
-    <router-view :users="users" :innerWidth="innerWidth" />
+    <router-view :user="user" :innerWidth="innerWidth" />
   </div>
 </template>
 
@@ -23,34 +23,32 @@ export default {
   name: 'admin',
   data: () => ({
     innerWidth: window.innerWidth,
-    menu: []
+    menu: [
+      { path: '/admin/new', icon: 'el-icon-edit-outline', label: '发布文章' },
+      { path: '/admin/articles', icon: 'el-icon-search', label: '管理文章' },
+      { path: '/', icon: 'el-icon-back', label: '返回首页' },
+      { icon: 'el-icon-close', label: '注销' }
+    ]
   }),
   computed: {
-    ...mapState([
-      'users',
-    ]),
+    ...mapState(['user']),
     isCollapse() {
       return this.innerWidth <= 480
     },
-  },
-  created() {
-    this.$api.getMenu().then(res => {
-      this.menu = res.data
-      if (!this.menu.length) this.$router.replace({ path: '/error?code=403' })
-    })
   },
   methods: {
     ...mapActions(['logout']),
     handleResize() {
       this.innerWidth = window.innerWidth
     },
-    handleClick(item) {
+    async handleClick(item) {
       if (item.path) {
         this.$router.push(item.path)
       } else if (item.label === '注销') {
-        this.logout({ userName: this.users.userName })
+        await this.logout()
+        this.$router.push('/')
       } else if (item.label === '返回首页') {
-        this.$router.push(`/${this.users.userName}`)
+        this.$router.push('/')
       }
     },
   },

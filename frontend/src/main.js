@@ -11,8 +11,6 @@ import api from './service/apiManage'
 import './registerServiceWorker'
 import '@/assets/js/iconfont.js'
 import {
-  Select,
-  Option,
   Button,
   Radio,
   Input,
@@ -26,14 +24,10 @@ import {
   Tabs,
   Table,
   TableColumn,
-  DatePicker,
-  Badge,
-  Popover,
   Form,
   FormItem,
   TabPane,
   Icon,
-  ColorPicker,
   Loading,
   Message,
 } from 'element-ui'
@@ -46,21 +40,15 @@ import {
   MenuItem,
   Input,
   Radio,
-  Select,
-  Option,
   Button,
   Table,
   TableColumn,
-  DatePicker,
-  Popover,
   Form,
   FormItem,
   Tabs,
   TabPane,
   Icon,
   Upload,
-  Badge,
-  ColorPicker,
   Loading.directive
 ].map(component => Vue.use(component))
 

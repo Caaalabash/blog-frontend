@@ -41,40 +41,30 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'articles',
-  props: ['users', 'innerWidth'],
+  props: ['user', 'innerWidth'],
   data: () => ({
     pgN: 1,
     pgS: 10,
     blogList: [],
   }),
   computed: {
-    ...mapGetters(['userName']),
     isShow() {
       return this.innerWidth < 420
     }
   },
-  watch: {
-    userName: {
-      handler(val) {
-        val && this._changePage(1)
-      },
-      immediate: true
-    }
+  created() {
+    this._changePage(1)
   },
   methods: {
-    _changePage(pgN) {
-      this.$api.getIdeaList({ author: this.userName, type: 'all', pgN: pgN, pgS: this.pgS }).then(res => {
-        this.blogList = res.data
-      })
+    async _changePage(pgN) {
+      const { data } = await this.$api.getIdeaList({ author: this.user.userName, type: 'all', pgN: pgN, pgS: this.pgS })
+      this.blogList = data
     },
-    _deleteIdea(id) {
-      this.$api.deleteIdea(id).then(() => {
-        this.blogList = this.blogList.filter(item => item.id !== id)
-      })
+    async _deleteIdea(id) {
+      await this.$api.deleteIdea(id)
+      this.blogList = this.blogList.filter(item => item.id !== id)
     },
     changeIdea(id) {
       this.$router.push({ path: '/admin/new', query: { id } })

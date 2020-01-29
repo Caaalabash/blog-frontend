@@ -10,11 +10,10 @@ import { mapActions } from 'vuex'
 export default {
   name: 'App',
   methods: {
-    ...mapActions(['visit', 'initStatus'])
+    ...mapActions(['getUserInfo'])
   },
   created() {
-    this.visit()
-    this.initStatus()
+    this.getUserInfo()
   },
 }
 </script>

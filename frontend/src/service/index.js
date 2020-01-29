@@ -7,8 +7,12 @@ class BaseModule {
 
     this.$http.interceptors.response.use(response => {
       if (response.status === 200 && response.data.msg) {
-        const type = response.data.errno ? 'error' : 'success'
-        Message[type](response.data.msg)
+        // NodeJS接口 Golang接口兼容
+        if (response.data.msg) {
+          Message[response.data.errno ? 'error' : 'success'](response.data.msg)
+        } else if (response.data.message) {
+          Message[response.data.code ? 'error' : 'success'](response.data.message)
+        }
       }
       return response.data
     }, error => {

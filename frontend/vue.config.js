@@ -2,7 +2,6 @@ const path = require('path')
 const { InjectManifest } = require('workbox-webpack-plugin')
 const WebpackAliyunOssPlugin = require('webpack-aliyun-oss-plugin')
 
-
 module.exports = {
   /**
    * @description 开发环境下代理
@@ -15,11 +14,6 @@ module.exports = {
         target: 'http://127.0.0.1:3000',
         changeOrigin: true,
       },
-      '/socket': {
-        target: 'http://127.0.0.1:3000',
-        changeOrigin: true,
-        ws: true
-      }
     }
   },
   publicPath: process.env.NODE_ENV === 'production' ? 'https://static.calabash.top/blog' : '/',

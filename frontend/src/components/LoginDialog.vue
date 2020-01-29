@@ -3,7 +3,6 @@
 
     <el-tabs v-model="tab">
       <el-tab-pane label="Login" name="login"></el-tab-pane>
-      <el-tab-pane label="Register" name="Register"></el-tab-pane>
     </el-tabs>
 
     <el-form ref="form" :model="form" :rules="rules">
@@ -15,7 +14,7 @@
         <el-input type="password" v-model="form.userPwd" placeholder="密码" @keyup.enter.native="sendRequest"></el-input>
       </el-form-item>
       <el-form-item >
-        <el-button type="primary" @click="sendRequest" plain>{{ buttonLabel }}</el-button>
+        <el-button type="primary" @click="sendRequest" plain>LOG IN</el-button>
       </el-form-item>
     </el-form>
 
@@ -25,7 +24,7 @@
 <script type="text/ecmascript-6">
 import { mapActions } from 'vuex'
 
-export default{
+export default {
   name: 'LoginDialog',
   props: {
     visible: {
@@ -50,14 +49,6 @@ export default{
       ]
     }
   }),
-  computed: {
-    isLogin() {
-      return this.tab === 'login'
-    },
-    buttonLabel () {
-      return this.isLogin ? 'LOG IN' : 'SIGN UP'
-    }
-  },
   methods: {
     ...mapActions([
       'login',
@@ -67,11 +58,7 @@ export default{
       this.$emit('close')
     },
     async sendType () {
-      if (this.isLogin) {
-        await this.login(this.form)
-      } else {
-        await this.$api.createUser(this.form)
-      }
+      await this.login(this.form)
       this.handleClose()
     },
     sendRequest () {

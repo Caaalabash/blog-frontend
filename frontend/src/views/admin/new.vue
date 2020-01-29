@@ -3,7 +3,7 @@
     <!--表单-->
     <el-form ref="form" :rules="rules" :model="idea" class="form-container fl-column">
       <el-form-item prop="blogTitle" class="title">
-        <el-input style="width: 50%" v-model="idea.blogTitle" placeholder="文章标题"></el-input>
+        <el-input style="width: 50%" v-model="idea.blogTitle" placeholder="文章标题"/>
       </el-form-item>
       <el-form-item class="type">
         <el-radio v-model="idea.blogType" label="public">公开</el-radio>
@@ -13,7 +13,7 @@
       <!--编辑/查看区域-->
       <el-form-item class="text">
         <div id="editor" class="post">
-          <textarea :value="idea.blogContent" @input="update" class="text-textarea"></textarea>
+          <textarea :value="idea.blogContent" @input="update" class="text-textarea"/>
           <div v-marked="idea.blogContent" class="text-content markdown-body"></div>
         </div>
       </el-form-item>
@@ -35,7 +35,7 @@
         :httpRequest="upload"
         :before-upload="beforeAvatarUpload"
         multiple>
-        <i class="el-icon-upload"></i>
+        <i class="el-icon-upload"/>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">只能上传图片文件，且不超过4MB</div>
       </el-upload>
@@ -52,7 +52,7 @@ import { formatDate } from '@/lib/lib'
 import debounce from 'lodash/debounce'
 
 export default{
-  props: ['users'],
+  props: ['user'],
   data: () => ({
     rules: {
       blogTitle: [
@@ -112,7 +112,7 @@ export default{
       this.$api.upload(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'userName': this.users.userName
+          'userName': this.user.userName
         }
       }).then(res => {
         if (res.data) {
@@ -143,7 +143,7 @@ export default{
       this.dialogVisible = true
     },
     update: debounce(function(e) {
-      const key = this.blogDate ? `article${this.blogDate}` : 'manuscript'
+      const key = this.id ? `article${this.id}` : 'manuscript'
       localStorage.setItem(key, JSON.stringify(this.idea))
       this.idea.blogContent = e.target.value
     }, 300),
@@ -164,7 +164,7 @@ export default{
         await this.$api.changeIdea(this.idea)
       } else {
         this.idea.blogDate = formatDate()
-        await this.$api.createNewIdea({ author: this.users.userName, ...this.idea })
+        await this.$api.createNewIdea({ author: this.user.userName, ...this.idea })
       }
       this.clearForm()
       localStorage.removeItem(cacheKey)

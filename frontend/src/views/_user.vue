@@ -17,25 +17,14 @@ export default {
     LoginDialog
   },
   data: () => ({
-    infoList: {
-      twitter: 'https://twitter.com/caaalabash',
-      github: 'https://github.com/Caaalabash',
-      juejin: 'https://juejin.im/user/5a9009795188257a7f1dbf70'
-    },
     showLoginDialog: false,
   }),
   computed: {
-    ...mapState(['users']),
-  },
-  watch: {
-    user: 'getInfo'
-  },
-  created() {
-    this.getInfo()
+    ...mapState(['user']),
   },
   methods: {
     openDialog() {
-      if (this.users && this.users.userName) {
+      if (this.user && this.user.userName) {
         this.$router.push('/admin/new')
       } else {
         this.showLoginDialog = true
@@ -44,11 +33,6 @@ export default {
     closeDialog() {
       this.showLoginDialog = false
     },
-    getInfo() {
-      this.$api.getUserInfo({ userName: this.user }).then(res => {
-        this.infoList = { ...this.infoList, ...res.data }
-      })
-    }
   },
 }
 </script>
