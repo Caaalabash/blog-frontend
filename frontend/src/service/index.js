@@ -6,7 +6,7 @@ class BaseModule {
     this.$http = axios.create({ timeout: 10000, baseURL: '/api', withCredentials: true })
 
     this.$http.interceptors.response.use(response => {
-      if (response.status === 200 && response.data.msg) {
+      if (response.status === 200) {
         // NodeJS接口 Golang接口兼容
         if (response.data.msg) {
           Message[response.data.errno ? 'error' : 'success'](response.data.msg)
