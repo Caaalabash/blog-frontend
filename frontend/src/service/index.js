@@ -16,8 +16,7 @@ class BaseModule {
       }
       return response.data
     }, error => {
-      Message.error('响应出错')
-      return Promise.resolve(error)
+      return Promise.reject(error)
     })
   }
   get(url, data = {}, config = {}) {
