@@ -88,7 +88,7 @@ export default{
       })
     } else if (this.id) {
       this.$api.getIdea(this.id).then(res => {
-        this.idea = res.data
+        this.idea = res.data.article
       })
     }
   },
