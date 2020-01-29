@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 
 class BaseModule {
   constructor() {
-    this.$http = axios.create({ timeout: 10000, baseURL: '/api' })
+    this.$http = axios.create({ timeout: 10000, baseURL: '/api', withCredentials: true })
 
     this.$http.interceptors.response.use(response => {
       if (response.status === 200 && response.data.msg) {
