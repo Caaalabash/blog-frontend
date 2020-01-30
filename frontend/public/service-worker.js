@@ -14,6 +14,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 // Delete outdated cache
 workbox.precaching.cleanupOutdatedCaches();
+//
 workbox.routing.registerRoute(
   // Filter navigate request
   ({event}) => {
@@ -57,7 +58,22 @@ workbox.routing.registerRoute(
   },
   'GET'
 );
-
+// Cache API
+workbox.routing.registerRoute(
+  /^https:\/\/blog\.calabash\.top\/api/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'calabash-blog-api',
+    networkTimeoutSeconds: 7,
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 10,
+        maxAgeSeconds: 60,
+        purgeOnQuotaError: false
+      })
+    ]
+  }),
+  'GET'
+);
 // New content avaliable
 self.addEventListener('message', e => {
   if (!e.data) return
