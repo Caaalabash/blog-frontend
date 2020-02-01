@@ -106,19 +106,15 @@ export default{
       this.idea.blogType = 'public'
     },
     // 文件上传
-    upload() {
-      let formData = new FormData()
-      formData.append('file', this.file)
-      this.$api.upload(formData, {
+    async upload() {
+      const formData = new FormData()
+      formData.append('uploadfile', this.file)
+      const { data } = await this.$api.upload(formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'userName': this.user.userName
-        }
-      }).then(res => {
-        if (res.data) {
-          this.imgPath = res.data
         }
       })
+      this.imgPath = data
     },
     beforeAvatarUpload(file) {
       const isImage = file.type.includes('image')

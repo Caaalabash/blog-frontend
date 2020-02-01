@@ -35,7 +35,7 @@ class apiManage extends BaseModule {
     return this.get('https://remake.calabash.top/ideas', obj)
   }
   upload(obj, config) {
-    return this.post('v1/files', obj, config)
+    return this.post('https://remake.calabash.top/idea/upload', obj, config)
   }
 }
 export default new apiManage()
