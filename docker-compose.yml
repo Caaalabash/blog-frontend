@@ -9,4 +9,5 @@ services:
     restart: unless-stopped
     extra_hosts:
       - "dockerhost:172.18.0.1"
-    command: ["nginx -g 'daemon off;'"]
+    command: ["nginx", "-g", "daemon off;"]
+
