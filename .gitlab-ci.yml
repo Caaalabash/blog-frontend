@@ -1,8 +1,3 @@
-image: docker:stable
-
-services:
-  - docker:dind
-
 variables:
   GIT_DEPTH: 1
 
@@ -10,46 +5,32 @@ cache:
   key: "vue-blog"
   untracked: true
   paths:
-    - frontend/dist/
+    - ./dist
 
 stages:
   - build
-  - make_image
-  - deploy
+  - make
 
 upload_to_oss:
   image: node:alpine
   stage: build
   script:
-    # - tar -zxf ./deploy/frontend/node_modules.tar.gz -C ./frontend
-    - cd frontend
     - npm install --registry https://registry.npm.taobao.org
     - npm run build
 
-make_fe:
-  stage: make_image
+make_image:
+  image: docker:stable
+  stage: make
   script:
+    - sed -i "s/blog:\w\+-FE/blog:$CI_COMMIT_SHORT_SHA-FE/g" docker-compose.yml
     - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
-    - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE -f ./deploy/frontend/Dockerfile .
+    - docker build
+      -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
+      -f ./Dockerfile .
     - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
-    
-make_be:
-  stage: make_image
-  script:
-    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
-    - docker build -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE -f ./deploy/backend/Dockerfile .
-    - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-BE
+    - scp ./docker-compose.yml deploy-server:~/deploy/blog/fe
+    - ssh deploy-server "cd ~/deploy/blog/fe && docker-compose up -d"
 
-deploy_test:
-  image: caaalabash/alpine-ssh:latest
-  stage: deploy
-  before_script:
-    - echo "$SSH_PRIVATE_KEY" > id_rsa_2048
-    - chmod 0600 id_rsa_2048
-    - eval $(ssh-agent)
-    - ssh-add id_rsa_2048
-  script:
-    - scp -P $SSH_PORT deploy/docker-compose.yml root@$DEPLOY_SERVER:$SERVER_FOLDER/deploy
-    - scp -P $SSH_PORT deploy/startup.sh root@$DEPLOY_SERVER:$SERVER_FOLDER/deploy
-    - ssh -p $SSH_PORT root@$DEPLOY_SERVER "chmod +x $SERVER_FOLDER/deploy/startup.sh"
-    - ssh -p $SSH_PORT root@$DEPLOY_SERVER "$SERVER_FOLDER/deploy/startup.sh $CI_COMMIT_SHORT_SHA"
+
+
+

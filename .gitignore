@@ -1,12 +1,5 @@
-backend/node_modules
-backend/yarn.lock
-backend/package-lock.json
-
-frontend/node_modules
-frontend/yarn.lock
-frontend/dist
-
-# Editor directories and files
+node_modules
+dist
 .DS_Store
 .idea
 .vscode

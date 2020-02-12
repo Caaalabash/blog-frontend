@@ -1,0 +1,49 @@
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-family: "Montserrat", "Helvetica Neue", "Hiragino Sans GB", "LiHei Pro", Arial, sans-serif;
+}
+img {
+  border: none;
+}
+a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.my-scrollbar{
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #eee;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: rgb(204,204,204);
+  }
+}
+.fl-row{
+  display: flex;
+  flex-direction: row;
+}
+.fl-column{
+  display: flex;
+  flex-direction: column;
+}
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+

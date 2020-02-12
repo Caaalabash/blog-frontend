@@ -1,0 +1,12 @@
+version: "3"
+services:
+  blog_frontend:
+    image: registry.cn-beijing.aliyuncs.com/calabash/blog:BUILD_ID-FE
+    container_name: blog-frontend
+    ports:
+      - 3001:800
+    network_mode: bridge
+    restart: unless-stopped
+    extra_hosts:
+      - "dockerhost:172.18.0.1"
+    command: ["nginx -g 'daemon off;'"]
