@@ -65,7 +65,7 @@ export default {
     async getIdea() {
       this.visible = false
       const { data } = await this.$api.getIdea(this.id)
-      this.idea = data.article
+      this.idea = data
       this.nextBlogId = data.nextBlogId
       this.lastBlogId = data.lastBlogId
       this.visible = true

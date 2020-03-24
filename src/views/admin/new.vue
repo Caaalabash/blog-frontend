@@ -76,19 +76,16 @@ export default{
     }
   },
   created() {
-    const cacheKey = this.id ? `article${this.id}` : 'manuscript'
-    const cache = localStorage.getItem(cacheKey)
-
-    if (cache) {
-      this.idea = JSON.parse(cache)
+    if (this.id) {
+      this.$api.getIdea(this.id).then(res => {
+        this.idea = res.data
+      })
+    } else if (localStorage.getItem('manuscript')) {
+      this.idea = JSON.parse(localStorage.getItem('manuscript'))
       this.$notify({
         title: '提示',
         message: '已采用缓存中的内容',
         duration: 2000,
-      })
-    } else if (this.id) {
-      this.$api.getIdea(this.id).then(res => {
-        this.idea = res.data.article
       })
     }
   },
