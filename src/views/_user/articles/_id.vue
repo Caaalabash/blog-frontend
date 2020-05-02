@@ -81,7 +81,9 @@ export default {
         repo: 'vue-blog',
         clientID: '6da65a95a5a6ffe0a6f5',
         clientSecret: 'd4dc4e5882e7abbe86d40e953e4fdf3f8a3c5935',
-        distractionFreeMode: false
+        distractionFreeMode: false,
+        title: this.idea.blogTitle,
+        body: this.idea.blogContent
       })
       gitalk.render('comments')
     },
