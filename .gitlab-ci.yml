@@ -28,8 +28,8 @@ make_image:
       -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
       -f ./Dockerfile .
     - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
-    - scp ./docker-compose.yml deploy-server:~/deploy/blog/fe
-    - ssh deploy-server "cd ~/deploy/blog/fe && docker-compose up -d"
+    - scp ./docker-compose.yml deploy-server:~/deploy/blog/fe -P $SSH_PORT
+    - ssh deploy-server -p $SSH_PORT "cd ~/deploy/blog/fe && docker-compose up -d"
 
 
 
