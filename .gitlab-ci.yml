@@ -6,6 +6,7 @@ cache:
   untracked: true
   paths:
     - ./dist
+    - ./docker-compose.yml
 
 stages:
   - build
