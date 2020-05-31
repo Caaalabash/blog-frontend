@@ -23,6 +23,7 @@ upload_to_oss:
       - ./dist
 
 make_image:
+  cache: {}
   image: docker:stable
   stage: make
   script:
