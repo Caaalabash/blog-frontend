@@ -19,7 +19,6 @@ upload_to_oss:
   artifacts:
     when: on_success
     paths:
-      - ./docker-compose.yml
       - ./dist
 
 make_image:
@@ -33,7 +32,7 @@ make_image:
       -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
       -f ./Dockerfile .
     - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
-    - scp ./docker-compose.yml deploy-server:~/deploy/blog/fe -P $SSH_PORT
+    - scp -P $SSH_PORT ./docker-compose.yml deploy-server:~/deploy/blog/fe
     - ssh deploy-server -p $SSH_PORT "cd ~/deploy/blog/fe && docker-compose up -d"
 
 
