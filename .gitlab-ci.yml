@@ -5,8 +5,7 @@ cache:
   key: "vue-blog"
   untracked: true
   paths:
-    - ./dist
-    - ./docker-compose.yml
+    - node_modules
 
 stages:
   - build
@@ -18,6 +17,12 @@ upload_to_oss:
   script:
     - npm install --registry https://registry.npm.taobao.org
     - npm run build
+  artifacts:
+    untracked: true
+    when: on_success
+    paths:
+      - ./docker-compose.yml
+      - ./dist
 
 make_image:
   image: docker:stable
