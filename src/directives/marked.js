@@ -1,10 +1,19 @@
 import marked from 'marked'
-import highlight from 'highlight.js'
+import hljs from 'highlight.js/lib/core'
+import javascript from 'highlight.js/lib/languages/javascript'
+import go from 'highlight.js/lib/languages/go'
+import cLike from 'highlight.js/lib/languages/c-like'
 import 'highlight.js/styles/github.css'
+
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('js', javascript)
+hljs.registerLanguage('go', go)
+hljs.registerLanguage('golang', go)
+hljs.registerLanguage('c', cLike)
 
 marked.setOptions({
   highlight(code, lang) {
-    return highlight.highlight(lang || 'javascript', code).value
+    return hljs.highlightAuto(code).value
   }
 })
 

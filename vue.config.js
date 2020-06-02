@@ -20,7 +20,7 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? 'https://static.calabash.top/blog' : '/',
   productionSourceMap: false,
   configureWebpack: config => {
-    if(process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       return {
         plugins: [
           new InjectManifest({

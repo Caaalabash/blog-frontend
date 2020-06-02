@@ -12,7 +12,6 @@ import LoginDialog from '@/components/LoginDialog'
 
 export default {
   name: 'index',
-  props: ['user'],
   components: {
     LoginDialog
   },
