@@ -18,7 +18,9 @@ marked.setOptions({
 })
 
 function update(el, binding) {
-  el.innerHTML = marked(binding.value)
+  if (binding.value) {
+    el.innerHTML = marked(binding.value)
+  }
 }
 
 export default {
