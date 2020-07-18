@@ -16,7 +16,7 @@
     "element-ui": "^2.0.11",
     "gitalk": "^1.5.0",
     "intersection-observer": "^0.5.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.19",
     "marked": "^0.7.0",
     "register-service-worker": "^1.5.2",
     "socket.io-client": "^2.2.0",
