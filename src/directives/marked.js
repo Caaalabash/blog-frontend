@@ -4,6 +4,7 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import go from 'highlight.js/lib/languages/go'
 import cLike from 'highlight.js/lib/languages/c-like'
 import 'highlight.js/styles/github.css'
+import Zoom from '../lib/zoom'
 
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('js', javascript)
@@ -20,6 +21,7 @@ marked.setOptions({
 function update(el, binding) {
   if (binding.value) {
     el.innerHTML = marked(binding.value)
+    Zoom.listen('img')
   }
 }
 

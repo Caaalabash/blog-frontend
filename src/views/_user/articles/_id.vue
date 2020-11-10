@@ -106,6 +106,12 @@ export default {
       text-align: center;
       line-height: 1.25;
     }
+    /deep/ img {
+      display: block;
+      max-width: 600px;
+      max-height: 400px;
+      margin: 0 auto;
+    }
     .article-meta {
       display: flex;
       flex-direction: row-reverse;
@@ -165,6 +171,9 @@ export default {
       .title {
         font-size: 24px;
         margin: 0 0 20px;
+      }
+      /deep/ img {
+        max-width: 300px;
       }
     }
   }

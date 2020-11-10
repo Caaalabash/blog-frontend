@@ -24,8 +24,7 @@
       </el-form-item>
     </el-form>
     <!--上传图片弹窗-->
-    <el-dialog :visible="dialogVisible"
-               @close="closeDialog">
+    <el-dialog :visible="dialogVisible" @close="closeDialog">
       <el-upload
         class="upload-demo"
         drag
