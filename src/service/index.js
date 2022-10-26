@@ -7,18 +7,18 @@ const ajax = axios.create({
   withCredentials: true,
 })
 
-ajax.interceptors.response.use(response => {
+ajax.interceptors.response.use((response) => {
   return response.data
 })
 
 const apis = {
   getBlogList: '/ideas',
-  getBlogDetail: '/idea/:id'
+  getBlogDetail: '/idea/:id',
 }
 
 export const service = new Proxy(apis, {
   get(target, p, receiver) {
-    return function(options = {}) {
+    return function (options = {}) {
       const { params = {}, ...rest } = options
       const copyParams = { ...params }
 
@@ -37,8 +37,8 @@ export const service = new Proxy(apis, {
 
       return ajax(url, {
         params: copyParams,
-        ...rest
+        ...rest,
       })
     }
-  }
+  },
 })
