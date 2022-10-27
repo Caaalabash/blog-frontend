@@ -19,7 +19,7 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    VitePluginOss({
+    process.env.NODE_ENV === 'production' && VitePluginOss({
       from: './dist/**', // 上传那个文件或文件夹
       dist: "/blog2",  // 需要上传到oss上的给定文件目录
       region: 'oss-cn-beijing',
@@ -32,7 +32,7 @@ export default defineConfig({
         return Path.replace(/\\/g, "/")
       },
     }),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -43,9 +43,9 @@ export default defineConfig({
     port: '5173',
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://blog.calabash.top',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

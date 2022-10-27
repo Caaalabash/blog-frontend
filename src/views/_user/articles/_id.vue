@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-content" v-loading.fullscreen.lock="loading">
+  <div class="blog-content">
     <!-- 文章内容区域 -->
     <article class="article">
       <h1 class="title" @click="$router.push('/')">{{ idea.blogTitle }}</h1>
@@ -27,7 +27,7 @@
 <script setup>
 import 'gitalk/dist/gitalk.css'
 import Gitalk from 'gitalk'
-import { defineProps, ref, computed, nextTick, watchEffect } from 'vue'
+import { defineProps, ref, computed, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { service } from '@/service'
 
@@ -38,11 +38,9 @@ const props = defineProps({
   user: String,
 })
 
-const loading = ref(false)
 const idea = ref({})
-const nextBlogId = ref('')
-const lastBlogId = ref('')
-
+const nextBlogId = computed(() => idea.value.nextBlogId)
+const lastBlogId = computed(() => idea.value.lastBlogId)
 const ChineseTime = computed(() => {
   const map = {
     '23': 'icon-rat_zi', '00': 'icon-rat_zi',
@@ -77,24 +75,19 @@ const initGitalk = () => {
 }
 
 const getBlogDetail = async () => {
-  loading.value = true
-  const { data } = await service.getBlogDetail({
-    params: {
-      id: props.id,
-    }
-  })
-  if (data) {
+  try {
+    const { data } = await service.getBlogDetail({
+      params: { id: props.id },
+      loading: true,
+    })
     idea.value = data
-    nextBlogId.value = data.nextBlogId
-    lastBlogId.value = data.lastBlogId
     nextTick(initGitalk)
-  } else {
+  } catch (e) {
     router.push('/error?code=404')
   }
-  loading.value = false
 }
 
-watchEffect(getBlogDetail, props.id)
+watch(() => props.id, getBlogDetail, { immediate: true })
 </script>
 
 <style lang="less" scoped>
