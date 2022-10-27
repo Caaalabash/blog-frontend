@@ -142,7 +142,7 @@ const openDialog = () => {
 }
 const update = debounce((e) => idea.blogContent = e.target.value, 300)
 const sendIdea = async () => {
-  await formRef.validate()
+  await formRef.value.validate()
   if (idea.blogContent === '') {
     ElMessage.error('文章内容不能为空')
     return
