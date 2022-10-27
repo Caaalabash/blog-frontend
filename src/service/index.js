@@ -3,7 +3,7 @@ import { isEmpty } from '@/utils'
 import { ElMessage, ElLoading } from 'element-plus'
 
 const ajax = axios.create({
-  timeout: 1000,
+  timeout: 10000,
   baseURL: '/api',
   withCredentials: true,
 })
