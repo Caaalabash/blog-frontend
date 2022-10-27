@@ -5,6 +5,20 @@
   </footer>
 </template>
 
+<script setup>
+import { useUserStore } from '@/stores/user'
+import { service } from '@/service'
+
+const userStore = useUserStore()
+
+const init = async () => {
+  const { data } = await service.checkLoginStatus({ ignoreErrorTips: true })
+  userStore.setUser(data)
+}
+
+init()
+</script>
+
 <style lang="less">
 @import 'assets/style/iconfont.css';
 @import 'assets/style/index.less';

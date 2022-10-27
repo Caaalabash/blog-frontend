@@ -1,0 +1,40 @@
+variables:
+  GIT_DEPTH: 1
+
+cache:
+  key: "vue-blog"
+  paths:
+    - node_modules
+
+stages:
+  - build
+  - make
+
+upload_to_oss:
+  image: node:alpine
+  stage: build
+  script:
+    - npm install --registry https://registry.npm.taobao.org
+    - npm run build
+  artifacts:
+    when: on_success
+    paths:
+      - ./dist
+
+make_image:
+  cache: {}
+  image: docker:stable
+  stage: make
+  script:
+    - sed -i "s/blog:\w\+-FE/blog:$CI_COMMIT_SHORT_SHA-FE/g" docker-compose.yml
+    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
+    - docker build
+      -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
+      -f ./Dockerfile .
+    - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
+    - scp -P $SSH_PORT ./docker-compose.yml deploy-server:~/deploy/blog/fe
+    - ssh deploy-server -p $SSH_PORT "cd ~/deploy/blog/fe && docker-compose up -d"
+
+
+
+

@@ -18,6 +18,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { service } from '@/service'
+import { useUserStore } from '@/stores/user'
 
 const emit = defineEmits(['close'])
 const props = defineProps({
@@ -26,7 +27,7 @@ const props = defineProps({
     default: false,
   }
 })
-
+const userStore = useUserStore()
 const form = reactive({
   userName: '',
   userPwd: ''
@@ -45,7 +46,8 @@ const rules = {
 
 const sendRequest = async () => {
   await formRef.value.validate()
-  await service.login({ method: 'POST', loading: true, data: form })
+  const { data } = await service.login({ method: 'POST', data: form })
+  userStore.setUser(data)
   handleClose(true)
 }
 const handleClose = (loginSuccess) => {

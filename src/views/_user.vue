@@ -14,12 +14,12 @@ import { service } from '@/service'
 const router = useRouter()
 const loginDialogVisible = ref(false)
 
-const checkLogin = () => service.checkLoginStatus({ ignoreError: true })
+const checkLogin = () => service.checkLoginStatus({ ignoreErrorTips: true })
 
 const openDialog = async () => {
   try {
     await checkLogin()
-    router.push('/admin/new')
+    router.push('/admin')
   } catch (e) {
     loginDialogVisible.value = true
   }
@@ -27,7 +27,7 @@ const openDialog = async () => {
 const closeDialog = (loginSuccess) => {
   loginDialogVisible.value = false
   if (loginSuccess) {
-    router.push('/admin/new')
+    router.push('/admin')
   }
 }
 </script>

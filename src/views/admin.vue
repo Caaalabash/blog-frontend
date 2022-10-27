@@ -12,46 +12,38 @@
       </el-menu-item>
     </el-menu>
     <!--右侧内容区域-->
-    <router-view :user="user" :innerWidth="innerWidth" />
+    <router-view :innerWidth="innerWidth" />
   </div>
 </template>
 
-<script>
-import { mapState, mapActions } from 'vuex'
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { service } from '@/service'
+import { useUserStore } from '@/stores/user'
 
-export default {
-  name: 'admin',
-  data: () => ({
-    innerWidth: window.innerWidth,
-    menu: [
-      { path: '/admin/new', icon: 'el-icon-edit-outline', label: '发布文章' },
-      { path: '/admin/articles', icon: 'el-icon-search', label: '管理文章' },
-      { path: '/', icon: 'el-icon-back', label: '返回首页' },
-      { icon: 'el-icon-close', label: '注销' }
-    ]
-  }),
-  computed: {
-    ...mapState(['user']),
-    isCollapse() {
-      return this.innerWidth <= 480
-    },
-  },
-  methods: {
-    ...mapActions(['logout']),
-    handleResize() {
-      this.innerWidth = window.innerWidth
-    },
-    async handleClick(item) {
-      if (item.path) {
-        this.$router.push(item.path)
-      } else if (item.label === '注销') {
-        await this.logout()
-        this.$router.push('/')
-      } else if (item.label === '返回首页') {
-        this.$router.push('/')
-      }
-    },
-  },
+const router = useRouter()
+const userStore = useUserStore()
+const innerWidth = ref(window.innerWidth)
+const menu = [
+  { path: '/admin', icon: 'el-icon-edit-outline', label: '发布文章' },
+  { path: '/admin/articles', icon: 'el-icon-search', label: '管理文章' },
+  { path: '/', icon: 'el-icon-back', label: '返回首页' },
+  { icon: 'el-icon-close', label: '注销' }
+]
+const isCollapse = computed(() => innerWidth.value <= 480)
+const handleResize = () => innerWidth.value = window.innerWidth
+const handleClick = (item) => {
+  if (item.path) {
+    router.push(item.path)
+  } else if (item.label === '注销') {
+    service.logout().then(() =>{
+      userStore.setUser({})
+      router.push('/')
+    })
+  } else if (item.label === '返回首页') {
+    router.push('/')
+  }
 }
 </script>
 

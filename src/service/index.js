@@ -9,15 +9,15 @@ const ajax = axios.create({
 })
 
 ajax.interceptors.response.use((response) => {
-  if (response.status === 200 && !isEmpty(response.data.message)) {
+  if (!isEmpty(response.data.message)) {
     ElMessage({
       type: response.data.code ? 'error' : 'success',
       message: response.data.message,
     })
   }
-  return response.data
+  return response.data.code ? Promise.reject(response.data) : response.data
 }, (error) => {
-  if (!error.config.ignoreError) {
+  if (!error.config.ignoreErrorTips) {
     ElMessage({
       type: 'error',
       message: error.message,
