@@ -9,7 +9,12 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import VitePluginOss from 'vite-plugin-oss'
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? 'https://static.calabash.top/blog2/' : '/',
+  base: '/',
+  experimental: {
+    renderBuiltUrl(filename) {
+      return 'https://static.calabash.top/blog2/' + filename
+    },
+  },
   plugins: [
     vue(),
     vueJsx(),
