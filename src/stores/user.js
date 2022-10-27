@@ -6,7 +6,7 @@ export const useUserStore = defineStore('user', () => {
   const user = ref({})
 
   const userName = computed(() => user.value.userName)
-  const isLogin = computed(() => !isEmpty(userName))
+  const isLogin = computed(() => !isEmpty(userName.value))
 
   const setUser = (payload) => user.value = payload
 
