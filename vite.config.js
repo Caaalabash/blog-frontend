@@ -6,11 +6,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? 'https://static.calabash.top/blog' : '/',
+  base: process.env.NODE_ENV === 'production' ? 'https://static.calabash.top/blog/' : '/',
   plugins: [
     vue(),
     vueJsx(),
@@ -20,11 +19,6 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'public',
-      filename: 'service-worker.js'
-    })
   ],
   resolve: {
     alias: {
