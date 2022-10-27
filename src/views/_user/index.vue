@@ -10,11 +10,69 @@
         </div>
       </div>
     </div>
+    <!-- 文章列表 -->
+    <ul class="list">
+      <template v-for="year in Object.keys(articleListGroupByYear).sort((a, b) => b - a)" :key="year">
+        <li class="list-item list-item-year">
+          <span class="text">{{ year }}</span>
+          <svg class="icon" aria-hidden="true">
+            <use :xlink:href="`#icon-${getYearOf(year)}`"></use>
+          </svg>
+        </li>
+        <li class="list-item" v-for="blog in articleListGroupByYear[year]" :key="blog.blogDate">
+          <router-link class="title" :to="`/${user}/articles/${blog.id}`">{{ blog.blogTitle }}</router-link>
+        </li>
+      </template>
+    </ul>
+    <!-- 滚动加载器 -->
+    <div class="observer" v-observer="handleObserver" v-if="blogList.length"></div>
   </div>
 </template>
 
 <script setup>
+import { watch, ref, computed } from 'vue'
+import { service } from '@/service'
 
+const props = defineProps({
+  user: String
+})
+
+const pgN = ref(1)
+const pgS = ref(8)
+const canLoadMore = ref(true)
+const blogList = ref([])
+
+const articleListGroupByYear = computed(() => {
+  return [...blogList.value].sort((a, b) => b.blogDate - a.blogDate).reduce((acc, item) => {
+    const year = item.blogDate.slice(0, 4)
+    if (!acc[year]) acc[year] = []
+    acc[year].push(item)
+    return acc
+  }, {})
+})
+
+const loadArticle = async () => {
+  if (!canLoadMore.value) return
+  const resp = await service.getBlogList({
+    params: {
+      author: props.user,
+      type: 'public',
+      pgN: pgN.value++,
+      pgS: pgS.value,
+    }
+  })
+  blogList.value.push(...resp.data)
+  if (resp.data.length < pgS.value) {
+    canLoadMore.value = false
+  }
+}
+const handleObserver = (el, status) => status && loadArticle()
+const getYearOf = year => {
+  const index = (year - 1984) % 12
+  return ['rat', 'ox', 'tiger', 'rabbit', 'dragon', 'snake', 'horse', 'goat', 'monkey', 'rooster', 'dog', 'boar'][index]
+}
+
+watch(() => props.user, loadArticle, { immediate: true })
 </script>
 
 <style scoped lang="less">

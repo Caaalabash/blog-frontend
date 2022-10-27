@@ -1,16 +1,11 @@
 <template>
   <RouterView />
   <footer class="app-footer">
-    <a
-      target="_blank"
-      rel="noopener noreferrer"
-      href="http://www.beian.miit.gov.cn"
-    >蜀ICP备17031321号</a
-    >
+    <a target="_blank" rel="noopener noreferrer" href="http://www.beian.miit.gov.cn">蜀ICP备17031321号</a>
   </footer>
 </template>
 
-<style scoped lang="less">
+<style lang="less">
 @import 'assets/style/iconfont.css';
 @import 'assets/style/index.less';
 

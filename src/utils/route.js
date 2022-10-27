@@ -36,7 +36,8 @@ export function createRoutes(
           path: formatPath,
           name: subKey,
           children: {},
-          component: formatterModuleMap[subKey]
+          component: formatterModuleMap[subKey],
+          props: subKey.indexOf('_') > -1,
         }
       }
       head = head[list[i]].children
@@ -45,8 +46,6 @@ export function createRoutes(
 
   // 排序
   formatRoute(dummyRoutes)
-
-  console.debug(dummyRoutes.children)
 
   return dummyRoutes.children
 }
@@ -66,6 +65,7 @@ function formatRoute(route) {
     route.component = route.children[0].component
     route.path += '/' + route.children[0].path
     route.name = route.children[0].name
+    route.props = route.children[0].props
     delete route.children
   }
 }

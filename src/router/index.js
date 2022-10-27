@@ -10,8 +10,15 @@ const router = createRouter({
       path: '/',
       redirect: '/Calabash',
     },
-    ...createRoutes(moduleMap, '../views/')
+    ...createRoutes(moduleMap, '../views/'),
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/error?code=404'
+    }
   ],
+  scrollBehavior (to, from, savedPosition) {
+    return { top: 0, left: 0 }
+  }
 })
 
 export default router
