@@ -7,7 +7,9 @@
         :index="item.label"
         :key="index"
         @click="handleClick(item)">
-        <i :class="item.icon"></i>
+        <el-icon>
+          <component :is="item.icon"></component>
+        </el-icon>
         <span slot="title">{{ item.label }}</span>
       </el-menu-item>
     </el-menu>
@@ -21,15 +23,16 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { service } from '@/service'
 import { useUserStore } from '@/stores/user'
+import { Edit, Search, Back, Close } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const userStore = useUserStore()
 const innerWidth = ref(window.innerWidth)
 const menu = [
-  { path: '/admin', icon: 'el-icon-edit-outline', label: '发布文章' },
-  { path: '/admin/articles', icon: 'el-icon-search', label: '管理文章' },
-  { path: '/', icon: 'el-icon-back', label: '返回首页' },
-  { icon: 'el-icon-close', label: '注销' }
+  { path: '/admin', icon: Edit, label: '发布文章' },
+  { path: '/admin/articles', icon: Search, label: '管理文章' },
+  { path: '/', icon: Back, label: '返回首页' },
+  { icon: Close, label: '注销' }
 ]
 const isCollapse = computed(() => innerWidth.value <= 480)
 const handleResize = () => innerWidth.value = window.innerWidth

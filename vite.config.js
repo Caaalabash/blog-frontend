@@ -48,9 +48,12 @@ export default defineConfig({
     port: '5173',
     proxy: {
       '/api': {
-        target: 'https://blog.calabash.top',
+        // 线上
+        // target: 'https://blog.calabash.top',
+        // 本地
+        target: 'http://localhost:8080',
+        rewrite: (path) => path.replace(/^\/api/, ''),
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
