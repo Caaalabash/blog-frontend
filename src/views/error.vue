@@ -12,6 +12,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import throttle from 'lodash/throttle'
 
 const route = useRoute()
 const torch = ref()
@@ -26,8 +27,8 @@ const warningLabel = computed(() => {
       return ''
   }
 })
-const handleMouseMove = e => torch.value.style =  `top:${e.pageY}px;left:${e.pageX}px`
-const handleTouchMove = e => torch.value.style = `top:${e.touches[0].clientY}px;left:${e.touches[0].clientX}px`
+const handleMouseMove = throttle(e => torch.value.style =  `top:${e.pageY}px;left:${e.pageX}px`, 16)
+const handleTouchMove = throttle(e => torch.value.style = `top:${e.touches[0].clientY}px;left:${e.touches[0].clientX}px`, 16)
 </script>
 
 <style scoped>
