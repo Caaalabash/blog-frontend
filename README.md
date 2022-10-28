@@ -1,35 +1,37 @@
-# blog-frontend2
+## Blog
 
-This template should help get you started developing with Vue 3 in Vite.
+### 博客地址
 
-## Recommended IDE Setup
+[https://blog.calabash.top/](https://blog.calabash.top/)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+供本人写一些很无聊的话
 
-## Customize configuration
+### 项目相关
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+[Vue2版本 - vue2.5.17 + element-ui + vue-cli](https://github.com/Caaalabash/blog-frontend/tree/f-go-version)
 
-## Project Setup
+[Vue3版本 - vue3.2.38 + element-plus + vite](https://github.com/Caaalabash/blog-frontend)
 
-```sh
+如果你想跑vue3
+
+````shell
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
+````
 
-### Compile and Minify for Production
+如果你想跑vue2
 
-```sh
-npm run build
-```
+````shell
+npm install
+npm run local
+````
 
-### Lint with [ESLint](https://eslint.org/)
+golang后端地址:[https://github.com/Caaalabash/blog-backend](https://github.com/Caaalabash/blog-backend)
 
-```sh
-npm run lint
-```
+### 部署流程
+
++ 提交到私有化部署的 gitlab，触发 gitlab-ci，参考`.gitlab-ci.yml`
+    + 前端build：在`node:alpine`镜像中安装依赖、打包、将打包结果上传至阿里云OSS
+    + 构建前端容器：在`docker:statble`镜像中构建前端容器，参考`Dockerfile`、`blog.conf`(nginx配置)，容器上传到Dockerhub
+    + 将启动脚本`docker-compose.yml`发送到部署服务器，执行`docker-compose up`即可
++ gitlab代码自动同步到github

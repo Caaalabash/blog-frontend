@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
+const installPersistedStatePlugin = createPersistedStatePlugin()
 
 import App from './App.vue'
 import router from './router'
@@ -15,11 +17,15 @@ import 'element-plus/es/components/notification/style/css'
 // import './registerServiceWorker'
 
 const app = createApp(App)
+const pinia = createPinia()
+
+pinia.use((context) => installPersistedStatePlugin(context))
+
 app.directive('marked', vMarked)
 app.directive('observer', vObserver)
 app.directive('resize', vResize)
 app.directive('touch', vTouch)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
