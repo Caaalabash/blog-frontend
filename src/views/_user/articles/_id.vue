@@ -4,7 +4,7 @@
     <article class="article">
       <h1 class="title" @click="$router.push('/')">{{ idea.blogTitle }}</h1>
       <div class="article-meta">
-        <span v-if="idea.blogDate">
+        <span v-if="idea.blogDate" :title="formatDateToChinese(idea.blogDate)">
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="`#${ChineseTime}`"></use>
           </svg>
@@ -30,6 +30,7 @@ import Gitalk from 'gitalk'
 import { defineProps, ref, computed, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { service } from '@/service'
+import { formatDateToChinese } from '@/utils'
 
 const router = useRouter()
 

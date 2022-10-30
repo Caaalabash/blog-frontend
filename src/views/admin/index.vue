@@ -50,7 +50,7 @@
 
 <script setup>
 import ClipboardJS from 'clipboard'
-import { formatDate } from '@/lib/lib'
+import { formatDate } from '@/utils'
 import debounce from 'lodash/debounce'
 import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'

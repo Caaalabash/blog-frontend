@@ -4,7 +4,7 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import go from 'highlight.js/lib/languages/go'
 import cLike from 'highlight.js/lib/languages/c-like'
 import 'highlight.js/styles/github.css'
-import Zoom from '../lib/zoom'
+import Zoom from '@/utils/zoom'
 
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('js', javascript)
