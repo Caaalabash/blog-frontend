@@ -14,9 +14,6 @@
           </div>
         </template>
       </el-page-header>
-      <div class="article-meta">
-
-      </div>
       <div class="markdown-body" v-marked="idea.blogContent"></div>
     </article>
     <!-- 翻页 -->
@@ -105,7 +102,8 @@ watch(() => props.id, getBlogDetail, { immediate: true })
   .article-header {
     position: sticky;
     top: 0;
-    background-color: #fff;
+    backdrop-filter: saturate(50%) blur(8px);
+    background: rgba(255, 255, 255, .7);
     /deep/ .el-page-header__left,
     /deep/ .el-page-header__content {
       width: 100%;
