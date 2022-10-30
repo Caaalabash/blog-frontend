@@ -2,13 +2,20 @@
   <div class="blog-content">
     <!-- 文章内容区域 -->
     <article class="article">
-      <h1 class="title" @click="$router.push('/')">{{ idea.blogTitle }}</h1>
+      <el-page-header @back="$router.push('/')" class="article-header">
+        <template #content>
+          <div class="article-header-item">
+            <div class="title">{{ idea.blogTitle }}</div>
+            <span v-if="idea.blogDate" :title="formatDateToChinese(idea.blogDate)">
+              <svg class="icon" aria-hidden="true">
+                <use :xlink:href="`#${ChineseTime}`"></use>
+              </svg>
+            </span>
+          </div>
+        </template>
+      </el-page-header>
       <div class="article-meta">
-        <span v-if="idea.blogDate" :title="formatDateToChinese(idea.blogDate)">
-          <svg class="icon" aria-hidden="true">
-            <use :xlink:href="`#${ChineseTime}`"></use>
-          </svg>
-        </span>
+
       </div>
       <div class="markdown-body" v-marked="idea.blogContent"></div>
     </article>
@@ -95,27 +102,36 @@ watch(() => props.id, getBlogDetail, { immediate: true })
 .blog-content {
   width: 760px;
   margin: 40px auto 80px;
-  .title {
-    font-size: 32px;
-    font-weight: 500;
-    margin: 0 0 30px;
-    color: #13022c;
-    text-align: center;
-    line-height: 1.25;
+  .article-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    /deep/ .el-page-header__left,
+    /deep/ .el-page-header__content {
+      width: 100%;
+    }
+    &-item {
+      display: flex;
+      align-items: center;
+      .title {
+        font-size: 32px;
+        font-weight: 500;
+        color: #13022c;
+        text-align: center;
+        line-height: 60px;
+        margin-right: auto;
+      }
+      .icon {
+        font-size: 32px;
+        cursor: pointer;
+      }
+    }
   }
   /deep/ img {
     display: block;
     max-width: 600px;
     max-height: 400px;
     margin: 0 auto;
-  }
-  .article-meta {
-    display: flex;
-    flex-direction: row-reverse;
-    font-size: 25px;
-    .icon {
-      cursor: pointer;
-    }
   }
   .turn-page {
     position: fixed;
@@ -165,9 +181,16 @@ watch(() => props.id, getBlogDetail, { immediate: true })
     width: 100%;
     margin: 20px auto 40px;
     padding: 0 24px;
-    .title {
-      font-size: 24px;
-      margin: 0 0 20px;
+    .article-header {
+      &-item {
+        .title {
+          font-size: 24px;
+          line-height: 36px;
+        }
+        .icon {
+          font-size: 24px;
+        }
+      }
     }
     /deep/ img {
       max-width: 300px;
