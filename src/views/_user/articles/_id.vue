@@ -5,13 +5,15 @@
       <el-page-header @back="$router.push('/')" class="article-header">
         <template #content>
           <div class="article-header-item">
-            <div class="title">{{ idea.blogTitle }}</div>
-            <span v-if="idea.blogDate" :title="formatDateToChinese(idea.blogDate)">
+            <span class="title">{{ idea.blogTitle }}</span>
+          </div>
+        </template>
+        <template #extra>
+          <span v-if="idea.blogDate" :title="formatDateToChinese(idea.blogDate)">
               <svg class="icon" aria-hidden="true">
                 <use :xlink:href="`#${ChineseTime}`"></use>
               </svg>
             </span>
-          </div>
         </template>
       </el-page-header>
       <div class="markdown-body" v-marked="idea.blogContent"></div>
@@ -98,31 +100,25 @@ watch(() => props.id, getBlogDetail, { immediate: true })
 <style lang="less" scoped>
 .blog-content {
   width: 760px;
-  margin: 40px auto 80px;
+  margin: 20px auto 80px;
   .article-header {
     position: sticky;
     top: 0;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
     backdrop-filter: saturate(50%) blur(8px);
     background: rgba(255, 255, 255, .7);
-    /deep/ .el-page-header__left,
-    /deep/ .el-page-header__content {
-      width: 100%;
+    margin-bottom: 20px;
+    .title {
+      font-size: 32px;
+      font-weight: 500;
+      color: #13022c;
+      text-align: left;
     }
-    &-item {
-      display: flex;
-      align-items: center;
-      .title {
-        font-size: 32px;
-        font-weight: 500;
-        color: #13022c;
-        text-align: center;
-        line-height: 60px;
-        margin-right: auto;
-      }
-      .icon {
-        font-size: 32px;
-        cursor: pointer;
-      }
+    .icon {
+      font-size: 32px;
+      cursor: pointer;
     }
   }
   /deep/ img {
@@ -180,14 +176,11 @@ watch(() => props.id, getBlogDetail, { immediate: true })
     margin: 20px auto 40px;
     padding: 0 24px;
     .article-header {
-      &-item {
-        .title {
-          font-size: 24px;
-          line-height: 36px;
-        }
-        .icon {
-          font-size: 24px;
-        }
+      .title {
+        font-size: 20px;
+      }
+      .icon {
+        font-size: 20px;
       }
     }
     /deep/ img {
