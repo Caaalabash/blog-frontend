@@ -23,13 +23,13 @@ upload_to_oss:
 
 make_image:
   cache: {}
-  image: docker:stable
   stage: make
+  before_script:
+    - docker login "$DOCKER_REPOSITORY_ALI" -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI"
   script:
     - sed -i "s/blog:\w\+-FE/blog:$CI_COMMIT_SHORT_SHA-FE/g" docker-compose.yml
-    - docker login -u="$DOCKER_USERNAME_ALI" -p="$DOCKER_PASSWORD_ALI" $DOCKER_REPOSITORY_ALI
     - docker build
-      -t $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
+      -t "$DOCKER_REPOSITORY_ALI"/calabash/blog:"$CI_COMMIT_SHORT_SHA"-FE
       -f ./Dockerfile .
     - docker push $DOCKER_REPOSITORY_ALI/calabash/blog:$CI_COMMIT_SHORT_SHA-FE
     - scp -P $SSH_PORT ./docker-compose.yml deploy-server:~/deploy/blog/fe
