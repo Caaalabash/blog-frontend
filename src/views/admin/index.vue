@@ -148,8 +148,7 @@ const sendIdea = async () => {
     return
   }
   if (id.value) {
-    const { id, ...rest } = idea
-    await service.changeIdea({ method: 'PUT', data: rest })
+    await service.changeIdea({ method: 'PUT', data: idea })
   } else {
     idea.blogDate = formatDate()
     await service.createNewIdea({
